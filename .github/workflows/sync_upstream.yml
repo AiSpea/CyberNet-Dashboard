@@ -1,0 +1,74 @@
+name: Propose upstream Dashboard updates
+
+on:
+  schedule:
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: cybernet-dashboard-upstream-sync
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  propose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out CyberNet main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Merge upstream into a review branch
+        env:
+          UPSTREAM_SYNC_TOKEN: ${{ secrets.UPSTREAM_SYNC_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/netbirdio/dashboard.git
+          git fetch upstream main --tags
+          git fetch origin automation/upstream-sync || true
+
+          git checkout -B automation/upstream-sync origin/main
+          before="$(git rev-parse HEAD)"
+
+          if ! git merge --no-ff --no-edit upstream/main; then
+            echo "Upstream changes conflict with the CyberNet fork; manual resolution is required." >&2
+            git diff --name-only --diff-filter=U >&2
+            exit 1
+          fi
+
+          after="$(git rev-parse HEAD)"
+          if [ "$before" = "$after" ]; then
+            echo "CyberNet already contains upstream/main."
+            exit 0
+          fi
+
+          git push --force-with-lease origin automation/upstream-sync
+
+          compare_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/main...automation/upstream-sync?expand=1"
+          if [ -n "$UPSTREAM_SYNC_TOKEN" ]; then
+            if GH_TOKEN="$UPSTREAM_SYNC_TOKEN" gh pr view automation/upstream-sync \
+              --repo "$GITHUB_REPOSITORY" --json number >/dev/null 2>&1; then
+              echo "Updated the existing upstream-sync pull request."
+            else
+              GH_TOKEN="$UPSTREAM_SYNC_TOKEN" gh pr create \
+                --repo "$GITHUB_REPOSITORY" \
+                --base main \
+                --head automation/upstream-sync \
+                --title "chore: review upstream Dashboard updates" \
+                --body "This pull request merges the latest netbirdio/dashboard main branch into CyberNet. It is intentionally not auto-merged; review branding, authentication, API compatibility, and deployment changes before merging."
+            fi
+          else
+            {
+              echo "### Upstream changes are ready for review"
+              echo
+              echo "The AiSpea organization blocks pull-request creation by the default Actions token."
+              echo "Open a pull request from the prepared branch: ${compare_url}"
+              echo
+              echo "To automate PR creation later, add a repository-scoped \`UPSTREAM_SYNC_TOKEN\` secret."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi

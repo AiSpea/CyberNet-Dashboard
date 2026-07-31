@@ -107,8 +107,8 @@ export const OnboardingSurvey = ({ domainCategory, onSubmit }: Props) => {
   const { oidcUser: user } = useOidcUser();
   const name = user?.given_name || user?.name || user?.preferred_username;
   const welcomeMessage = name
-    ? `Welcome to NetBird, ${name}!`
-    : "Welcome to NetBird!";
+    ? `Welcome to CyberNet, ${name}!`
+    : "Welcome to CyberNet!";
 
   const isPrivate = domainCategory === "private";
   const [personalOrBusiness, setPersonalOrBusiness] = useState(

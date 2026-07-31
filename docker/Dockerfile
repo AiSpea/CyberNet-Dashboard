@@ -1,24 +1,36 @@
-FROM alpine:3.14
+ARG NODE_IMAGE=node:22-alpine
+ARG NGINX_IMAGE=nginx:1.28-alpine
 
-RUN apk add --no-cache bash curl less ca-certificates git tzdata zip gettext \
-    nginx curl supervisor certbot-nginx && \
-    rm -rf /var/cache/apk/* && mkdir -p /run/nginx
+FROM ${NODE_IMAGE} AS builder
 
-STOPSIGNAL SIGINT
+WORKDIR /app
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN apk add --no-cache curl
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY . .
+RUN ./scripts/fetch-ironrdp.sh \
+    && printf '{}\n' > .local-config.json
+
+ARG DASHBOARD_VERSION=development
+ENV NEXT_PUBLIC_DASHBOARD_VERSION=${DASHBOARD_VERSION}
+RUN npm run build
+
+FROM ${NGINX_IMAGE} AS runtime
+
+RUN rm -f /etc/nginx/conf.d/default.conf
+
+COPY docker/default.conf /etc/nginx/conf.d/default.conf
+COPY docker/init_react_envs.sh /docker-entrypoint.d/40-cybernet-config.sh
+COPY --from=builder /app/out/ /usr/share/nginx/html/
+
+RUN chmod 0755 /docker-entrypoint.d/40-cybernet-config.sh
+
+STOPSIGNAL SIGQUIT
 EXPOSE 80
-EXPOSE 443
-ENTRYPOINT ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]
 
-WORKDIR /usr/share/nginx/html
-# copy configuration files
-COPY docker/default.conf /etc/nginx/http.d/default.conf
-COPY docker/nginx.conf /etc/nginx/nginx.conf
-COPY docker/init_cert.sh /usr/local/init_cert.sh
-COPY docker/init_react_envs.sh /usr/local/init_react_envs.sh
-RUN chmod +x /usr/local/init_cert.sh && rm /etc/crontabs/root
-RUN chmod +x /usr/local/init_react_envs.sh
-
-# configure supervisor
-COPY docker/supervisord.conf /etc/supervisord.conf
-# copy build files
-COPY out/ /usr/share/nginx/html/
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD wget --quiet --spider http://127.0.0.1/healthz || exit 1

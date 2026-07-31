@@ -13,6 +13,7 @@ import {
   ArrowUpRightIcon,
   BookText,
   CircleQuestionMark,
+  Github,
   MailIcon,
   MessageSquareShare,
   MessagesSquareIcon,
@@ -124,6 +125,21 @@ export default function HelpAndSupportButton() {
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
+
+        <DropdownMenuItem
+          href="https://github.com/AiSpea/CyberNet-Dashboard"
+          target="_blank"
+          rel="noopener noreferrer"
+          asChild
+        >
+          <div className={"flex gap-3 items-center"}>
+            <Github size={14} />
+            CyberNet Source Code
+          </div>
+          <DropdownMenuShortcut>
+            <ArrowUpRightIcon size={16} />
+          </DropdownMenuShortcut>
+        </DropdownMenuItem>
 
         <DropdownMenuItem
           href={"https://forms.gle/TeLw2zrXEdw6RcQ36"}

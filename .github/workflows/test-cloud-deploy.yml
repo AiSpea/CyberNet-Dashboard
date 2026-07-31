@@ -25,10 +25,9 @@ jobs:
 
       - name: Prepare nginx layout expected by the init script
         run: |
-          sudo mkdir -p /etc/nginx/http.d /usr/share/nginx/html
-          echo 'add_header Content-Security-Policy "placeholder" always;' | sudo tee /etc/nginx/http.d/default.conf
+          sudo mkdir -p /etc/nginx/conf.d /usr/share/nginx/html
+          echo 'add_header Content-Security-Policy "__CYBERNET_CSP__" always;' | sudo tee /etc/nginx/conf.d/default.conf
           sudo touch /usr/share/nginx/html/OidcTrustedDomains.js.tmpl
-          sudo systemctl start nginx
 
       - name: Run init script with production-like env
         env:
@@ -38,11 +37,11 @@ jobs:
           AUTH_SUPPORTED_SCOPES: openid profile email
           USE_AUTH0: "false"
           NETBIRD_MGMT_API_ENDPOINT: https://api.example.com
-        run: sudo -E bash docker/init_react_envs.sh
+        run: sudo -E sh docker/init_react_envs.sh
 
       - name: Assert provider APIs are in connect-src
         run: |
-          CSP=$(grep -o 'Content-Security-Policy "[^"]*"' /etc/nginx/http.d/default.conf)
+          CSP=$(grep -o 'Content-Security-Policy "[^"]*"' /etc/nginx/conf.d/default.conf)
           echo "Generated CSP: $CSP"
           CONNECT_SRC=$(echo "$CSP" | sed 's/.*connect-src \([^;]*\);.*/\1/')
           echo "connect-src: $CONNECT_SRC"
