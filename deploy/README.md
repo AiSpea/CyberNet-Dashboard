@@ -86,7 +86,8 @@ deleted.
 Traefik sends these high-priority paths to the combined server:
 
 - h2c gRPC: `/signalexchange.SignalExchange/`,
-  `/management.ManagementService/`, and `/management.ProxyService/`
+  `/management.ManagementService/`, `/management.ProxyService/`, and
+  `/flow.FlowService/`
 - HTTP/WebSocket: `/relay`, `/ws-proxy/`, `/api`, and `/oauth2`
 
 The host-only rule has priority `1` and sends every other request to the
