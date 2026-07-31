@@ -1,13 +1,14 @@
 "use client";
 
 import { buttonVariants } from "@components/Button";
-import Code from "@components/Code";
 import { cn } from "@utils/helpers";
 import {
   AlertTriangle,
   Apple,
   ArrowLeft,
+  Check,
   Clock3,
+  Copy,
   Download,
   ExternalLink,
   LoaderCircle,
@@ -21,6 +22,7 @@ import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import { useLocale } from "@/contexts/LocaleProvider";
+import useCopyToClipboard from "@/hooks/useCopyToClipboard";
 import type { ClientUpdateConfig } from "@/interfaces/Instance";
 import { resolveClientDownloads } from "@/modules/setup-netbird-modal/useClientDownloads";
 import { fetchInstanceStatus } from "@/utils/unauthenticatedApi";
@@ -113,6 +115,8 @@ function companionAndroidUrl(url?: string): string | undefined {
 
 export default function DownloadsPage() {
   const { t } = useLocale();
+  const [, copyLinuxCommand, linuxCommandCopied] =
+    useCopyToClipboard(linuxInstallCommand);
   const [config, setConfig] = useState<ClientUpdateConfig>();
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
@@ -261,26 +265,48 @@ export default function DownloadsPage() {
                           </span>
                         </div>
                       )}
-                      {config?.update.latest_version && id !== "linux" && (
-                        <p className="mt-3 text-xs text-slate-500 dark:text-nb-gray-400">
-                          {t("downloads.availableVersion", {
-                            version: config.update.latest_version,
-                          })}
-                        </p>
-                      )}
+                      {config?.update.latest_version &&
+                        id !== "linux" &&
+                        url && (
+                          <p className="mt-3 text-xs text-slate-500 dark:text-nb-gray-400">
+                            {t("downloads.availableVersion", {
+                              version: config.update.latest_version,
+                            })}
+                          </p>
+                        )}
                       <div className="mt-auto pt-5">
                         {id === "linux" ? (
                           <div>
                             <p className="mb-2 text-xs font-medium text-slate-500 dark:text-nb-gray-400">
                               {t("downloads.linuxScriptTitle")}
                             </p>
-                            <Code
-                              codeToCopy={linuxInstallCommand}
-                              message={t("downloads.scriptCopied")}
-                              small
+                            <button
+                              type="button"
+                              onClick={() =>
+                                copyLinuxCommand(t("downloads.scriptCopied"))
+                              }
+                              className={cn(
+                                buttonVariants({
+                                  variant: "secondary",
+                                  size: "sm",
+                                  rounded: true,
+                                  border: 0,
+                                }),
+                                "w-full",
+                              )}
                             >
-                              <Code.Line>{linuxInstallCommand}</Code.Line>
-                            </Code>
+                              {linuxCommandCopied ? (
+                                <Check size={15} />
+                              ) : (
+                                <Copy size={15} />
+                              )}
+                              {linuxCommandCopied
+                                ? t("downloads.action.linuxCopied")
+                                : t("downloads.action.linuxCopy")}
+                            </button>
+                            <p className="mt-2 text-xs leading-5 text-slate-500 dark:text-nb-gray-400">
+                              {t("downloads.linuxPasteHint")}
+                            </p>
                           </div>
                         ) : url ? (
                           <div className="space-y-3">
