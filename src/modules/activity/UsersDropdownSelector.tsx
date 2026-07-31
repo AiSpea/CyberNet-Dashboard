@@ -6,6 +6,7 @@ import { SmallBadge } from "@components/ui/SmallBadge";
 import TextWithTooltip from "@components/ui/TextWithTooltip";
 import { VirtualScrollAreaList } from "@components/VirtualScrollAreaList";
 import { useSearch } from "@hooks/useSearch";
+import loadConfig from "@utils/config";
 import { generateColorFromString } from "@utils/helpers";
 import { sortBy, uniqBy } from "lodash";
 import { ChevronsUpDown, Cog, UserCircle2 } from "lucide-react";
@@ -13,6 +14,8 @@ import * as React from "react";
 import { useMemo, useState } from "react";
 import { useElementSize } from "@/hooks/useElementSize";
 import { SmallUserAvatar } from "@/modules/users/SmallUserAvatar";
+
+const config = loadConfig();
 
 interface Props {
   value?: string;
@@ -33,7 +36,7 @@ const searchPredicate = (item: UserSelectOption, query: string) => {
   const lowerCaseQuery = query.toLowerCase();
   if (
     item.email === "NetBird" &&
-    "NetBird System".toLowerCase().includes(lowerCaseQuery)
+    `${config.productName} System`.toLowerCase().includes(lowerCaseQuery)
   )
     return true;
   if (item.name.toLowerCase().includes(lowerCaseQuery)) return true;
@@ -238,7 +241,11 @@ export function UsersDropdownSelector({
                         }
                       >
                         <TextWithTooltip
-                          text={user?.email || "NetBird"}
+                          text={
+                            isSystemUser
+                              ? config.productName
+                              : user?.email || config.productName
+                          }
                           maxChars={20}
                         />
                       </span>

@@ -3,6 +3,13 @@ const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
 
+const walkSourceFiles = (directory) =>
+  fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const fullPath = path.join(directory, entry.name);
+    if (entry.isDirectory()) return walkSourceFiles(fullPath);
+    return /\.(?:ts|tsx)$/.test(entry.name) ? [fullPath] : [];
+  });
+
 const checks = [
   {
     file: "src/auth/OIDCError.tsx",
@@ -55,6 +62,30 @@ for (const check of checks) {
     if (pattern.test(source)) {
       failures.push(`${check.file}: ${description}`);
     }
+  }
+}
+
+const sourceRoot = path.join(root, "src");
+for (const file of walkSourceFiles(sourceRoot)) {
+  const relative = path.relative(root, file);
+  const source = fs.readFileSync(file, "utf8");
+
+  if (
+    !relative.startsWith(`src${path.sep}cloud${path.sep}`) &&
+    /https:\/\/(?:docs|app|api)\.netbird\.io/.test(source)
+  ) {
+    failures.push(`${relative}: upstream service endpoint in self-hosted code`);
+  }
+}
+
+const integrationsRoot = path.join(root, "src", "modules", "integrations");
+for (const file of walkSourceFiles(integrationsRoot)) {
+  const relative = path.relative(root, file);
+  if (relative.endsWith("idp-sync/IdentityProviderTab.tsx")) continue;
+
+  const source = fs.readFileSync(file, "utf8");
+  if (/\bNetBird\b|support@netbird\.io|status\.netbird\.io/.test(source)) {
+    failures.push(`${relative}: legacy visible integration branding`);
   }
 }
 

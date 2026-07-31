@@ -16,6 +16,7 @@ import { GradientFadedBackground } from "@components/ui/GradientFadedBackground"
 import { useHasChanges } from "@hooks/useHasChanges";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import {
   AlertOctagon,
@@ -40,6 +41,8 @@ import { matchAttributesReducer } from "@/modules/integrations/edr/sentinel-one/
 import { SentinelOneMatchSettings } from "@/modules/integrations/edr/sentinel-one/SentinelOneMatchSettings";
 import SentinelOneUrlInput from "@/modules/integrations/edr/sentinel-one/SentinelOneUrlInput";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
+
+const appConfig = loadConfig();
 
 type Props = {
   open: boolean;
@@ -350,9 +353,9 @@ export function ConfigurationContent({
             </Label>
             <HelpText className={"max-w-lg mt-2"}>
               Deleting this integration will remove the ability to sync users
-              and groups from your IdP to NetBird. If you delete the integration
-              you will need to reconfigure it again to enable the
-              synchronization.
+              and groups from your IdP to {appConfig.productName}. If you delete
+              the integration you will need to reconfigure it again to enable
+              the synchronization.
             </HelpText>
           </div>
           <Button
@@ -371,10 +374,7 @@ export function ConfigurationContent({
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
-            <InlineLink
-              href={"https://docs.netbird.io/how-to/sentinelone-edr"}
-              target={"_blank"}
-            >
+            <InlineLink href={appConfig.docsUrl} target={"_blank"}>
               SentinelOne Integration
               <ExternalLinkIcon size={12} />
             </InlineLink>

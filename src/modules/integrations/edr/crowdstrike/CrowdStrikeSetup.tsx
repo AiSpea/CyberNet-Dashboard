@@ -14,6 +14,7 @@ import {
   IconDevicesCheck,
 } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { isEmpty } from "lodash";
 import {
@@ -37,6 +38,8 @@ import {
 import { CrowdStrikeZtaScoreInput } from "@/modules/integrations/edr/crowdstrike/CrowdStrikeZtaScoreInput";
 import { CrowdStrikeZtaToggle } from "@/modules/integrations/edr/crowdstrike/CrowdStrikeZtaToggle";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -123,7 +126,7 @@ export function SetupContent({ onSuccess, account }: ModalProps) {
 
     notify({
       title: "CrowdStrike Integration",
-      description: `CrowdStrike was successfully connected to NetBird.`,
+      description: `CrowdStrike was successfully connected to ${config.productName}.`,
       promise: falconRequest({
         client_id: clientId,
         secret: secret,
@@ -177,7 +180,7 @@ export function SetupContent({ onSuccess, account }: ModalProps) {
 
       <IntegrationModalHeader
         image={integrationImage}
-        title={"Connect NetBird with CrowdStrike"}
+        title={`Connect ${config.productName} with CrowdStrike`}
         description={
           "Restrict network access only to devices managed by the company's IT department"
         }
@@ -224,7 +227,7 @@ export function SetupContent({ onSuccess, account }: ModalProps) {
             <Steps.Step step={2}>
               <p className={"font-normal"}>
                 Click <Mark>Create API client</Mark> and enter
-                <Mark copy>NetBird</Mark>
+                <Mark copy>{config.productName}</Mark>
                 as the client name and select <Mark>Hosts (Read)</Mark> and{" "}
                 <Mark>Zero Trust Assessment (Read)</Mark> as the scope
               </p>

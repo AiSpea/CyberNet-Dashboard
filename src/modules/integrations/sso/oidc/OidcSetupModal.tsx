@@ -12,6 +12,7 @@ import Paragraph from "@components/Paragraph";
 import Steps from "@components/Steps";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
 import { Mark } from "@components/ui/Mark";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { ExternalLinkIcon, GlobeIcon, Repeat } from "lucide-react";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
@@ -20,6 +21,9 @@ import { DomainValidationStatus } from "@/interfaces/IdentityProvider";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
 import { DomainVerificationModal } from "@/modules/integrations/sso/DomainVerificationModal";
 import { useEnterpriseConnections } from "@/modules/integrations/sso/useEnterpriseConnections";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -37,6 +41,7 @@ export default function OidcSetupModal({
   discoveryPlaceholder,
 }: Readonly<Props>) {
   const { createOrUpdateConnection, mutate } = useEnterpriseConnections();
+  const { t } = useLocale();
   const [step, setStep] = useState(0);
   const maxSteps = 1;
 
@@ -117,7 +122,10 @@ export default function OidcSetupModal({
 
           <IntegrationModalHeader
             image={logo}
-            title={`Connect NetBird with ${name}`}
+            title={t("integrations.connectWith", {
+              product: config.productName,
+              integration: name,
+            })}
             description={`Use ${name} as a Single Sign-On provider to authenticate users. Follow the steps below to get started.`}
           />
 
@@ -174,7 +182,7 @@ export default function OidcSetupModal({
                 <p className={"font-normal"}>
                   Enter your
                   <Mark>Primary E-Mail Domain</Mark> which will later be used to
-                  log in to NetBird.
+                  log in to {config.productName}.
                 </p>
                 <Input
                   customPrefix={<GlobeIcon size={16} />}
@@ -189,12 +197,7 @@ export default function OidcSetupModal({
             <div className={"w-full"}>
               <Paragraph className={"text-sm mt-auto"}>
                 Learn more about
-                <InlineLink
-                  href={
-                    "https://docs.netbird.io/how-to/register-machines-using-setup-keys"
-                  }
-                  target={"_blank"}
-                >
+                <InlineLink href={config.docsUrl} target={"_blank"}>
                   {name} Integration
                   <ExternalLinkIcon size={12} />
                 </InlineLink>

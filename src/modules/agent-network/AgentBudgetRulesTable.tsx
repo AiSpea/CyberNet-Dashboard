@@ -19,6 +19,7 @@ import MultipleGroups from "@components/ui/MultipleGroups";
 import { ToggleSwitch } from "@components/ToggleSwitch";
 import { IconCirclePlus } from "@tabler/icons-react";
 import { ColumnDef, SortingState } from "@tanstack/react-table";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import dayjs from "dayjs";
 import {
@@ -50,6 +51,8 @@ import {
   PolicyBudgetLimit,
   PolicyTokenLimit,
 } from "@/modules/agent-network/data/mockData";
+
+const config = loadConfig();
 
 function NameCell({ rule }: { rule: AgentBudgetRule }) {
   return (
@@ -214,7 +217,10 @@ function formatTokenLimit(l: PolicyTokenLimit): string {
 }
 
 function formatBudgetLimit(l: PolicyBudgetLimit): string {
-  return `${capDisplay(l.groupCapUsd, true)} · ${capDisplay(l.userCapUsd, true)}`;
+  return `${capDisplay(l.groupCapUsd, true)} · ${capDisplay(
+    l.userCapUsd,
+    true,
+  )}`;
 }
 
 function capDisplay(value: number, isUsd: boolean): string {
@@ -432,10 +438,7 @@ export default function AgentBudgetRulesTable() {
             icon={
               <SquareIcon
                 icon={
-                  <SlidersHorizontal
-                    className={"fill-nb-gray-200"}
-                    size={20}
-                  />
+                  <SlidersHorizontal className={"fill-nb-gray-200"} size={20} />
                 }
                 color={"gray"}
                 size={"large"}
@@ -460,7 +463,7 @@ export default function AgentBudgetRulesTable() {
             learnMore={
               <>
                 Learn more about
-                <InlineLink href={"https://docs.netbird.io/"} target={"_blank"}>
+                <InlineLink href={config.docsUrl} target={"_blank"}>
                   Agent Network
                   <ExternalLinkIcon size={12} />
                 </InlineLink>

@@ -11,7 +11,10 @@ import { Peer } from "@/interfaces/Peer";
 import { useUsers } from "@/contexts/UsersProvider";
 import Paragraph from "@components/Paragraph";
 import InlineLink from "@components/InlineLink";
+import loadConfig from "@utils/config";
 import { ExternalLinkIcon } from "lucide-react";
+
+const config = loadConfig();
 
 export const NetworkRoutingPeersTabContent = ({
   routers,
@@ -27,14 +30,18 @@ export const NetworkRoutingPeersTabContent = ({
   const data = useMemo(() => {
     return routers?.map((router) => {
       const peer = peers?.find((peer) => peer.id === router.peer);
-      const user = peer ? users?.find((user) => user.id === peer.user_id) : undefined;
+      const user = peer
+        ? users?.find((user) => user.id === peer.user_id)
+        : undefined;
       const group = groups?.find(
         (group) => group.id === router?.peer_groups?.[0],
       );
 
       return {
         ...router,
-        search: `${peer?.name ?? ""} ${peer?.ip ?? ""} ${peer?.ipv6 ?? ""} ${user?.name ?? ""} ${user?.id ?? ""} ${group?.name ?? ""}`,
+        search: `${peer?.name ?? ""} ${peer?.ip ?? ""} ${peer?.ipv6 ?? ""} ${
+          user?.name ?? ""
+        } ${user?.id ?? ""} ${group?.name ?? ""}`,
       };
     });
   }, [users, peers, routers, groups]);
@@ -46,10 +53,7 @@ export const NetworkRoutingPeersTabContent = ({
           <Paragraph>
             Add routing peers to this network to access resources inside this
             network.{" "}
-            <InlineLink
-              href={"https://docs.netbird.io/manage/networks#routing-peers"}
-              target={"_blank"}
-            >
+            <InlineLink href={config.docsUrl} target={"_blank"}>
               Learn more
               <ExternalLinkIcon size={12} />
             </InlineLink>

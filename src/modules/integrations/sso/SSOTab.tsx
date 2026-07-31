@@ -3,6 +3,7 @@ import InlineLink from "@components/InlineLink";
 import Paragraph from "@components/Paragraph";
 import { SkeletonIntegration } from "@components/skeletons/SkeletonIntegration";
 import * as Tabs from "@radix-ui/react-tabs";
+import loadConfig from "@utils/config";
 import { ExternalLinkIcon, KeyRoundIcon } from "lucide-react";
 import React from "react";
 import IntegrationIcon from "@/assets/icons/IntegrationIcon";
@@ -10,9 +11,13 @@ import { useAccount } from "@/modules/account/useAccount";
 import { LockedFeatureInfoCard } from "@/modules/billing/locked-feature/LockedFeatureInfoCard";
 import { LockedFeatureOverlay } from "@/modules/billing/locked-feature/LockedFeatureOverlay";
 import { OktaSSOIntegrationCard } from "@/modules/integrations/sso/okta/OktaSSOIntegrationCard";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const config = loadConfig();
 
 export default function SSOTab() {
   const account = useAccount();
+  const { t } = useLocale();
 
   return (
     <Tabs.Content value={"sso"}>
@@ -36,13 +41,8 @@ export default function SSOTab() {
           Sign-On (SSO) for your team.
         </Paragraph>
         <Paragraph>
-          <InlineLink
-            href={
-              "https://docs.netbird.io/how-to/okta-sync#configuring-sso-in-okta"
-            }
-            target={"_blank"}
-          >
-            Learn more
+          <InlineLink href={config.docsUrl} target={"_blank"}>
+            {t("common.learnMore")}
             <ExternalLinkIcon size={12} />
           </InlineLink>
         </Paragraph>

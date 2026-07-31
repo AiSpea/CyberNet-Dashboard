@@ -16,6 +16,7 @@ import ModalHeader from "@components/modal/ModalHeader";
 import Paragraph from "@components/Paragraph";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/Tabs";
 import { Textarea } from "@components/Textarea";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import {
   Boxes,
@@ -33,6 +34,8 @@ import {
 } from "@/modules/agent-network/data/mockData";
 import { useAIProviders } from "@/modules/agent-network/AIProvidersProvider";
 import { PostureCheckCard } from "@/modules/posture-checks/ui/PostureCheckCard";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -182,7 +185,7 @@ export default function AgentGuardrailModal({
           <div className={"w-full"}>
             <Paragraph className={"text-sm mt-auto"}>
               Learn more about
-              <InlineLink href={"https://docs.netbird.io/"} target={"_blank"}>
+              <InlineLink href={config.docsUrl} target={"_blank"}>
                 Agent Network
                 <ExternalLinkIcon size={12} />
               </InlineLink>
@@ -190,10 +193,7 @@ export default function AgentGuardrailModal({
           </div>
           <div className={"flex gap-3 w-full justify-end"}>
             {tab === "checks" && (
-              <Button
-                variant={"secondary"}
-                onClick={() => onOpenChange(false)}
-              >
+              <Button variant={"secondary"} onClick={() => onOpenChange(false)}>
                 Cancel
               </Button>
             )}
@@ -352,7 +352,7 @@ function ModelAllowlistContent({
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
-            <InlineLink href={"https://docs.netbird.io/"} target={"_blank"}>
+            <InlineLink href={config.docsUrl} target={"_blank"}>
               Model Allowlist
               <ExternalLinkIcon size={12} />
             </InlineLink>
@@ -374,7 +374,6 @@ function ModelAllowlistContent({
     </>
   );
 }
-
 
 function PromptCaptureCheck({
   value,
@@ -412,17 +411,17 @@ function PromptCaptureContent({ onConfirm }: { onConfirm: () => void }) {
     <>
       <div className={"flex flex-col px-8 gap-3 pb-6"}>
         <div className={"text-sm text-nb-gray-300"}>
-          NetBird redacts emails, SSN-shaped, phone-shaped, and credit-card
-          patterns before storing the prompt body. Enabling this guardrail
-          adds strict redaction on top of the proxy&apos;s built-in token
-          redaction.
+          {config.productName} redacts emails, SSN-shaped, phone-shaped, and
+          credit-card patterns before storing the prompt body. Enabling this
+          guardrail adds strict redaction on top of the proxy&apos;s built-in
+          token redaction.
         </div>
       </div>
       <ModalFooter className={"items-center"}>
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
-            <InlineLink href={"https://docs.netbird.io/"} target={"_blank"}>
+            <InlineLink href={config.docsUrl} target={"_blank"}>
               Prompt Capture
               <ExternalLinkIcon size={12} />
             </InlineLink>
@@ -440,4 +439,3 @@ function PromptCaptureContent({ onConfirm }: { onConfirm: () => void }) {
     </>
   );
 }
-

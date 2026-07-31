@@ -7,6 +7,7 @@ import Steps from "@components/Steps";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
 import { Mark } from "@components/ui/Mark";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import {
   Box,
@@ -25,6 +26,9 @@ import { EstimatedSetupTime } from "@/modules/integrations/EstimatedSetupTime";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
 import { DomainVerificationModal } from "@/modules/integrations/sso/DomainVerificationModal";
 import { useEnterpriseConnections } from "@/modules/integrations/sso/useEnterpriseConnections";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -33,6 +37,7 @@ type Props = {
 
 export default function OktaSSOSetup({ open, onOpenChange }: Props) {
   const { createOrUpdateConnection, mutate } = useEnterpriseConnections();
+  const { t } = useLocale();
   const [step, setStep] = useState(0);
   const maxSteps = 2;
 
@@ -134,7 +139,10 @@ export default function OktaSSOSetup({ open, onOpenChange }: Props) {
 
           <IntegrationModalHeader
             image={integrationImage}
-            title={"Connect NetBird with Okta SSO"}
+            title={t("integrations.connectWith", {
+              product: config.productName,
+              integration: "Okta SSO",
+            })}
             description={
               "Use Okta as a Single Sign-On provider to authenticate users. Follow the steps below to get started."
             }
@@ -197,7 +205,7 @@ export default function OktaSSOSetup({ open, onOpenChange }: Props) {
             <div className={"px-8 py-3 flex flex-col gap-0 mt-4"}>
               <p className={"font-medium flex gap-3 items-center text-base"}>
                 <Box size={20} />
-                Install NetBird application for Okta
+                Install {config.productName} application for Okta
               </p>
               <Steps>
                 <Steps.Step step={1}>
@@ -277,7 +285,7 @@ export default function OktaSSOSetup({ open, onOpenChange }: Props) {
                   <p className={"font-normal"}>
                     Enter your
                     <Mark>Primary E-Mail Domain</Mark> which will later be used
-                    to log in to NetBird.
+                    to log in to {config.productName}.
                   </p>
                   <Input
                     customPrefix={<GlobeIcon size={16} />}

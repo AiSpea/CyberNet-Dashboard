@@ -16,6 +16,7 @@ import { GradientFadedBackground } from "@components/ui/GradientFadedBackground"
 import { useHasChanges } from "@hooks/useHasChanges";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import {
   AlertOctagon,
@@ -42,6 +43,8 @@ import {
 } from "@/modules/integrations/edr/huntress/Huntress";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
 import { HuntressMatchSettings } from "@/modules/integrations/edr/huntress/HuntressMatchSettings";
+
+const appConfig = loadConfig();
 
 type Props = {
   open: boolean;
@@ -249,12 +252,7 @@ export function ConfigurationContent({
             <HelpText className={"mt-2"}>
               Set the specific requirements that devices must meet to be
               considered compliant. Learn more in the{" "}
-              <InlineLink
-                href={
-                  HUNTRESS_DOCUMENTATION_URL
-                }
-                target={"_blank"}
-              >
+              <InlineLink href={HUNTRESS_DOCUMENTATION_URL} target={"_blank"}>
                 Huntress Documentation
                 <ExternalLinkIcon size={12} />
               </InlineLink>{" "}
@@ -373,9 +371,9 @@ export function ConfigurationContent({
             </Label>
             <HelpText className={"max-w-lg mt-2"}>
               Deleting this integration will remove the ability to sync users
-              and groups from your IdP to NetBird. If you delete the integration
-              you will need to reconfigure it again to enable the
-              synchronization.
+              and groups from your IdP to {appConfig.productName}. If you delete
+              the integration you will need to reconfigure it again to enable
+              the synchronization.
             </HelpText>
           </div>
           <Button

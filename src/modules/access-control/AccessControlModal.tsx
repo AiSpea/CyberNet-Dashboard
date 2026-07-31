@@ -28,6 +28,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/Tabs";
 import { Textarea } from "@components/Textarea";
 import PolicyDirection from "@components/ui/PolicyDirection";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import {
   AlertCircleIcon,
@@ -56,6 +57,8 @@ import { SSHAccessType } from "@/modules/access-control/ssh/SSHAccessType";
 import { SSHAuthorizedGroups } from "@/modules/access-control/ssh/SSHAuthorizedGroups";
 import { useUsers } from "@/contexts/UsersProvider";
 import { HelpTooltip } from "@components/HelpTooltip";
+
+const config = loadConfig();
 
 type Props = {
   children?: React.ReactNode;
@@ -563,10 +566,7 @@ export function AccessControlModalContent({
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
-            <InlineLink
-              href={"https://docs.netbird.io/how-to/manage-network-access"}
-              target={"_blank"}
-            >
+            <InlineLink href={config.docsUrl} target={"_blank"}>
               Access Controls
               <ExternalLinkIcon size={12} />
             </InlineLink>

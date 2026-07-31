@@ -2,10 +2,13 @@ import { InlineButtonLink } from "@components/InlineLink";
 import { Modal, ModalClose, ModalContent } from "@components/modal/Modal";
 import ModalHeader from "@components/modal/ModalHeader";
 import Paragraph from "@components/Paragraph";
+import loadConfig from "@utils/config";
 import { CreditCardIcon } from "lucide-react";
 import * as React from "react";
 import { useCustomerPlan } from "@/cloud/distributor/hooks/useCustomerPlan";
 import { PlanCard, PlanLoadingSkeleton } from "@/modules/billing/PlanCard";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -62,14 +65,12 @@ const DistributorSubscriptionModalContent = ({
     >
       <ModalHeader
         icon={<CreditCardIcon size={18} />}
-        title={`NetBird Plan for ${name}`}
+        title={`${config.productName} Plan for ${name}`}
         description={`Select the plan that best fits your customer's needs.`}
         color={"netbird"}
       />
       <div className={"px-8 pb-1"}>
-        <div
-          className={"grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-4"}
-        >
+        <div className={"grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-4"}>
           {(!plans || isLoading) && (
             <>
               <PlanLoadingSkeleton height={378} />

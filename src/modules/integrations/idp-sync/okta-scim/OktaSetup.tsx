@@ -13,6 +13,7 @@ import { Mark } from "@components/ui/Mark";
 import { MinimalList } from "@components/ui/MinimalList";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { isEmpty } from "lodash";
 import {
@@ -38,6 +39,9 @@ import oktaSyncGroups from "@/modules/integrations/idp-sync/okta-scim/images/okt
 import { EmbeddedIdentityProviderSelect } from "@/modules/integrations/idp-sync/EmbeddedIdentityProviderSelect";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
 import { useEnterpriseConnections } from "@/modules/integrations/sso/useEnterpriseConnections";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -120,6 +124,7 @@ export function SetupContent({
   onConnectorIdChange,
 }: ModalProps) {
   const { isEmbeddedIdPEnabled } = useEmbeddedIdentityProviders();
+  const { t } = useLocale();
   const [step, setStep] = useState(isEmbeddedIdPEnabled ? -1 : 0);
   const maxSteps = 5;
 
@@ -160,10 +165,14 @@ export function SetupContent({
 
       <IntegrationModalHeader
         image={integrationImage}
-        title={"Connect NetBird with Okta"}
-        description={
-          "Start syncing your users and groups from Okta to NetBird. Follow the steps below to get started."
-        }
+        title={t("integrations.connectWith", {
+          product: config.productName,
+          integration: "Okta",
+        })}
+        description={t("integrations.syncStart", {
+          product: config.productName,
+          integration: "Okta",
+        })}
       />
 
       {step === -1 && onConnectorIdChange && (
@@ -239,7 +248,8 @@ export function SetupContent({
               <p className={"font-normal"}>
                 Access the Okta dashboard and navigate to{" "}
                 <Mark>{"Applications > Applications"}</Mark>, selecting the
-                previously installed <Mark>NetBird</Mark> application
+                previously installed <Mark>{config.productName}</Mark>{" "}
+                application
               </p>
             </Steps.Step>
             <Steps.Step step={2}>
@@ -264,14 +274,14 @@ export function SetupContent({
         <div className={"px-8 py-3 flex flex-col gap-0 mt-4"}>
           <p className={"font-medium flex gap-3 items-center text-base"}>
             <Share2 size={20} />
-            Enable Okta SCIM in NetBird
+            Enable Okta SCIM in {config.productName}
           </p>
           <Steps>
             <Steps.Step step={1}>
               <p>
                 From the Okta dashboard, navigate to{" "}
                 <Mark>{"Applications > Applications"}</Mark> and select the{" "}
-                <Mark>NetBird</Mark> application
+                <Mark>{config.productName}</Mark> application
               </p>
             </Steps.Step>
             <Steps.Step step={2}>
@@ -304,7 +314,7 @@ export function SetupContent({
         <div className={"px-8 py-3 flex flex-col gap-0 mt-4"}>
           <p className={"font-medium flex gap-3 items-center text-base"}>
             <Box size={20} />
-            Configure SCIM provisioning to NetBird
+            Configure SCIM provisioning to {config.productName}
           </p>
           <Steps>
             <Steps.Step step={1}>
@@ -329,7 +339,7 @@ export function SetupContent({
         <div className={"px-8 py-3 flex flex-col gap-0 mt-4"}>
           <p className={"font-medium flex gap-3 items-center text-base"}>
             <UserCircle size={20} />
-            Sync Users to NetBird
+            Sync Users to {config.productName}
           </p>
           <Steps>
             <Steps.Step step={1}>
@@ -349,7 +359,7 @@ export function SetupContent({
               <p className={"font-normal"}>
                 Select <Mark>Done</Mark> after you have finished assigning
                 groups. At this point, all members of the groups assigned to the
-                application will be synced to NetBird.
+                application will be synced to {config.productName}.
               </p>
             </Steps.Step>
           </Steps>
@@ -360,7 +370,7 @@ export function SetupContent({
         <div className={"px-8 py-3 flex flex-col gap-0 mt-4"}>
           <p className={"font-medium flex gap-3 items-center text-base"}>
             <FolderGit2 size={20} />
-            Sync Groups to NetBird
+            Sync Groups to {config.productName}
           </p>
           <Steps>
             <Steps.Step step={1}>
@@ -374,7 +384,7 @@ export function SetupContent({
             <Steps.Step step={2} line={false}>
               <p className={"font-normal"}>
                 Search groups to push and then click <Mark>Save</Mark>. The
-                selected groups will then be synced to NetBird.
+                selected groups will then be synced to {config.productName}.
               </p>
             </Steps.Step>
           </Steps>
@@ -445,6 +455,7 @@ export function SetupContent({
 export function SetupSSOContent() {
   const [step, setStep] = useState(0);
   const maxSteps = 2;
+  const { t } = useLocale();
 
   return (
     <ModalContent
@@ -473,10 +484,14 @@ export function SetupSSOContent() {
 
       <IntegrationModalHeader
         image={integrationImage}
-        title={"Connect NetBird with Okta"}
-        description={
-          "Start syncing your users and groups from Okta to NetBird. Follow the steps below to get started."
-        }
+        title={t("integrations.connectWith", {
+          product: config.productName,
+          integration: "Okta",
+        })}
+        description={t("integrations.syncStart", {
+          product: config.productName,
+          integration: "Okta",
+        })}
       />
 
       {step == 0 && (
@@ -536,7 +551,7 @@ export function SetupSSOContent() {
         <div className={"px-8 py-3 flex flex-col gap-0 mt-4"}>
           <p className={"font-medium flex gap-3 items-center text-base"}>
             <Box size={20} />
-            Install NetBird application for Okta
+            Install {config.productName} application for Okta
           </p>
           <Steps>
             <Steps.Step step={1}>
@@ -572,7 +587,7 @@ export function SetupSSOContent() {
         <div className={"px-8 py-3 flex flex-col gap-0 mt-4"}>
           <p className={"font-medium flex gap-3 items-center text-base"}>
             <MailIcon size={20} />
-            Share your Okta details with NetBird
+            Share your Okta details with {config.productName}
           </p>
           <Steps>
             <Steps.Step step={1}>
@@ -591,16 +606,15 @@ export function SetupSSOContent() {
               <p className={"font-normal"}>
                 Share your <Mark>Client ID</Mark> <Mark>Client secret</Mark>{" "}
                 <Mark>Okta account domain</Mark> and your {"user's"}
-                <Mark>Primary email domain</Mark> with the NetBird team
+                <Mark>Primary email domain</Mark> with the {config.productName}{" "}
+                team
               </p>
             </Steps.Step>
             <Steps.Step step={4} line={false}>
               <p className={"font-normal"}>
-                Once the NetBird team has enabled the authentication for your
-                account you will receive an email. After that you can visit{" "}
-                <InlineLink href={"https://app.netbird.io"}>
-                  app.netbird.io
-                </InlineLink>{" "}
+                Once the {config.productName} team has enabled authentication
+                for your account, you will receive an email. After that you can
+                visit <InlineLink href={"/"}>{config.productName}</InlineLink>{" "}
                 and authenticate using your Okta’s credentials
               </p>
             </Steps.Step>
@@ -613,22 +627,15 @@ export function SetupSSOContent() {
               }
             >
               <p className={"!text-netbird-200"}>
-                You can use{" "}
+                You can use 1Password or any other secure sharing tool to share
+                your Okta details with the {config.productName} team. If you
+                need help, contact{" "}
                 <InlineLink
-                  href={"mailto:support@netbird.io"}
+                  href={config.supportUrl}
                   className={"inline !text-netbird-500 font-medium"}
+                  target={"_blank"}
                 >
-                  {" "}
-                  1Password
-                </InlineLink>{" "}
-                or any other secure sharing tool to share your Okta details with
-                the NetBird team. If you need help, please contact us at{" "}
-                <InlineLink
-                  href={"mailto:support@netbird.io"}
-                  className={"inline !text-netbird-500 font-medium"}
-                >
-                  {" "}
-                  support@netbird.io
+                  {config.productName} support
                 </InlineLink>{" "}
               </p>
             </div>

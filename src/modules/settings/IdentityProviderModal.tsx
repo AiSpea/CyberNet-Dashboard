@@ -118,7 +118,15 @@ export default function IdentityProviderModal({
       return true;
 
     return false;
-  }, [name, issuer, clientId, clientSecret, isEditing, clientIdChanged, requiresIssuer]);
+  }, [
+    name,
+    issuer,
+    clientId,
+    clientSecret,
+    isEditing,
+    clientIdChanged,
+    requiresIssuer,
+  ]);
 
   const submit = () => {
     const payload: SSOIdentityProviderRequest = {
@@ -289,12 +297,7 @@ export default function IdentityProviderModal({
                 </Code>
                 <HelpText margin={false} className={"mt-1.5"}>
                   Not all identity providers support logout.{" "}
-                  <InlineLink
-                    href={
-                      "https://docs.netbird.io/selfhosted/identity-providers"
-                    }
-                    target={"_blank"}
-                  >
+                  <InlineLink href={config.docsUrl} target={"_blank"}>
                     Learn more
                   </InlineLink>
                 </HelpText>

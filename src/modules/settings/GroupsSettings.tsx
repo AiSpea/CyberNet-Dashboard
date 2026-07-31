@@ -7,6 +7,7 @@ import { Label } from "@components/Label";
 import { notify } from "@components/Notification";
 import * as Tabs from "@radix-ui/react-tabs";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { isLocalDev, isNetBirdCloud } from "@utils/netbird";
 import { AnimatePresence, motion } from "framer-motion";
@@ -31,6 +32,8 @@ import { Account } from "@/interfaces/Account";
 import { Callout } from "@components/Callout";
 import { InlineButtonLink } from "@components/InlineLink";
 import { useRouter } from "next/navigation";
+
+const config = loadConfig();
 
 type Props = {
   account: Account;
@@ -85,7 +88,7 @@ export default function GroupsSettings({ account }: Props) {
     const choice = showConfirm
       ? await confirm({
           title: `JWT allow group - ${jwtAllowGroups[0]}`,
-          description: `Only users part of the ${jwtAllowGroups[0]} group will be able to access NetBird. Are you sure you want to save the changes?`,
+          description: `Only users part of the ${jwtAllowGroups[0]} group will be able to access ${config.productName}. Are you sure you want to save the changes?`,
           confirmText: "Save",
           children: (
             <div
@@ -237,9 +240,10 @@ export default function GroupsSettings({ account }: Props) {
                     <div>
                       <Label>JWT allow groups</Label>
                       <HelpText>
-                        Limit access to NetBird for the specified group names,
-                        e.g., NetBird users. To use the groups, you need to
-                        configure them first in your IdP.
+                        Limit access to {config.productName} for the specified
+                        group names, e.g., {config.productName} users. To use
+                        the groups, you need to configure them first in your
+                        IdP.
                       </HelpText>
                       <div>
                         {jwtAllowGroups.length > 0 && (

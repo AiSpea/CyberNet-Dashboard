@@ -1,5 +1,6 @@
 import { notify } from "@components/Notification";
 import useFetchApi, { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { isNetBirdCloud } from "@utils/netbird";
 import md5 from "crypto-js/md5";
 import dayjs from "dayjs";
@@ -24,6 +25,8 @@ import {
 import { LimitsReachedModal } from "@/modules/billing/LimitsReachedModal";
 import { TrialSuccessModal } from "@/modules/billing/trial/TrialSuccessModal";
 
+const config = loadConfig();
+
 type Props = {
   children: React.ReactNode;
 };
@@ -43,9 +46,9 @@ export const trialExpiresInfo: Announcement = {
   tag: "Trial",
   text: "Your trial is ending soon. Need more time? Contact us to extend your trial.",
   variant: "default", // "default" or "important"
-  link: "mailto:support@netbird.io",
-  linkText: "support@netbird.io",
-  isExternal: false,
+  link: config.supportUrl,
+  linkText: "Contact Support",
+  isExternal: true,
   closeable: false,
   isCloudOnly: true,
 };
@@ -251,9 +254,9 @@ function BillingContextProvider({ children }: Readonly<Props>) {
           mutate("/integrations/billing/subscription");
         });
         notify({
-          title: "NetBird Subscription",
+          title: `${config.productName} Subscription`,
           description: `Successfully subscribed to the ${plan.name} plan`,
-          loadingMessage: "Subscribing to NetBird via AWS Marketplace...",
+          loadingMessage: `Subscribing to ${config.productName} via AWS Marketplace...`,
           promise: promise,
         });
         return promise;

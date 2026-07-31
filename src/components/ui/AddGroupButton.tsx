@@ -17,10 +17,13 @@ import { useSWRConfig } from "swr";
 import { usePermissions } from "@/contexts/PermissionsProvider";
 import { Group } from "@/interfaces/Group";
 import { useApiCall } from "@/utils/api";
+import loadConfig from "@/utils/config";
 import ModalHeader from "../modal/ModalHeader";
 import { notify } from "../Notification";
 import Paragraph from "../Paragraph";
 import Separator from "../Separator";
+
+const config = loadConfig();
 
 export const AddGroupButton = () => {
   const create = useApiCall<Group>("/groups", true).post;
@@ -85,10 +88,7 @@ export const AddGroupButton = () => {
             <div className={"w-full"}>
               <Paragraph className={"text-sm mt-auto"}>
                 Learn more about
-                <InlineLink
-                  href={"https://docs.netbird.io/how-to/manage-network-access"}
-                  target={"_blank"}
-                >
+                <InlineLink href={config.docsUrl} target={"_blank"}>
                   Groups
                   <ExternalLinkIcon size={12} />
                 </InlineLink>

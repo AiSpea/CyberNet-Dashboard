@@ -1,5 +1,4 @@
 import { DatePickerWithRange } from "@components/DatePickerWithRange";
-import InlineLink from "@components/InlineLink";
 import SquareIcon from "@components/SquareIcon";
 import { DataTable } from "@components/table/DataTable";
 import DataTableHeader from "@components/table/DataTableHeader";
@@ -15,17 +14,17 @@ import {
   TableFilterDef,
   TableFiltersButton,
 } from "@components/table/TableFilters";
-import AddPeerButton from "@components/ui/AddPeerButton";
 import GetStartedTest from "@components/ui/GetStartedTest";
 import { ColumnDef, SortingState } from "@tanstack/react-table";
 import dayjs from "dayjs";
 import { uniqBy } from "lodash";
-import { ExternalLinkIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useSWRConfig } from "swr";
 import PeerIcon from "@/assets/icons/PeerIcon";
+import { useLocale } from "@/contexts/LocaleProvider";
+import loadConfig from "@utils/config";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { ActivityEvent } from "@/interfaces/ActivityEvent";
 import { ActivityEntryRow } from "@/modules/activity/ActivityEntryRow";
@@ -34,53 +33,13 @@ import {
   formatActivityTypeChip,
 } from "@/modules/activity/ActivityTypePicker";
 
+const config = loadConfig();
+
 type Props = {
   events?: ActivityEvent[];
   isLoading: boolean;
   headingTarget?: HTMLHeadingElement | null;
 };
-
-const ActivityFeedColumnsTable: ColumnDef<ActivityEvent>[] = [
-  {
-    accessorKey: "activity_code",
-    header: ({ column }) => {
-      return <DataTableHeader column={column}>Code</DataTableHeader>;
-    },
-    sortingFn: "text",
-    filterFn: "arrIncludesSomeExact",
-    cell: ({ row }) => <ActivityEntryRow event={row.original} />,
-  },
-  {
-    id: "activity_text",
-    accessorFn: (event) => {
-      try {
-        if (event.meta) {
-          return Object.keys(event.meta)
-            .map((key) => {
-              return `${event?.meta[key]}`;
-            })
-            .join(" ");
-        }
-      } catch (error) {
-        return "";
-      }
-    },
-  },
-  {
-    accessorKey: "timestamp",
-    id: "timestamp",
-    filterFn: "dateRange",
-  },
-  {
-    accessorKey: "activity",
-    id: "name",
-  },
-  {
-    id: "initiator_email",
-    accessorFn: (row) => row.initiator_email || "NetBird",
-    filterFn: "exactMatch",
-  },
-];
 
 const defaultFromDate = dayjs().subtract(14, "day").toDate();
 const defaultToDate = dayjs().toDate();
@@ -90,8 +49,55 @@ export default function ActivityTable({
   isLoading,
   headingTarget,
 }: Props) {
+  const { t } = useLocale();
   const { mutate } = useSWRConfig();
   const path = usePathname();
+
+  const columns = useMemo<ColumnDef<ActivityEvent>[]>(
+    () => [
+      {
+        accessorKey: "activity_code",
+        header: ({ column }) => (
+          <DataTableHeader column={column}>
+            {t("activity.table.code")}
+          </DataTableHeader>
+        ),
+        sortingFn: "text",
+        filterFn: "arrIncludesSomeExact",
+        cell: ({ row }) => <ActivityEntryRow event={row.original} />,
+      },
+      {
+        id: "activity_text",
+        accessorFn: (event) => {
+          try {
+            if (event.meta) {
+              return Object.keys(event.meta)
+                .map((key) => `${event.meta[key]}`)
+                .join(" ");
+            }
+          } catch (error) {
+            return "";
+          }
+        },
+      },
+      {
+        accessorKey: "timestamp",
+        id: "timestamp",
+        filterFn: "dateRange",
+      },
+      {
+        accessorKey: "activity",
+        id: "name",
+      },
+      {
+        id: "initiator_email",
+        // Keep the server sentinel unchanged; only visible labels are localized.
+        accessorFn: (row) => row.initiator_email || "NetBird",
+        filterFn: "exactMatch",
+      },
+    ],
+    [t],
+  );
 
   // Default sorting state of the table
   const [sorting, setSorting] = useState<SortingState>([
@@ -129,7 +135,7 @@ export default function ActivityTable({
     () => [
       {
         id: "activity_code",
-        label: "Type",
+        label: t("activity.filter.type"),
         renderPicker: (p) => (
           <ActivityTypePicker
             value={p.value as string[] | undefined}
@@ -138,11 +144,17 @@ export default function ActivityTable({
             events={events ?? []}
           />
         ),
-        formatChip: (v) => formatActivityTypeChip(v as string[] | undefined),
+        formatChip: (v) =>
+          formatActivityTypeChip(
+            v as string[] | undefined,
+            t("activity.filter.typeCount", {
+              count: (v as string[] | undefined)?.length ?? 0,
+            }),
+          ),
       },
       {
         id: "initiator_email",
-        label: "Initiator",
+        label: t("activity.filter.initiator"),
         renderPicker: (p) => (
           <UsersPicker
             value={p.value as string | undefined}
@@ -155,7 +167,7 @@ export default function ActivityTable({
           formatUsersChip(v as string | undefined, userOptions),
       },
     ],
-    [events, userOptions],
+    [events, t, userOptions],
   );
 
   return (
@@ -163,16 +175,16 @@ export default function ActivityTable({
       headingTarget={headingTarget}
       paginationClassName={"max-w-[800px]"}
       as={"div"}
-      text={"Audit Events"}
+      text={t("activity.table.title")}
       sorting={sorting}
       setSorting={setSorting}
       initialPageSize={25}
       showResetFilterButton={false}
       wrapperClassName={"gap-0 flex flex-col"}
       tableClassName={"px-8 pt-4"}
-      columns={ActivityFeedColumnsTable}
+      columns={columns}
       data={events}
-      searchPlaceholder={"Search by audit name, user, peer, meta..."}
+      searchPlaceholder={t("activity.search.placeholder")}
       isLoading={isLoading}
       aboveTable={(table) => (
         <TableFilterChips table={table} filters={filterDefs} />
@@ -192,24 +204,10 @@ export default function ActivityTable({
               size={"large"}
             />
           }
-          title={"Get Started with NetBird"}
-          description={
-            "It looks like you don't have any connected machines.\n" +
-            "Get started by adding one to your network."
-          }
-          button={<AddPeerButton />}
-          learnMore={
-            <>
-              Learn more in our{" "}
-              <InlineLink
-                href={"https://docs.netbird.io/how-to/getting-started"}
-                target={"_blank"}
-              >
-                Getting Started Guide
-                <ExternalLinkIcon size={12} />
-              </InlineLink>
-            </>
-          }
+          title={t("activity.empty.title")}
+          description={t("activity.empty.description", {
+            product: config.productName,
+          })}
         />
       }
       onFilterReset={() => {

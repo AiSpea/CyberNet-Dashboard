@@ -36,6 +36,7 @@ import {
   Table,
 } from "@tanstack/react-table";
 import useFetchApi from "@utils/api";
+import loadConfig from "@utils/config";
 import { isNetBirdCloud } from "@utils/netbird";
 import dayjs from "dayjs";
 import { ExternalLinkIcon, Link2, MailPlus } from "lucide-react";
@@ -58,6 +59,8 @@ import UserStatusCell from "@/modules/users/table-cells/UserStatusCell";
 import UserInviteModal from "@/modules/users/UserInviteModal";
 import UserInvitesTable from "@/modules/users/UserInvitesTable";
 import { useAccount } from "@/modules/account/useAccount";
+
+const config = loadConfig();
 
 export const UsersTableColumns: ColumnDef<User>[] = [
   {
@@ -382,12 +385,7 @@ export default function UsersTable({
             learnMore={
               <>
                 Learn more about
-                <InlineLink
-                  href={
-                    "https://docs.netbird.io/how-to/add-users-to-your-network"
-                  }
-                  target={"_blank"}
-                >
+                <InlineLink href={config.docsUrl} target={"_blank"}>
                   Users
                   <ExternalLinkIcon size={12} />
                 </InlineLink>
@@ -501,9 +499,7 @@ export const InviteUserButton = ({
             </p>
             <div className={"text-xs mt-1.5"}>
               <InlineLink
-                href={
-                  "https://docs.netbird.io/selfhosted/identity-providers/disable-local-authentication"
-                }
+                href={config.docsUrl}
                 target={"_blank"}
                 className={"flex gap-1 items-center"}
               >

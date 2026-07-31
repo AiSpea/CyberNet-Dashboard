@@ -8,8 +8,11 @@ import SmallParagraph from "@components/SmallParagraph";
 import SquareIcon from "@components/SquareIcon";
 import { SelectDropdown } from "@components/select/SelectDropdown";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/Tabs";
+import loadConfig from "@utils/config";
 import { Plug } from "lucide-react";
 import * as React from "react";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -280,7 +283,7 @@ export function AgentConnectTabs({
               `model_provider = "netbird"`,
               ``,
               `[model_providers.netbird]`,
-              `name = "NetBird"`,
+              `name = "${config.productName}"`,
               `base_url = "${openaiBase}"`,
               `wire_api = "responses"`,
             ]}
@@ -314,8 +317,14 @@ export function AgentConnectTabs({
             Pairs with a Kimi provider keeping the default upstream URL{" "}
             <code className={"font-mono"}>https://api.moonshot.ai</code>. For
             the OpenAI shape instead, use{" "}
-            <code className={"font-mono"}>type = &quot;openai_legacy&quot;</code>{" "}
-            with <code className={"font-mono"}>base_url = &quot;{openaiBase}&quot;</code>.
+            <code className={"font-mono"}>
+              type = &quot;openai_legacy&quot;
+            </code>{" "}
+            with{" "}
+            <code className={"font-mono"}>
+              base_url = &quot;{openaiBase}&quot;
+            </code>
+            .
           </SmallParagraph>
         </div>
       </TabsContent>
@@ -333,7 +342,7 @@ export function AgentConnectTabs({
               ``,
               `client.chat.completions.create(`,
               `    model="gpt-5.5",`,
-              `    messages=[{"role": "user", "content": "What is NetBird Agent Network?"}],`,
+              `    messages=[{"role": "user", "content": "What is ${config.productName} Agent Network?"}],`,
               `)`,
             ]}
           />
@@ -351,11 +360,11 @@ export function AgentConnectTabs({
               `  -d '{`,
               `    "model": "gpt-5.5",`,
               `    "messages": [`,
-              `      { "role": "user", "content": "What is NetBird Agent Network?" }`,
+              `      { "role": "user", "content": "What is ${config.productName} Agent Network?" }`,
               `    ]`,
               `  }'`,
             ]}
-            copyText={`curl ${openaiBase}/chat/completions -H "Content-Type: application/json" -d '{"model":"gpt-5.5","messages":[{"role":"user","content":"What is NetBird Agent Network?"}]}'`}
+            copyText={`curl ${openaiBase}/chat/completions -H "Content-Type: application/json" -d '{"model":"gpt-5.5","messages":[{"role":"user","content":"What is ${config.productName} Agent Network?"}]}'`}
           />
         </div>
       </TabsContent>
@@ -376,13 +385,21 @@ export default function AgentConnectModal({
       <ModalContent maxWidthClass={"max-w-2xl"}>
         <div className={"px-8 pt-5"}>
           <div className={"flex items-center gap-3"}>
-            <SquareIcon color={"netbird"} margin={""} icon={<Plug size={16} />} />
-            <h2 className={"text-lg my-0 leading-[1.5]"}>Configure Your Agent</h2>
+            <SquareIcon
+              color={"netbird"}
+              margin={""}
+              icon={<Plug size={16} />}
+            />
+            <h2 className={"text-lg my-0 leading-[1.5]"}>
+              Configure Your Agent
+            </h2>
           </div>
           <Paragraph className={"text-sm mt-3"}>
-            Point your agent at the NetBird endpoint as its base URL. No provider
-            API key is needed on the client. NetBird authorizes the request
-            against your policies and injects the upstream key.
+            Point your agent at the {config.productName} endpoint as its base
+            URL. No provider API key is needed on the client.{" "}
+            {config.productName}
+            authorizes the request against your policies and injects the
+            upstream key.
           </Paragraph>
         </div>
 

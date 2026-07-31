@@ -6,6 +6,7 @@ import TextWithTooltip from "@components/ui/TextWithTooltip";
 import { VirtualScrollAreaList } from "@components/VirtualScrollAreaList";
 import { useSearch } from "@hooks/useSearch";
 import useFetchApi from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { isRoutingPeerSupported } from "@utils/version";
 import { sortBy, unionBy } from "lodash";
@@ -15,6 +16,8 @@ import { memo, useEffect, useState } from "react";
 import { useElementSize } from "@/hooks/useElementSize";
 import { Peer } from "@/interfaces/Peer";
 import { PeerOperatingSystemIcon } from "@/modules/peers/PeerOperatingSystemIcon";
+
+const config = loadConfig();
 
 const MapPinIcon = memo(() => <MapPin size={12} />);
 MapPinIcon.displayName = "MapPinIcon";
@@ -193,7 +196,7 @@ export function PeerSelector({
                     className={"w-full flex items-center justify-between"}
                     content={
                       <div className={"max-w-[240px] text-xs"}>
-                        Please update NetBird to at least{" "}
+                        Please update {config.productName} to at least{" "}
                         <span className={"text-netbird"}>v0.36.6</span> or later
                         to use this peer as a routing peer.
                       </div>

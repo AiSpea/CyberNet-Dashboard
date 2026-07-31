@@ -23,6 +23,7 @@ import {
 import GetStartedTest from "@components/ui/GetStartedTest";
 import NoResults from "@components/ui/NoResults";
 import { ColumnDef, SortingState } from "@tanstack/react-table";
+import loadConfig from "@utils/config";
 import { cloneDeep } from "lodash";
 import { ExternalLinkIcon, PlusCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -43,6 +44,8 @@ import GroupedRouteTypeCell from "@/modules/route-group/GroupedRouteTypeCell";
 import { RouteAddRoutingPeerProvider } from "@/modules/routes/RouteAddRoutingPeerProvider";
 import RouteModal from "@/modules/routes/RouteModal";
 import RouteTable from "@/modules/routes/RouteTable";
+
+const config = loadConfig();
 
 export const GroupedRouteTableColumns: ColumnDef<GroupedRoute>[] = [
   {
@@ -336,12 +339,7 @@ export default function NetworkRoutesTable({
               learnMore={
                 <>
                   Learn more about
-                  <InlineLink
-                    href={
-                      "https://docs.netbird.io/how-to/routing-traffic-to-private-networks"
-                    }
-                    target={"_blank"}
-                  >
+                  <InlineLink href={config.docsUrl} target={"_blank"}>
                     Network Routes
                     <ExternalLinkIcon size={12} />
                   </InlineLink>

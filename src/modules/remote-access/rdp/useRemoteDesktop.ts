@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import loadConfig from "@utils/config";
 import { useIronRDPInputHandler } from "./useIronRDPInputHandler";
 import {
   CertificatePromptInfo,
   useRDPCertificateHandler,
 } from "./useRDPCertificateHandler";
+
+const dashboardConfig = loadConfig();
 
 interface RDPConfig {
   hostname: string;
@@ -40,7 +43,7 @@ export enum RDPStatus {
   CONNECTING = 2,
 }
 
-export const RDP_DOCS_LINK = "https://docs.netbird.io/how-to/browser-client";
+export const RDP_DOCS_LINK = `${dashboardConfig.docsUrl}/how-to/browser-client`;
 
 export const useRemoteDesktop = (client: any) => {
   const [status, setStatus] = useState(RDPStatus.DISCONNECTED);

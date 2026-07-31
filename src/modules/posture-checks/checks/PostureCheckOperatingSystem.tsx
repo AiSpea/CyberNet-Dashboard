@@ -13,6 +13,7 @@ import {
 } from "@components/select/SelectDropdown";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/Tabs";
 import { IconMathEqualGreater } from "@tabler/icons-react";
+import loadConfig from "@utils/config";
 import { validator } from "@utils/helpers";
 import { isEmpty } from "lodash";
 import {
@@ -39,6 +40,8 @@ import {
   windowsKernelVersions,
 } from "@/interfaces/PostureCheck";
 import { PostureCheckCard } from "@/modules/posture-checks/ui/PostureCheckCard";
+
+const config = loadConfig();
 
 type Props = {
   value?: OperatingSystemVersionCheck;
@@ -231,12 +234,7 @@ const CheckContent = ({ value, onChange, disabled }: Props) => {
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
-            <InlineLink
-              href={
-                "https://docs.netbird.io/how-to/manage-posture-checks#operating-system-version-check"
-              }
-              target={"_blank"}
-            >
+            <InlineLink href={config.docsUrl} target={"_blank"}>
               Operating System Check
               <ExternalLinkIcon size={12} />
             </InlineLink>

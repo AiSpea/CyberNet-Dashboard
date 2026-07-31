@@ -19,6 +19,7 @@ import Paragraph from "@components/Paragraph";
 import { PeerGroupSelector } from "@components/PeerGroupSelector";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/Tabs";
 import { Textarea } from "@components/Textarea";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import {
   ArrowRightLeft,
@@ -48,6 +49,8 @@ import { useAIProviders } from "@/modules/agent-network/AIProvidersProvider";
 import AgentPolicyGuardrailsTab from "@/modules/agent-network/AgentPolicyGuardrailsTab";
 import AgentPolicyLimitsTab from "@/modules/agent-network/AgentPolicyLimitsTab";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -145,9 +148,7 @@ function AgentPolicyModalContent({
     if (sourceGroups.length === 0 || destinationProviderIds.length === 0) {
       return "";
     }
-    const provider = providers.find(
-      (p) => p.id === destinationProviderIds[0],
-    );
+    const provider = providers.find((p) => p.id === destinationProviderIds[0]);
     return `${sourceGroups[0].name} → ${provider?.name ?? ""}`.trim();
   }, [sourceGroups, destinationProviderIds, providers]);
 
@@ -258,15 +259,11 @@ function AgentPolicyModalContent({
                   onChange={setSourceGroups}
                 />
                 {hasLegacyExtraGroups && (
-                  <div
-                    className={
-                      "mt-2 text-xs text-yellow-400 leading-snug"
-                    }
-                  >
-                    This policy was created with multiple source groups.
-                    Only the first group is kept on save —{" "}
-                    {sourceGroupsRaw[0]?.name ?? "—"} will be retained,
-                    the others removed.
+                  <div className={"mt-2 text-xs text-yellow-400 leading-snug"}>
+                    This policy was created with multiple source groups. Only
+                    the first group is kept on save —{" "}
+                    {sourceGroupsRaw[0]?.name ?? "—"} will be retained, the
+                    others removed.
                   </div>
                 )}
               </div>
@@ -276,11 +273,7 @@ function AgentPolicyModalContent({
                   <Sparkles size={15} />
                   Provider
                   <HelpTooltip
-                    content={
-                      <>
-                        AI providers the source is allowed to reach.
-                      </>
-                    }
+                    content={<>AI providers the source is allowed to reach.</>}
                   />
                 </Label>
                 <ProviderMultiSelect
@@ -335,7 +328,7 @@ function AgentPolicyModalContent({
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
-            <InlineLink href={"https://docs.netbird.io/"} target={"_blank"}>
+            <InlineLink href={config.docsUrl} target={"_blank"}>
               Agent Network
               <ExternalLinkIcon size={12} />
             </InlineLink>
@@ -352,7 +345,9 @@ function AgentPolicyModalContent({
                   <Button
                     variant={"primary"}
                     onClick={() => setTab("limits")}
-                    disabled={!canContinueFromPolicy || name.trim().length === 0}
+                    disabled={
+                      !canContinueFromPolicy || name.trim().length === 0
+                    }
                   >
                     Continue
                   </Button>
@@ -550,9 +545,7 @@ function ProviderMultiSelect({
                   key={p.id}
                   className={cn(
                     "flex items-center gap-3 p-2 rounded cursor-pointer transition-colors",
-                    checked
-                      ? "bg-netbird/10"
-                      : "hover:bg-nb-gray-900/50",
+                    checked ? "bg-netbird/10" : "hover:bg-nb-gray-900/50",
                   )}
                 >
                   <Checkbox
@@ -574,4 +567,3 @@ function ProviderMultiSelect({
     </div>
   );
 }
-

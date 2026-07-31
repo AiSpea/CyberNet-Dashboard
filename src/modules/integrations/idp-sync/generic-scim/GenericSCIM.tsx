@@ -2,6 +2,7 @@ import Button from "@components/Button";
 import { notify } from "@components/Notification";
 import { SkeletonIntegration } from "@components/skeletons/SkeletonIntegration";
 import useFetchApi, { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import dayjs from "dayjs";
 import { isEmpty } from "lodash";
 import { RefreshCw, Repeat, Settings } from "lucide-react";
@@ -22,6 +23,8 @@ import { useIntegrations } from "@/modules/integrations/idp-sync/useIntegrations
 import { IntegrationCard } from "@/modules/integrations/IntegrationCard";
 import EntraSCIMSetup from "@/modules/integrations/idp-sync/entra-scim/EntraSCIMSetup";
 
+const config = loadConfig();
+
 export interface GenericSCIMProps {
   name?: string;
   description?: string;
@@ -37,8 +40,8 @@ export const GenericSCIM = ({
   name = "Generic SCIM",
   description = "Provide your own custom SCIM provider to sync users and groups.",
   url = {
-    title: "docs.netbird.io",
-    href: "https://docs.netbird.io/how-to/idp-sync#supported-identity-providers",
+    title: `${config.productName} documentation`,
+    href: config.docsUrl,
   },
   image = integrationImage,
   provider = IdentityProvider.GENERIC,

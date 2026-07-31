@@ -1,9 +1,12 @@
 import Button from "@components/Button";
 import { Input } from "@components/Input";
 import { useDebounce } from "@hooks/useDebounce";
+import loadConfig from "@utils/config";
 import { Folder, MinusCircleIcon, PlusIcon } from "lucide-react";
 import * as React from "react";
 import { useEffect, useState } from "react";
+
+const config = loadConfig();
 
 type GroupPrefixInputProps = {
   value: string[];
@@ -20,7 +23,7 @@ export function GroupPrefixInput({
   addText = "Add group filter",
   icon = <Folder size={14} />,
   text = "Group starts with...",
-  placeholder = "e.g., NetBird_",
+  placeholder = `e.g., ${config.productName}_`,
 }: GroupPrefixInputProps) {
   const [groupPrefixes, setGroupPrefixes] = useState<string[]>(value);
   const prefixes = useDebounce(groupPrefixes, 100);

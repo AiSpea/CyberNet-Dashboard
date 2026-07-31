@@ -25,6 +25,7 @@ import { Textarea } from "@components/Textarea";
 import InputDomain, { domainReducer } from "@components/ui/InputDomain";
 import { getOperatingSystem } from "@hooks/useOperatingSystem";
 import { IconDirectionSign } from "@tabler/icons-react";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { normalizeHostCIDR } from "@utils/ip";
 import cidr from "ip-cidr";
@@ -53,6 +54,8 @@ import { useRoutes } from "@/contexts/RoutesProvider";
 import { Group } from "@/interfaces/Group";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import { Peer } from "@/interfaces/Peer";
+
+const config = loadConfig();
 import { Policy } from "@/interfaces/Policy";
 import { Route } from "@/interfaces/Route";
 import { AccessControlModalContent } from "@/modules/access-control/AccessControlModal";
@@ -309,7 +312,10 @@ export function RouteModalContent({
         enabled: enabled,
         peer: useSinglePeer ? routingPeer?.id : undefined,
         peer_groups: useSinglePeer ? undefined : peerGroups || undefined,
-        network: routeType === "ip-range" ? normalizeHostCIDR(networkRange) : undefined,
+        network:
+          routeType === "ip-range"
+            ? normalizeHostCIDR(networkRange)
+            : undefined,
         domains: domainRouteNames,
         keep_route: useKeepRoute,
         metric: Number(metric) || 9999,
@@ -335,7 +341,8 @@ export function RouteModalContent({
   const cidrError = useMemo(() => {
     if (networkRange == "") return "";
     const validCIDR = cidr.isValidAddress(networkRange);
-    if (!validCIDR) return "Please enter a valid IP or CIDR, e.g., 192.168.1.1, 192.168.1.0/24 or 2001:db8::/64";
+    if (!validCIDR)
+      return "Please enter a valid IP or CIDR, e.g., 192.168.1.1, 192.168.1.0/24 or 2001:db8::/64";
   }, [networkRange]);
 
   const isGroupsEntered = useMemo(() => {
@@ -506,7 +513,9 @@ export function RouteModalContent({
                 <Input
                   ref={networkRangeRef}
                   customPrefix={<NetworkIcon size={16} />}
-                  placeholder={"e.g., 172.16.0.1, 172.16.0.0/16, 2001:db8::1 or 2001:db8::/64"}
+                  placeholder={
+                    "e.g., 172.16.0.1, 172.16.0.0/16, 2001:db8::1 or 2001:db8::/64"
+                  }
                   value={networkRange}
                   data-testid={"network-range"}
                   className={"font-mono !text-[13px]"}
@@ -754,9 +763,7 @@ export function RouteModalContent({
                     Auto Apply Route
                   </>
                 }
-                helpText={
-                  "Automatically apply this exit node to your distribution groups. This requires NetBird client v0.55.0 or higher."
-                }
+                helpText={`Automatically apply this exit node to your distribution groups. This requires ${config.productName} client v0.55.0 or higher.`}
               />
             )}
 
@@ -806,8 +813,8 @@ export function RouteModalContent({
             <InlineLink
               href={
                 exitNode
-                  ? "https://docs.netbird.io/how-to/configuring-default-routes-for-internet-traffic"
-                  : "https://docs.netbird.io/how-to/routing-traffic-to-private-networks"
+                  ? `${config.docsUrl}/how-to/configuring-default-routes-for-internet-traffic`
+                  : `${config.docsUrl}/how-to/routing-traffic-to-private-networks`
               }
               target={"_blank"}
             >

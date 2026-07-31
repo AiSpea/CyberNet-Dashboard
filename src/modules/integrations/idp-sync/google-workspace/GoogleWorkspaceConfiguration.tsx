@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/Tabs";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
 import { useHasChanges } from "@hooks/useHasChanges";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { trim } from "lodash";
 import {
@@ -35,6 +36,9 @@ import { GroupPrefixHelpText } from "@/modules/integrations/idp-sync/GroupPrefix
 import { GroupPrefixInput } from "@/modules/integrations/idp-sync/GroupPrefixInput";
 import { useIntegrations } from "@/modules/integrations/idp-sync/useIntegrations";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const dashboardConfig = loadConfig();
 
 type Props = {
   open: boolean;
@@ -74,6 +78,7 @@ type ModalProps = {
 export function ConfigurationContent({ onSuccess, config }: ModalProps) {
   const { mutate } = useSWRConfig();
   const { confirm } = useDialog();
+  const { t } = useLocale();
 
   const [tab, setTab] = useState<string>("settings");
 
@@ -325,10 +330,9 @@ export function ConfigurationContent({ onSuccess, config }: ModalProps) {
               </div>
             </Label>
             <HelpText className={"max-w-lg mt-2"}>
-              Deleting this integration will remove the ability to sync users
-              and groups from your IdP to NetBird. If you delete the integration
-              you will need to reconfigure it again to enable the
-              synchronization.
+              {t("integrations.deleteSync", {
+                product: dashboardConfig.productName,
+              })}
             </HelpText>
           </div>
           <Button

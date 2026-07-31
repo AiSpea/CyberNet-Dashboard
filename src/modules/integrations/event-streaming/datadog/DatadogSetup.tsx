@@ -27,6 +27,7 @@ import React, { useState } from "react";
 import { useSWRConfig } from "swr";
 import datadogLogo from "@/assets/integrations/datadog.png";
 import { EventStream } from "@/interfaces/EventStream";
+import { eventStreamingConfig } from "@/modules/integrations/event-streaming/branding";
 import {
   DatadogApiKeysPage,
   DatadogRegions,
@@ -98,7 +99,7 @@ export function SetupContent({ onSuccess }: Readonly<ModalProps>) {
   const connect = async () => {
     notify({
       title: "Datadog Integration",
-      description: `Datadog was successfully connected to NetBird.`,
+      description: `Datadog was successfully connected to ${eventStreamingConfig.productName}.`,
       promise: integrationRequest
         .post({
           platform: "datadog",
@@ -128,10 +129,8 @@ export function SetupContent({ onSuccess }: Readonly<ModalProps>) {
 
       <IntegrationModalHeader
         image={datadogLogo}
-        title={"Connect NetBird with Datadog"}
-        description={
-          "Start streaming your NetBird audit & traffic events to Datadog. Follow the steps below to get started."
-        }
+        title={`Connect ${eventStreamingConfig.productName} with Datadog`}
+        description={`Start streaming your ${eventStreamingConfig.productName} audit & traffic events to Datadog. Follow the steps below to get started.`}
       />
 
       {step == 1 && (
@@ -202,7 +201,9 @@ export function SetupContent({ onSuccess }: Readonly<ModalProps>) {
             <Steps.Step step={3}>
               <p className={"font-normal"}>
                 Give it a descriptive name like{" "}
-                <Mark copy>NetBird Activity Events</Mark>
+                <Mark copy>
+                  {eventStreamingConfig.productName} Activity Events
+                </Mark>
                 and click <Mark>Create Key</Mark>
                 <Tooltip>
                   <TooltipTrigger>

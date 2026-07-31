@@ -1,3 +1,5 @@
+import loadConfig from "@utils/config";
+
 export interface DNSZone {
   id?: string;
   name: string;
@@ -19,7 +21,7 @@ export interface DNSRecord {
 
 export type DNSRecordType = "A" | "AAAA" | "CNAME";
 
-export const DNS_ZONE_DOCS_LINK =
-  "https://docs.netbird.io/manage/dns/custom-zones";
-export const DNS_RECORDS_DOCS_LINK =
-  "https://docs.netbird.io/manage/dns/custom-zones#adding-records-to-a-zone";
+const dnsDocsUrl = loadConfig().docsUrl;
+
+export const DNS_ZONE_DOCS_LINK = dnsDocsUrl;
+export const DNS_RECORDS_DOCS_LINK = dnsDocsUrl;

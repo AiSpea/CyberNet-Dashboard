@@ -1,10 +1,13 @@
 import { IconInfoCircle } from "@tabler/icons-react";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { Sparkles } from "lucide-react";
 import * as React from "react";
 import { useBilling } from "@/contexts/BillingProvider";
 import { PlanTier } from "@/interfaces/Subscription";
 import { TrialOrUpgradeButton } from "@/modules/billing/trial/TrialOrUpgradeButton";
+
+const config = loadConfig();
 
 export const TrialGradientCard = () => {
   const { currentPlan, canUpgrade, isTrialAvailable } = useBilling();
@@ -31,10 +34,10 @@ export const TrialGradientCard = () => {
               )}
             >
               <Sparkles size={16} className={cn("relative", "-top-[0px]")} />
-              {`Try all of NetBird's features for free`}
+              {`Try all of ${config.productName}'s features for free`}
             </div>
             <div className={cn("font-light")}>
-              {`Activate your 14-day trial to access NetBird's full set of features & integrations. After the trial, you will return to your ${planName} plan unless you choose to upgrade.`}
+              {`Activate your 14-day trial to access ${config.productName}'s full set of features & integrations. After the trial, you will return to your ${planName} plan unless you choose to upgrade.`}
             </div>
           </div>
           <TrialOrUpgradeButton plan={PlanTier.BUSINESS} variant={"white"} />

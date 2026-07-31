@@ -37,6 +37,7 @@ import {
   RowSelectionState,
   SortingState,
 } from "@tanstack/react-table";
+import loadConfig from "@utils/config";
 import { trim, uniqBy } from "lodash";
 import { AlertTriangle, MonitorDotIcon, ShieldCheck } from "lucide-react";
 import { useBypassedPeers } from "@/cloud/edr/useBypass";
@@ -53,6 +54,8 @@ import { Group } from "@/interfaces/Group";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import { Peer } from "@/interfaces/Peer";
 import PeerActionCell from "@/modules/peers/PeerActionCell";
+
+const config = loadConfig();
 import PeerAddressCell from "@/modules/peers/PeerAddressCell";
 import PeerGroupCell from "@/modules/peers/PeerGroupCell";
 import PeerLastSeenCell from "@/modules/peers/PeerLastSeenCell";
@@ -517,13 +520,9 @@ export default function PeersTable({
         // "Get Started" card. With no peers at all (kind unselected), the card
         // still shows.
         hasServerSideFilters={kind !== undefined && (peers?.length ?? 0) > 0}
-        getStartedCard={
-          <NoPeersGettingStarted showBackground={true} />
-        }
+        getStartedCard={<NoPeersGettingStarted showBackground={true} />}
         rightSide={() => (
-          <>
-            {peers && peers.length > 0 && <AddPeerDropdown />}
-          </>
+          <>{peers && peers.length > 0 && <AddPeerDropdown />}</>
         )}
         aboveTable={(table) => (
           <TableFilterChips table={table} filters={filterDefs} />
@@ -704,9 +703,9 @@ export default function PeersTable({
               <FullTooltip
                 content={
                   <div className={"max-w-sm text-xs"}>
-                    Show temporary peers created by the NetBird browser client.
-                    These peers are ephemeral and will be deleted automatically
-                    after a short period of time.
+                    Show temporary peers created by the {config.productName}{" "}
+                    browser client. These peers are ephemeral and will be
+                    deleted automatically after a short period of time.
                   </div>
                 }
               >

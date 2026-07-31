@@ -17,6 +17,7 @@ import {
 } from "@components/table/TableFilters";
 import GetStartedTest from "@components/ui/GetStartedTest";
 import { ColumnDef, SortingState } from "@tanstack/react-table";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { ExternalLinkIcon, PlusCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -37,6 +38,8 @@ import { NetworkPolicyCell } from "@/modules/networks/table/NetworkPolicyCell";
 import { NetworkResourceCell } from "@/modules/networks/table/NetworkResourceCell";
 import NetworkRoutingPeerCell from "@/modules/networks/table/NetworkRoutingPeerCell";
 import { GlobalSearchModal } from "@/modules/search/GlobalSearchModal";
+
+const config = loadConfig();
 
 export const NetworkTableColumns: ColumnDef<Network>[] = [
   {
@@ -190,10 +193,7 @@ export default function NetworksTable({
                 learnMore={
                   <>
                     Learn more about
-                    <InlineLink
-                      href={"https://docs.netbird.io/how-to/networks"}
-                      target={"_blank"}
-                    >
+                    <InlineLink href={config.docsUrl} target={"_blank"}>
                       Networks
                       <ExternalLinkIcon size={12} />
                     </InlineLink>

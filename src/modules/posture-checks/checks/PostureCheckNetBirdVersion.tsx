@@ -5,14 +5,18 @@ import { Input } from "@components/Input";
 import { Label } from "@components/Label";
 import { ModalClose, ModalFooter } from "@components/modal/Modal";
 import Paragraph from "@components/Paragraph";
+import loadConfig from "@utils/config";
 import { validator } from "@utils/helpers";
 import { isEmpty } from "lodash";
 import { ExternalLinkIcon } from "lucide-react";
 import * as React from "react";
 import { useMemo, useState } from "react";
 import NetBirdIcon from "@/assets/icons/NetBirdIcon";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { NetBirdVersionCheck } from "@/interfaces/PostureCheck";
 import { PostureCheckCard } from "@/modules/posture-checks/ui/PostureCheckCard";
+
+const config = loadConfig();
 
 type Props = {
   value?: NetBirdVersionCheck;
@@ -25,6 +29,7 @@ export const PostureCheckNetBirdVersion = ({
   onChange,
   disabled,
 }: Props) => {
+  const { t } = useLocale();
   const [open, setOpen] = useState(false);
 
   return (
@@ -33,10 +38,10 @@ export const PostureCheckNetBirdVersion = ({
       setOpen={setOpen}
       key={open ? 1 : 0}
       active={value?.min_version !== undefined}
-      title={"NetBird Client Version"}
-      description={
-        "Restrict access to peers with a specific NetBird client version."
-      }
+      title={t("posture.version.title", { product: config.productName })}
+      description={t("posture.version.description", {
+        product: config.productName,
+      })}
       icon={<NetBirdIcon size={18} />}
       modalWidthClass={"max-w-lg"}
       onReset={() => onChange(undefined)}
@@ -54,14 +59,14 @@ export const PostureCheckNetBirdVersion = ({
 };
 
 const CheckContent = ({ value, onChange, disabled }: Props) => {
+  const { t } = useLocale();
   const [version, setVersion] = useState(value?.min_version || "");
 
   const versionError = useMemo(() => {
     if (version == "") return "";
     const validSemver = validator.isValidVersion(version);
-    if (!validSemver)
-      return "Please enter a valid version, e.g., 0.2, 0.2.0, 0.2.0-alpha.1";
-  }, [version]);
+    if (!validSemver) return t("posture.version.invalid");
+  }, [t, version]);
 
   const canSave = useMemo(() => {
     return (
@@ -76,10 +81,11 @@ const CheckContent = ({ value, onChange, disabled }: Props) => {
     <>
       <div className={"flex flex-col px-8 gap-3 pb-6"}>
         <div>
-          <Label>Minimum required version</Label>
+          <Label>{t("posture.version.minimum")}</Label>
           <HelpText>
-            Only peers with the minimum specified NetBird client version will
-            have access to the network.
+            {t("posture.version.minimumHelp", {
+              product: config.productName,
+            })}
           </HelpText>
           <div>
             <Input
@@ -88,7 +94,7 @@ const CheckContent = ({ value, onChange, disabled }: Props) => {
               onChange={(e) => setVersion(e.target.value)}
               placeholder={"e.g., 0.25.0"}
               error={versionError}
-              customPrefix={"Version"}
+              customPrefix={t("posture.version.prefix")}
               disabled={disabled}
             />
           </div>
@@ -97,21 +103,19 @@ const CheckContent = ({ value, onChange, disabled }: Props) => {
       <ModalFooter className={"items-center"}>
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
-            Learn more about
+            {t("posture.learnMore")}
             <InlineLink
-              href={
-                "https://docs.netbird.io/how-to/manage-posture-checks#net-bird-client-version-check"
-              }
+              href={`${config.docsUrl}/how-to/manage-posture-checks#net-bird-client-version-check`}
               target={"_blank"}
             >
-              Client Version Check
+              {t("posture.version.documentation")}
               <ExternalLinkIcon size={12} />
             </InlineLink>
           </Paragraph>
         </div>
         <div className={"flex gap-3 w-full justify-end"}>
           <ModalClose asChild={true}>
-            <Button variant={"secondary"}>Cancel</Button>
+            <Button variant={"secondary"}>{t("common.cancel")}</Button>
           </ModalClose>
           <Button
             variant={"primary"}
@@ -124,7 +128,7 @@ const CheckContent = ({ value, onChange, disabled }: Props) => {
               }
             }}
           >
-            Save
+            {t("common.save")}
           </Button>
         </div>
       </ModalFooter>

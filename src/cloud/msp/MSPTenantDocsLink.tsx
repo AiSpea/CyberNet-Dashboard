@@ -1,13 +1,16 @@
 import InlineLink from "@components/InlineLink";
+import loadConfig from "@utils/config";
 import { ExternalLinkIcon } from "lucide-react";
 import * as React from "react";
+
+const config = loadConfig();
 
 export const MSPTenantDocsLink = () => {
   return (
     <>
       Learn more about
       <InlineLink
-        href={"https://docs.netbird.io/how-to/msp-portal"}
+        href={`${config.docsUrl}/how-to/msp-portal`}
         target={"_blank"}
       >
         MSP Portal

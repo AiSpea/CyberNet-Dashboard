@@ -17,6 +17,7 @@ import { useAccount } from "@/modules/account/useAccount";
 import { referralSourceOptions } from "@/modules/onboarding/OnboardingSurvey";
 
 export default function HowDidYouHearAboutUs() {
+  const config = loadConfig();
   const { isOwner, loggedInUser } = useLoggedInUser();
   const account = useAccount();
   const params = useSearchParams();
@@ -49,7 +50,7 @@ export default function HowDidYouHearAboutUs() {
         ];
       }
       await submitHubspotForm({
-        id: loadConfig().hubspotSurveyFormId ?? "",
+        id: config.hubspotSurveyFormId ?? "",
         fields,
         hubspotQueryId: hsId,
         gaId,
@@ -109,13 +110,12 @@ export default function HowDidYouHearAboutUs() {
             <Paragraph
               className={cn("text-sm text-center max-w-[400px] px-4 mt-2")}
             >
-              Help us improve by sharing how you discovered NetBird. Your
-              feedback truly helps us grow.
+              {`Help us improve by sharing how you discovered ${config.productName}. Your feedback truly helps us grow.`}
             </Paragraph>
           </div>
           <div className={"px-8 py-3 flex flex-col mt-5 z-0 gap-6"}>
             <div className={"flex w-full flex-col gap-2"}>
-              <Label>How did you hear about NetBird?</Label>
+              <Label>How did you hear about {config.productName}?</Label>
               <SelectDropdown
                 value={referralSource}
                 onChange={setReferralSource}

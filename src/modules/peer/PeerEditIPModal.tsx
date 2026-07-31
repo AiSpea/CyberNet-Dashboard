@@ -8,9 +8,13 @@ import {
   ModalFooter,
 } from "@components/modal/Modal";
 import ModalHeader from "@components/modal/ModalHeader";
+import loadConfig from "@utils/config";
 import cidr from "ip-cidr";
 import { trim } from "lodash";
 import React, { useMemo, useState } from "react";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const brandConfig = loadConfig();
 
 type IPVersion = "v4" | "v6";
 
@@ -25,28 +29,19 @@ interface PeerEditIPModalProps {
 const config: Record<
   IPVersion,
   {
-    title: string;
-    description: string;
     placeholder: string;
-    errorMessage: string;
     validate: (ip: string) => boolean;
   }
 > = {
   v4: {
-    title: "Edit Peer IP Address",
-    description: "Update the NetBird IP address for this peer.",
     placeholder: "e.g., 100.64.0.15",
-    errorMessage: "Please enter a valid IP, e.g., 100.64.0.15",
     validate: (ip: string) =>
       /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
         ip,
       ),
   },
   v6: {
-    title: "Edit Peer IPv6 Address",
-    description: "Update the NetBird IPv6 address for this peer.",
     placeholder: "e.g., fd00:1234::1",
-    errorMessage: "Please enter a valid IPv6 address, e.g., fd00:1234::1",
     validate: (ip: string) => cidr.isValidAddress(ip) && ip.includes(":"),
   },
 };
@@ -58,8 +53,15 @@ export function PeerEditIPModal({
   currentIP,
   version,
 }: Readonly<PeerEditIPModalProps>) {
-  const { title, description, placeholder, errorMessage, validate } =
-    config[version];
+  const { t } = useLocale();
+  const { placeholder, validate } = config[version];
+  const isV4 = version === "v4";
+  const title = t(isV4 ? "peerIp.editV4Title" : "peerIp.editV6Title");
+  const description = t(
+    isV4 ? "peerIp.editV4Description" : "peerIp.editV6Description",
+    { product: brandConfig.productName },
+  );
+  const errorMessage = t(isV4 ? "peerIp.invalidV4" : "peerIp.invalidV6");
   const [ip, setIP] = useState(currentIP);
 
   const isDisabled = useMemo(() => {
@@ -90,14 +92,14 @@ export function PeerEditIPModal({
               />
             </div>
 
-            <Callout>Changes take effect when the peer reconnects.</Callout>
+            <Callout>{t("peerIp.reconnectNotice")}</Callout>
           </div>
 
           <ModalFooter className={"items-center"} separator={false}>
             <div className={"flex gap-3 w-full justify-end"}>
               <ModalClose asChild={true}>
                 <Button variant={"secondary"} className={"w-full"}>
-                  Cancel
+                  {t("common.cancel")}
                 </Button>
               </ModalClose>
 
@@ -107,7 +109,7 @@ export function PeerEditIPModal({
                 onClick={() => onSave(trim(ip))}
                 disabled={isDisabled}
               >
-                Save
+                {t("common.save")}
               </Button>
             </div>
           </ModalFooter>

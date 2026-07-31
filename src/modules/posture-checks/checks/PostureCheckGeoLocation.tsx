@@ -7,6 +7,7 @@ import Paragraph from "@components/Paragraph";
 import { RadioGroup, RadioGroupItem } from "@components/RadioGroup";
 import { CitySelector } from "@components/ui/CitySelector";
 import { CountrySelector } from "@components/ui/CountrySelector";
+import loadConfig from "@utils/config";
 import { isEmpty, uniqueId } from "lodash";
 import {
   ExternalLinkIcon,
@@ -20,6 +21,8 @@ import * as React from "react";
 import { useState } from "react";
 import { GeoLocation, GeoLocationCheck } from "@/interfaces/PostureCheck";
 import { PostureCheckCard } from "@/modules/posture-checks/ui/PostureCheckCard";
+
+const config = loadConfig();
 
 type Props = {
   value?: GeoLocationCheck;
@@ -177,12 +180,7 @@ const CheckContent = ({ value, onChange, disabled }: Props) => {
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
-            <InlineLink
-              href={
-                "https://docs.netbird.io/how-to/manage-posture-checks#geolocation-check"
-              }
-              target={"_blank"}
-            >
+            <InlineLink href={config.docsUrl} target={"_blank"}>
               Country & Region Check
               <ExternalLinkIcon size={12} />
             </InlineLink>

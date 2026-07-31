@@ -1,7 +1,10 @@
 import Button from "@components/Button";
 import { Modal, ModalContent } from "@components/modal/Modal";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
+import loadConfig from "@utils/config";
 import * as React from "react";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -22,7 +25,7 @@ export const AccountMFAInfoModal = ({
         <GradientFadedBackground />
         <div className={"flex items-center justify-center flex-col gap-3 px-6"}>
           <div className={"text-xl font-medium text-center"}>
-            You may not need NetBird MFA
+            You may not need {config.productName} MFA
           </div>
           <div className={"text-sm text-nb-gray-300 text-center mb-2"}>
             {`Your`}

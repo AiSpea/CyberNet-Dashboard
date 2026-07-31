@@ -3,12 +3,15 @@ import { Modal, ModalContent } from "@components/modal/Modal";
 import Paragraph from "@components/Paragraph";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
 import * as React from "react";
 import ConfettiExplosion from "react-confetti-explosion";
 import { FirewallGPTConfirmation } from "@/interfaces/FirewallGPT";
 import { Policy } from "@/interfaces/Policy";
+
+const config = loadConfig();
 
 type Props = {
   request_id: string;
@@ -57,9 +60,7 @@ export const FirewallGPTSuccessModal = ({
             Policy {"'" + policy?.name + "'"} has been created successfully!
           </h2>
           <Paragraph className={cn("text-sm text-center max-w-xs")}>
-            {
-              "How would you rate your experience with NetBird's Smart Firewall?"
-            }
+            {`How would you rate your experience with ${config.productName}'s Smart Firewall?`}
           </Paragraph>
 
           <div className={"flex justify-center items-center gap-4"}>

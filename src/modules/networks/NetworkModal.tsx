@@ -17,10 +17,13 @@ import Paragraph from "@components/Paragraph";
 import Separator from "@components/Separator";
 import { Textarea } from "@components/Textarea";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { ExternalLinkIcon, PlusCircle } from "lucide-react";
 import React, { useState } from "react";
 import NetworkRoutesIcon from "@/assets/icons/NetworkRoutesIcon";
 import { Network } from "@/interfaces/Network";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -133,10 +136,7 @@ const Content = ({ network, onCreated, onUpdated }: ContentProps) => {
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
-            <InlineLink
-              href={"https://docs.netbird.io/how-to/networks"}
-              target={"_blank"}
-            >
+            <InlineLink href={config.docsUrl} target={"_blank"}>
               Networks
               <ExternalLinkIcon size={12} />
             </InlineLink>

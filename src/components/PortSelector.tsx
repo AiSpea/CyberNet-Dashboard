@@ -5,6 +5,7 @@ import { CommandItem } from "@components/Command";
 import { DropdownInfoText } from "@components/DropdownInfoText";
 import { Popover, PopoverContent, PopoverTrigger } from "@components/Popover";
 import { IconArrowBack } from "@tabler/icons-react";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { Command, CommandGroup, CommandInput, CommandList } from "cmdk";
 import { orderBy, trim } from "lodash";
@@ -13,6 +14,8 @@ import * as React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useElementSize } from "@/hooks/useElementSize";
 import { PortRange } from "@/interfaces/Policy";
+
+const config = loadConfig();
 
 interface MultiSelectProps {
   ports: number[];
@@ -322,7 +325,7 @@ export function PortSelector({
       </Popover>
       {portRanges?.length > 0 && (
         <Callout variant={"info"} className={"mt-4"}>
-          Port ranges requires NetBird client{" "}
+          Port ranges require the {config.productName} client{" "}
           <span className={"text-white font-normal"}>v0.48</span> or higher.
         </Callout>
       )}

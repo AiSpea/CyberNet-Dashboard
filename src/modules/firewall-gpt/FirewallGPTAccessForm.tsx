@@ -6,6 +6,7 @@ import Paragraph from "@components/Paragraph";
 import { Textarea } from "@components/Textarea";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
 import useFetchApi from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { Loader2 } from "lucide-react";
 import * as React from "react";
@@ -16,6 +17,8 @@ import { useAnalytics } from "@/contexts/AnalyticsProvider";
 import { useLoggedInUser } from "@/contexts/UsersProvider";
 import type { Peer } from "@/interfaces/Peer";
 import { companySizes } from "@/modules/onboarding/OnboardingSurvey";
+
+const config = loadConfig();
 
 const brevoFormUrl =
   "https://ee8d1e90.sibforms.com/serve/MUIFADhAlqzGzwhzxXojyqtHhVQkXyORiLc20F22--S_-NWZe5jr_3C6KO4KK3175j3tQjpxoClLoLq25_OpJjlATwEYcpyqD60HkJIUh3r3zErtUjF0L7ihIJqNcatEXZI7O3bPjp8gTL5GwfVnKeKyPFlBc-xrV2y_Mok5hwpKg5Hd-IfsFjCc9nIUeEQTZf3Hv2bYROOTbAdr";
@@ -114,7 +117,7 @@ export const FirewallGptAccessForm = ({ account_id, onSubmit }: Props) => {
             <div className={"flex w-full flex-col gap-2"}>
               <div>
                 <Label>
-                  How many people in your company will use NetBird?
+                  How many people in your company will use {config.productName}?
                   <span className={"text-red-500 relative -top-[2.5px] "}>
                     *
                   </span>

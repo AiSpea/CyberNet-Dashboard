@@ -1,8 +1,11 @@
 import Button from "@components/Button";
 import { Modal, ModalContent } from "@components/modal/Modal";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
+import loadConfig from "@utils/config";
 import { Check, CircleCheckBig } from "lucide-react";
 import * as React from "react";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -20,7 +23,7 @@ export const TrialSuccessModal = ({ open, setOpen }: Props) => {
             Your 14-Day Trial has started!
           </div>
           <div className={"text-sm text-nb-gray-300 text-center"}>
-            {`Welcome aboard! You have now access to NetBird's full set of features & integrations `}
+            {`Welcome aboard! You now have access to ${config.productName}'s full set of features & integrations `}
             <b className={"text-nb-gray-200 font-medium"}>
               for the next two weeks
             </b>
@@ -51,7 +54,7 @@ export const TrialSuccessModal = ({ open, setOpen }: Props) => {
               variant={"primary"}
               onClick={() => setOpen(false)}
             >
-              Explore NetBird
+              Explore {config.productName}
             </Button>
           </div>
         </div>

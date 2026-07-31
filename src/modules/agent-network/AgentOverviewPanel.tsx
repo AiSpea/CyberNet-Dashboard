@@ -17,6 +17,7 @@ import {
   Tooltip,
 } from "chart.js";
 import useFetchApi from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import dayjs from "dayjs";
 import { ActivityIcon, ExternalLinkIcon } from "lucide-react";
@@ -32,6 +33,8 @@ import {
   buildUsageOverviewQuery,
 } from "@/modules/agent-network/agentAccessLogApi";
 import { useAgentNetworkMode } from "@/modules/agent-network/useAgentNetworkMode";
+
+const config = loadConfig();
 
 // Register the chart.js building blocks we use. Idempotent, so it's safe
 // even when another agent-network chart already registered them.
@@ -365,7 +368,7 @@ function DailyBreakdownTable({ daily }: { daily: DayBucket[] }) {
           learnMore={
             <>
               Learn more about
-              <InlineLink href={"https://docs.netbird.io/"} target={"_blank"}>
+              <InlineLink href={config.docsUrl} target={"_blank"}>
                 Agent Network
                 <ExternalLinkIcon size={12} />
               </InlineLink>

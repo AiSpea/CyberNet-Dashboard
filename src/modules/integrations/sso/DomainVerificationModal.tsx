@@ -13,10 +13,13 @@ import Paragraph from "@components/Paragraph";
 import Steps from "@components/Steps";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
 import { Mark } from "@components/ui/Mark";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { ExternalLinkIcon, GlobeIcon } from "lucide-react";
 import * as React from "react";
 import { useEnterpriseConnections } from "@/modules/integrations/sso/useEnterpriseConnections";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -95,9 +98,9 @@ export const DomainVerificationModal = ({
           </Card>
 
           <Paragraph className={"text-sm mt-4"}>
-            {
-              "Note: DNS changes may take some time to apply. If NetBird doesn't find the record immediately, please wait a day and try again."
-            }
+            Note: DNS changes may take some time to apply. If{" "}
+            {config.productName} does not find the record immediately, please
+            wait a day and try again.
           </Paragraph>
 
           <div
@@ -105,23 +108,22 @@ export const DomainVerificationModal = ({
               "bg-nb-gray-900/70 px-4 py-3 rounded-md border border-nb-gray-800/70 my-6 !text-nb-gray-300 text-sm"
             }
           >
-            If you do not have access to your DNS configuration, you can also
-            verify your domain by sending us an email to{" "}
+            If you do not have access to your DNS configuration, contact{" "}
             <InlineLink
-              href={"mailto:support@netbird.io"}
+              href={config.supportUrl}
               className={"inline font-medium"}
+              target={"_blank"}
             >
-              {" "}
-              support@netbird.io
-            </InlineLink>
-            . The email should be sent from the domain you are trying to verify.
+              {config.productName} support
+            </InlineLink>{" "}
+            for help verifying the domain.
           </div>
         </div>
         <ModalFooter className={"items-center"}>
           <div className={"w-full"}>
             <Paragraph className={"text-sm mt-auto"}>
               Learn more about
-              <InlineLink href={"#"} target={"_blank"}>
+              <InlineLink href={config.docsUrl} target={"_blank"}>
                 Domain Verification
                 <ExternalLinkIcon size={12} />
               </InlineLink>

@@ -24,6 +24,7 @@ import GetStartedTest from "@components/ui/GetStartedTest";
 import { IconSettings2 } from "@tabler/icons-react";
 import { ColumnDef, SortingState } from "@tanstack/react-table";
 import useFetchApi from "@utils/api";
+import loadConfig from "@utils/config";
 import { ExternalLinkIcon, PlusCircle } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useMemo } from "react";
@@ -36,6 +37,8 @@ import ServiceUserNameCell from "@/modules/users/table-cells/ServiceUserNameCell
 import UserActionCell from "@/modules/users/table-cells/UserActionCell";
 import UserRoleCell from "@/modules/users/table-cells/UserRoleCell";
 import UserStatusCell from "@/modules/users/table-cells/UserStatusCell";
+
+const config = loadConfig();
 
 export const ServiceUsersTableColumns: ColumnDef<User>[] = [
   {
@@ -223,12 +226,7 @@ export default function ServiceUsersTable({
           learnMore={
             <>
               Learn more about
-              <InlineLink
-                href={
-                  "https://docs.netbird.io/how-to/access-netbird-public-api"
-                }
-                target={"_blank"}
-              >
+              <InlineLink href={config.docsUrl} target={"_blank"}>
                 Service Users
                 <ExternalLinkIcon size={12} />
               </InlineLink>
