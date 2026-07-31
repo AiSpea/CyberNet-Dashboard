@@ -45,6 +45,24 @@ jobs:
       - name: Type-check
         run: npm exec tsc -- --noEmit
 
+      - name: Validate Dokploy Compose routes
+        run: |
+          docker compose \
+            --env-file deploy/.env.example \
+            --file deploy/compose.dokploy.yml \
+            config --quiet
+
+          for grpc_path in \
+            '/signalexchange.SignalExchange/' \
+            '/management.ManagementService/' \
+            '/management.ProxyService/' \
+            '/flow.FlowService/'
+          do
+            grep --fixed-strings --quiet \
+              "PathPrefix(\`${grpc_path}\`)" \
+              deploy/compose.dokploy.yml
+          done
+
   deploy:
     needs: validate
     if: >-

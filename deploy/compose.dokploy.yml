@@ -103,7 +103,7 @@ services:
     labels:
       traefik.enable: "true"
       traefik.docker.network: ${DOKPLOY_NETWORK:-dokploy-network}
-      traefik.http.routers.cybernet-grpc.rule: Host(`${CYBERNET_DOMAIN:?set CYBERNET_DOMAIN}`) && (PathPrefix(`/signalexchange.SignalExchange/`) || PathPrefix(`/management.ManagementService/`) || PathPrefix(`/management.ProxyService/`))
+      traefik.http.routers.cybernet-grpc.rule: Host(`${CYBERNET_DOMAIN:?set CYBERNET_DOMAIN}`) && (PathPrefix(`/signalexchange.SignalExchange/`) || PathPrefix(`/management.ManagementService/`) || PathPrefix(`/management.ProxyService/`) || PathPrefix(`/flow.FlowService/`))
       traefik.http.routers.cybernet-grpc.entrypoints: ${TRAEFIK_ENTRYPOINT:-websecure}
       traefik.http.routers.cybernet-grpc.tls: "true"
       traefik.http.routers.cybernet-grpc.tls.certresolver: ${TRAEFIK_CERT_RESOLVER:-letsencrypt}
