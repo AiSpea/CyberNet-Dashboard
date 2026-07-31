@@ -33,6 +33,10 @@ import {
   exampleAwsAccessKeyId,
   exampleAwsSecretAccessKey,
 } from "@/modules/integrations/event-streaming/amazon/exampleCredentials";
+import {
+  defaultEventStreamResourceName,
+  eventStreamingConfig,
+} from "@/modules/integrations/event-streaming/branding";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
 
 type Props = {
@@ -110,7 +114,7 @@ export function SetupContent({ onSuccess }: Readonly<ModalProps>) {
   const connect = async () => {
     notify({
       title: "Amazon Data Firehose Integration",
-      description: `Amazon Data Firehose was successfully connected to NetBird.`,
+      description: `Amazon Data Firehose was successfully connected to ${eventStreamingConfig.productName}.`,
       promise: integrationRequest
         .post({
           platform: "firehose",
@@ -142,10 +146,8 @@ export function SetupContent({ onSuccess }: Readonly<ModalProps>) {
 
       <IntegrationModalHeader
         image={firehoseLogo}
-        title={"Connect NetBird with Amazon Data Firehose"}
-        description={
-          "Start streaming your NetBird audit & traffic events to Amazon Data Firehose. Follow the steps below to get started."
-        }
+        title={`Connect ${eventStreamingConfig.productName} with Amazon Data Firehose`}
+        description={`Start streaming your ${eventStreamingConfig.productName} audit & traffic events to Amazon Data Firehose. Follow the steps below to get started.`}
       />
 
       {step == 1 && (
@@ -228,7 +230,7 @@ export function SetupContent({ onSuccess }: Readonly<ModalProps>) {
             <Steps.Step step={5}>
               <p className={"font-normal"}>
                 Give it a descriptive name like{" "}
-                <Mark copy>netbird-activity-events</Mark>
+                <Mark copy>{defaultEventStreamResourceName}</Mark>
                 and click <Mark>Create Firehose stream</Mark>
                 <Tooltip>
                   <TooltipTrigger>
@@ -256,7 +258,7 @@ export function SetupContent({ onSuccess }: Readonly<ModalProps>) {
                       <PencilLine size={16} className={"text-nb-gray-300"} />
                     </div>
                   }
-                  placeholder={"netbird-activity-events"}
+                  placeholder={defaultEventStreamResourceName}
                   value={streamName}
                   onChange={(e) => setStreamName(e.target.value)}
                 />

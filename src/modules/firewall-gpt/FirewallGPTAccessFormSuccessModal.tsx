@@ -1,8 +1,11 @@
 import Button from "@components/Button";
 import { Modal, ModalContent } from "@components/modal/Modal";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
+import loadConfig from "@utils/config";
 import { Sparkles } from "lucide-react";
 import * as React from "react";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -24,7 +27,7 @@ export const FirewallGPTAccessFormSuccessModal = ({ open, setOpen }: Props) => {
           <div className={"text-sm text-center mb-2"}>
             <p
               className={"!text-nb-gray-300"}
-            >{`We'll send you an email once NetBird's Smart Firewall is ready to use in your account.`}</p>
+            >{`We'll send you an email once ${config.productName}'s Smart Firewall is ready to use in your account.`}</p>
           </div>
           <Button
             variant={"secondary"}

@@ -16,6 +16,7 @@ import Paragraph from "@components/Paragraph";
 import { PeerGroupSelector } from "@components/PeerGroupSelector";
 import { PeerSelector } from "@components/PeerSelector";
 import Separator from "@components/Separator";
+import loadConfig from "@utils/config";
 import { uniqBy } from "lodash";
 import { ExternalLinkIcon, PlusCircle } from "lucide-react";
 import React, { useMemo, useState } from "react";
@@ -24,6 +25,8 @@ import { useRoutes } from "@/contexts/RoutesProvider";
 import { Peer } from "@/interfaces/Peer";
 import { GroupedRoute, Route } from "@/interfaces/Route";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
+
+const config = loadConfig();
 
 type Props = {
   groupedRoute?: GroupedRoute;
@@ -165,9 +168,7 @@ function Content({ onSuccess, groupedRoute, peer }: ModalProps) {
       <ModalHeader
         icon={<NetworkRoutesIcon className={"fill-netbird"} />}
         title={"Add New Routing Peer"}
-        description={
-          "When you add multiple routing peers, NetBird enables high availability for this network."
-        }
+        description={`When you add multiple routing peers, ${config.productName} enables high availability for this network.`}
         color={"netbird"}
       />
 
@@ -222,9 +223,7 @@ function Content({ onSuccess, groupedRoute, peer }: ModalProps) {
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
             <InlineLink
-              href={
-                "https://docs.netbird.io/how-to/routing-traffic-to-private-networks"
-              }
+              href={`${config.docsUrl}/how-to/routing-traffic-to-private-networks`}
               target={"_blank"}
             >
               Network Routes

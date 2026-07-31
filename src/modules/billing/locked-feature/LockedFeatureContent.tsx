@@ -1,4 +1,5 @@
 import Button from "@components/Button";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { isNetBirdCloud } from "@utils/netbird";
 import { LockIcon, MailIcon } from "lucide-react";
@@ -10,6 +11,8 @@ import { useLoggedInUser } from "@/contexts/UsersProvider";
 import { PlanTier } from "@/interfaces/Subscription";
 import { LockedFeatureInfoCardProps } from "@/modules/billing/locked-feature/LockedFeatureInfoCard";
 import { TrialOrUpgradeButton } from "@/modules/billing/trial/TrialOrUpgradeButton";
+
+const config = loadConfig();
 
 export enum PLAN_TEXT {
   TEAM = "Available on Team",
@@ -41,7 +44,11 @@ export const LockedFeatureContent = ({
             size={isTooltip ? 12 : 14}
             className={cn("relative", isTooltip && "-top-[1px]")}
           />
-            { isNetBirdCloud()? (plan == "team" ? PLAN_TEXT.TEAM : PLAN_TEXT.BUSINESS) : PLAN_TEXT.ENTERPRISE }
+          {isNetBirdCloud()
+            ? plan == "team"
+              ? PLAN_TEXT.TEAM
+              : PLAN_TEXT.BUSINESS
+            : PLAN_TEXT.ENTERPRISE}
         </div>
         <div
           className={cn(
@@ -83,11 +90,13 @@ const AvailableOnPlanText = ({
   const teamOrBusiness =
     plan == "team" ? "Team plan or higher. " : "Business plan. ";
   if (!isNetBirdCloud()) {
-      return (
+    return (
       <>
-        {featureText} {isOrAre} available with a NetBird Enterprise commercial license, or on NetBird Cloud with the {teamOrBusiness}
+        {featureText} {isOrAre} available with a {config.productName} Enterprise
+        commercial license, or on {config.productName} Cloud with the{" "}
+        {teamOrBusiness}
       </>
-      )
+    );
   }
 
   return (
@@ -112,10 +121,7 @@ const UpgradeOrTrialText = ({
   const { isOwnerOrAdmin } = useLoggedInUser();
 
   if (!isNetBirdCloud()) {
-    return (
-      <>
-      </>
-    );
+    return <></>;
   }
 
   if (hasReseller) {
@@ -145,15 +151,14 @@ const UpgradeOrTrialText = ({
 
 const GetMSPSupportButton = () => {
   const { mspInfo, hasReseller } = useMSP();
-  const mailToEmail = mspInfo?.parent_owner_email || "support@netbird.io";
+  const supportHref = mspInfo?.parent_owner_email
+    ? `mailto:${mspInfo.parent_owner_email}?subject=Request%20for%20Assistance%3A%20Upgrade%20Plan`
+    : config.supportUrl;
   if (hasReseller) return;
 
   return (
     <div className={"relative top-1 min-w-[160px]"}>
-      <a
-        href={`mailto:${mailToEmail}?subject=Request%20for%20Assistance%3A%20Upgrade%20Plan`}
-        className={"w-full"}
-      >
+      <a href={supportHref} className={"w-full"}>
         <Button
           size={"xs"}
           variant={"primary"}

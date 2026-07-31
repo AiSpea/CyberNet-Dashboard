@@ -3,6 +3,7 @@ import {
   SelectOption,
 } from "@components/select/SelectDropdown";
 import useFetchApi from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn, generateColorFromUser } from "@utils/helpers";
 import { Handle, type Node, Position } from "@xyflow/react";
 import { sortBy } from "lodash";
@@ -12,6 +13,8 @@ import { User } from "@/interfaces/User";
 import TruncatedText from "@components/ui/TruncatedText";
 import TextWithTooltip from "@components/ui/TextWithTooltip";
 import { SmallUserAvatar } from "@/modules/users/SmallUserAvatar";
+
+const config = loadConfig();
 
 type UserNodeProps = Node<
   {
@@ -57,7 +60,11 @@ export const SelectUserNode = ({ data, id }: UserNodeProps) => {
                       }
                     >
                       <TextWithTooltip
-                        text={user?.email || "NetBird"}
+                        text={
+                          user?.email === "NetBird"
+                            ? config.productName
+                            : user?.email || config.productName
+                        }
                         maxChars={20}
                       />
                     </span>

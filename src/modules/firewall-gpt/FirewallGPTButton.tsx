@@ -1,4 +1,5 @@
 import FullTooltip from "@components/FullTooltip";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { isNetBirdCloud } from "@utils/netbird";
 import { LockIcon, Sparkles } from "lucide-react";
@@ -6,6 +7,8 @@ import * as React from "react";
 import { usePermissions } from "@/contexts/PermissionsProvider";
 import { PLAN_TEXT } from "@/modules/billing/locked-feature/LockedFeatureContent";
 import { SelfHostedUpgradeButton } from "@/modules/billing/trial/TrialOrUpgradeButton";
+
+const config = loadConfig();
 
 type Props = {
   onClick: () => void;
@@ -26,7 +29,8 @@ export const FirewallGPTButton = ({ onClick }: Props) => {
             </div>
             <div className={"text-xs text-nb-gray-300 font-light"}>
               Smart Firewall uses AI to help you create access policies and is
-              available with a NetBird Enterprise commercial license.
+              available with a {config.productName} Enterprise commercial
+              license.
             </div>
             <SelfHostedUpgradeButton />
           </div>

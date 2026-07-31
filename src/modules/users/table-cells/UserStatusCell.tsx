@@ -1,11 +1,14 @@
 import FullTooltip from "@components/FullTooltip";
 import InlineLink from "@components/InlineLink";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { isNetBirdCloud } from "@utils/netbird";
 import { ExternalLinkIcon, HelpCircle } from "lucide-react";
 import React from "react";
 import { User } from "@/interfaces/User";
 import { useAccount } from "@/modules/account/useAccount";
+
+const config = loadConfig();
 
 type Props = {
   user: User;
@@ -46,12 +49,7 @@ export default function UserStatusCell({ user }: Readonly<Props>) {
         your IdP for authentication.
       </div>
       <div>
-        <InlineLink
-          href={
-            "https://docs.netbird.io/selfhosted/identity-providers/disable-local-authentication"
-          }
-          target={"_blank"}
-        >
+        <InlineLink href={config.docsUrl} target={"_blank"}>
           Learn more <ExternalLinkIcon size={12} />
         </InlineLink>
       </div>
@@ -75,10 +73,7 @@ export default function UserStatusCell({ user }: Readonly<Props>) {
         <InlineLink href={"/settings?tab=authentication"}>Settings</InlineLink>.
       </div>
       <div>
-        <InlineLink
-          href={"https://docs.netbird.io/how-to/approve-users"}
-          target={"_blank"}
-        >
+        <InlineLink href={config.docsUrl} target={"_blank"}>
           Learn more <ExternalLinkIcon size={12} />
         </InlineLink>
       </div>

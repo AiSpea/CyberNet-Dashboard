@@ -94,6 +94,154 @@ const en = {
     "Control which users and agents can reach each network resource.",
   "page.audit.description":
     "Review configuration, access-policy, peer-registration, and sign-in events.",
+  // Activity and audit log
+  "activity.page.title": "Audit events",
+  "activity.page.description":
+    "Review configuration changes, peer activity, and sign-ins across {{product}}.",
+  "activity.table.title": "Audit events",
+  "activity.table.code": "Code",
+  "activity.search.placeholder":
+    "Search by event, user, peer, or event details...",
+  "activity.filter.type": "Type",
+  "activity.filter.initiator": "Initiator",
+  "activity.filter.typeSearch": "Search events...",
+  "activity.filter.typeCount": "{{count}} types",
+  "activity.empty.title": "No audit events yet",
+  "activity.empty.description":
+    "Changes and sign-ins across {{product}} will appear here.",
+  "activity.system": "System",
+  "activity.external": "External",
+  "activity.timestamp": "{{date}} at {{time}}",
+  "activity.value.unknown": "Unknown",
+  "activity.description.from": "from",
+  "activity.description.fallback": "Event: {{activity}}",
+  "activity.details.code": "Activity code",
+  "activity.details.meta": "Metadata",
+  "activity.group.setupkey": "Setup keys",
+  "activity.group.dashboard": "Dashboard",
+  "activity.group.policy": "Policies",
+  "activity.group.route": "Routes",
+  "activity.group.user": "Users",
+  "activity.group.serviceUser": "Service users",
+  "activity.group.peer": "Peers",
+  "activity.group.group": "Groups",
+  "activity.group.account": "Account",
+  "activity.group.nameserver": "Nameservers",
+  "activity.group.personal": "Access tokens",
+  "activity.group.integration": "Integrations",
+  "activity.group.dns": "DNS",
+  "activity.group.posture": "Posture checks",
+  "activity.group.network": "Networks",
+  "activity.group.identityprovider": "Identity providers",
+  "activity.group.service": "Services",
+  "activity.group.reseller": "Distributor",
+  "activity.description.setupKeyCreated":
+    "Setup key {{name}} ({{key}}) was created",
+  "activity.description.setupKeyDeleted":
+    "Setup key {{name}} ({{key}}) was deleted",
+  "activity.description.setupKeyRevoked":
+    "Setup key {{name}} ({{key}}) was revoked",
+  "activity.description.peerAddedWithSetupKey":
+    "Peer {{name}} was added with the {{product}} IP {{ip}} using setup key {{setupKey}}",
+  "activity.description.dashboardLogin":
+    "{{username}} signed in to the dashboard",
+  "activity.description.policyCreated": "Policy {{name}} was created",
+  "activity.description.policyUpdated": "Policy {{name}} was updated",
+  "activity.description.policyDeleted": "Policy {{name}} was deleted",
+  "activity.description.routeCreated":
+    "Route {{name}} ({{target}}) was created",
+  "activity.description.routeUpdated":
+    "Route {{name}} ({{target}}) was updated",
+  "activity.description.routeDeleted":
+    "Route {{name}} ({{target}}) was deleted",
+  "activity.description.peerCreated":
+    "Peer {{name}} with the {{product}} IP {{ip}} was added",
+  "activity.description.peerUpdated":
+    "Peer {{name}} with the {{product}} IP {{ip}} was updated",
+  "activity.description.peerDeleted":
+    "Peer {{name}} with the {{product}} IP {{ip}} was deleted",
+  "activity.description.userJoined": "User {{username}} joined {{product}}",
+  "activity.description.userInvited": "{{username}} ({{email}}) was invited",
+  "activity.description.userCreated":
+    "{{username}} ({{email}}) was created by {{initiator}}",
+  "activity.description.userDeleted":
+    "User {{username}} ({{email}}) was deleted",
+  "activity.description.userBlocked":
+    "User {{username}} ({{email}}) was blocked",
+  "activity.description.userUnblocked":
+    "User {{username}} ({{email}}) was unblocked",
+  "activity.description.userApproved":
+    "User {{username}} ({{email}}) was approved",
+  "activity.description.userRejected":
+    "User {{username}} ({{email}}) was rejected",
+  "activity.description.serviceUserCreated":
+    "Service user {{name}} was created",
+  "activity.description.serviceUserDeleted":
+    "Service user {{name}} was deleted",
+  "activity.description.peerLoginExpired": "Login for peer {{name}} expired",
+  "activity.description.peerLoginExpiredReason":
+    "Login for peer {{name}} expired: {{reason}}",
+  "activity.description.peerSshEnabled":
+    "The SSH server on peer {{name}} was enabled",
+  "activity.description.peerSshDisabled":
+    "The SSH server on peer {{name}} was disabled",
+  "activity.description.peerRenamed": "Peer {{ip}} was renamed to {{name}}",
+  "activity.description.peerApproved": "Peer {{ip}} was approved",
+  "activity.description.peerIpUpdated":
+    "Peer {{name}} IP changed from {{oldIp}} to {{ip}}",
+  "activity.description.groupCreated": "Group {{name}} was created",
+  "activity.description.groupUpdated":
+    "Group {{oldName}} was renamed to {{newName}}",
+  "activity.description.groupDeleted": "Group {{name}} was deleted",
+  "activity.description.accountCreated": "{{initiator}} created an account",
+  "activity.description.globalLoginExpirationUpdated":
+    "Global login expiration was updated",
+  "activity.description.globalLoginExpirationEnabled":
+    "Global login expiration was enabled",
+  "activity.description.globalLoginExpirationDisabled":
+    "Global login expiration was disabled",
+  "activity.description.accountNetworkRangeUpdated":
+    "Account network range changed from {{oldRange}} to {{newRange}}",
+  "activity.description.nameserverCreated": "Nameserver {{name}} was added",
+  "activity.description.nameserverUpdated": "Nameserver {{name}} was updated",
+  "activity.description.nameserverDeleted": "Nameserver {{name}} was deleted",
+  "activity.description.accessTokenCreated":
+    "Access token {{name}} for {{username}} was created",
+  "activity.description.accessTokenDeleted":
+    "Access token {{name}} for {{username}} was deleted",
+  "activity.description.integrationCreated":
+    "{{platform}} integration was created",
+  "activity.description.integrationUpdated":
+    "{{platform}} integration was updated",
+  "activity.description.integrationDeleted":
+    "{{platform}} integration was deleted",
+  "activity.description.postureCheckCreated":
+    "Posture check {{name}} was created",
+  "activity.description.postureCheckUpdated":
+    "Posture check {{name}} was updated",
+  "activity.description.postureCheckDeleted":
+    "Posture check {{name}} was deleted",
+  "activity.description.networkCreated": "Network {{name}} was created",
+  "activity.description.networkUpdated": "Network {{name}} was updated",
+  "activity.description.networkDeleted": "Network {{name}} was deleted",
+  "activity.description.networkResourceCreated":
+    "Resource {{name}} was created in network {{network}}",
+  "activity.description.networkResourceUpdated":
+    "Resource {{name}} was updated in network {{network}}",
+  "activity.description.networkResourceDeleted":
+    "Resource {{name}} was deleted from network {{network}}",
+  "activity.description.networkRouterCreated":
+    "A routing peer was added to network {{network}}",
+  "activity.description.networkRouterUpdated":
+    "A routing peer in network {{network}} was updated",
+  "activity.description.networkRouterDeleted":
+    "A routing peer was removed from network {{network}}",
+  "activity.description.identityProviderCreated":
+    "Identity provider {{name}} was created",
+  "activity.description.identityProviderUpdated":
+    "Identity provider {{name}} was updated",
+  "activity.description.identityProviderDeleted":
+    "Identity provider {{name}} was deleted",
   "page.reverseProxy.description":
     "Expose services securely through CyberNet's reverse proxy.",
   "page.reverseProxy.beta":
@@ -459,6 +607,155 @@ const en = {
   "invite.creating": "Creating account...",
   "invite.create": "Create account",
   "invite.expires": "Invitation expires {{date}}",
+  "common.back": "Back",
+  "common.close": "Close",
+  "common.save": "Save",
+  "common.delete": "Delete",
+  "accessTokens.title": "Access Tokens",
+  "accessTokens.column.name": "Name",
+  "accessTokens.column.expires": "Expires",
+  "accessTokens.column.lastUsed": "Last used",
+  "accessTokens.lastUsedOn": "Last used on",
+  "accessTokens.emptyTitle": "No access tokens",
+  "accessTokens.emptyDescription":
+    "You don't have any access tokens yet. Add a token to access the {{product}} API.",
+  "accessTokens.createTitle": "Create Access Token",
+  "accessTokens.createDescription":
+    "Use this token to access {{product}}'s public API.",
+  "accessTokens.createdTitle": "Access token created successfully!",
+  "accessTokens.createdDescription":
+    "This token will not be shown again. Copy it now and store it in a secure location.",
+  "accessTokens.copySuccess": "Access token copied to your clipboard!",
+  "accessTokens.createFailed": "Access token could not be created...",
+  "accessTokens.copyToClipboard": "Copy to clipboard",
+  "accessTokens.creatingTitle": "Creating access token",
+  "accessTokens.createdNotification": "{{name}} was created successfully.",
+  "accessTokens.loading": "Creating access token...",
+  "accessTokens.name": "Name",
+  "accessTokens.nameHelp": "Choose an easily identifiable name for your token.",
+  "accessTokens.namePlaceholder": "e.g., Infrastructure token",
+  "accessTokens.expiresIn": "Expires in",
+  "accessTokens.expiresHelp": "Enter a value between 1 and 365 days.",
+  "accessTokens.days": "Day(s)",
+  "accessTokens.learnMore": "Learn more about",
+  "accessTokens.documentation": "Access Tokens",
+  "accessTokens.create": "Create Token",
+  "posture.createTitle": "Create Posture Check",
+  "posture.updateTitle": "Update Posture Check",
+  "posture.description":
+    "Use posture checks to further restrict access in your network.",
+  "posture.tab.checks": "Checks",
+  "posture.tab.general": "Name & Description",
+  "posture.nameLabel": "Name of the Posture Check",
+  "posture.nameHelp":
+    "Choose an easily identifiable name for your posture check.",
+  "posture.namePlaceholder": "e.g., {{product}} Version > 0.25.0",
+  "posture.descriptionLabel": "Description (optional)",
+  "posture.descriptionHelp":
+    "Write a short description to add more context to this posture check.",
+  "posture.descriptionPlaceholder":
+    "e.g., Check whether the {{product}} version is later than 0.25.0",
+  "posture.learnMore": "Learn more about",
+  "posture.documentation": "Posture Checks",
+  "posture.saveChanges": "Save Changes",
+  "posture.version.title": "{{product}} Client Version",
+  "posture.version.description":
+    "Restrict access to peers running a specific {{product}} client version.",
+  "posture.version.minimum": "Minimum required version",
+  "posture.version.minimumHelp":
+    "Only peers running at least this {{product}} client version can access the network.",
+  "posture.version.invalid":
+    "Enter a valid version, e.g., 0.2, 0.2.0, or 0.2.0-alpha.1",
+  "posture.version.prefix": "Version",
+  "posture.version.documentation": "Client Version Check",
+  "posture.process.title": "Process",
+  "posture.process.description":
+    "Restrict network access based on processes running on a peer.",
+  "posture.process.label": "Processes",
+  "posture.process.help":
+    "Add an executable path for Linux, macOS, or Windows. A peer can connect only while the configured process is running.",
+  "posture.process.invalidMac": "Enter a valid macOS file path",
+  "posture.process.invalidLinux": "Enter a valid Unix file path",
+  "posture.process.invalidWindows": "Enter a valid Windows file path",
+  "posture.process.add": "Add Process",
+  "posture.process.documentation": "Process Check",
+  "posture.table.name": "Name",
+  "posture.table.checks": "Checks",
+  "posture.table.policies": "Policies",
+  "posture.table.all": "All",
+  "posture.table.active": "Active",
+  "posture.table.inactive": "Inactive",
+  "posture.table.status": "Status",
+  "posture.table.feature": "Posture Checks",
+  "posture.table.singular": "Posture Check",
+  "posture.table.search": "Search by name and description...",
+  "posture.table.add": "Add Posture Check",
+  "posture.emptyTitle": "You haven't added any posture checks yet",
+  "posture.emptyDescription":
+    "Add posture checks to further restrict network access. For example, require a specific {{product}} client version, operating system, or location.",
+  "posture.browse": "Browse Checks",
+  "posture.new": "New Posture Check",
+  "peerIp.editV4Title": "Edit Peer IP Address",
+  "peerIp.editV6Title": "Edit Peer IPv6 Address",
+  "peerIp.editV4Description":
+    "Update the {{product}} IP address for this peer.",
+  "peerIp.editV6Description":
+    "Update the {{product}} IPv6 address for this peer.",
+  "peerIp.invalidV4": "Enter a valid IP address, e.g., 100.64.0.15",
+  "peerIp.invalidV6": "Enter a valid IPv6 address, e.g., fd00:1234::1",
+  "peerIp.reconnectNotice": "Changes take effect when the peer reconnects.",
+  "peerIssue.bypassed":
+    "An administrator bypassed compliance for this peer. The bypass will be removed automatically when the device becomes compliant.",
+  "peerIssue.loginExpired":
+    "This peer's login has expired. Re-authenticate from the {{product}} client on the device to bring it back online.",
+  "peerIssue.nonCompliant":
+    "This peer is not compliant with {{integration}} and cannot connect until compliance is restored or bypassed.",
+  "peerIssue.approvalRequired":
+    "This peer needs administrator approval before it can connect. Approve it from the row's actions menu.",
+  "peerAction.approveTitle": "Approve peer '{{name}}'?",
+  "peerAction.approveDescription":
+    "Are you sure you want to approve this peer?",
+  "peerAction.approve": "Approve",
+  "peerAction.approvedTitle": "Peer {{name}} approved",
+  "peerAction.approvedDescription":
+    "This peer was approved and can now connect to other peers.",
+  "peerAction.approving": "Approving peer...",
+  "peerAction.bypassTitle": "Bypass compliance for '{{name}}'?",
+  "peerAction.bypassDescription":
+    "This overrides the compliance check and allows the peer to connect. The bypass will be removed automatically when the device becomes compliant.",
+  "peerAction.bypass": "Bypass Compliance",
+  "peerAction.bypassedTitle": "Compliance bypassed for {{name}}",
+  "peerAction.canConnect": "This peer can now connect to other peers.",
+  "peerAction.bypassing": "Bypassing compliance...",
+  "peerAction.revokeTitle": "Revoke compliance bypass for '{{name}}'?",
+  "peerAction.revokeDescription":
+    "This peer will return to normal compliance validation. If it is still non-compliant, it will lose network access.",
+  "peerAction.revoke": "Revoke",
+  "peerAction.revokedTitle": "Compliance bypass revoked",
+  "peerAction.revokedDescription":
+    "Peer {{name}} is now subject to normal compliance validation.",
+  "peerAction.revoking": "Revoking compliance bypass...",
+  "peerAction.sessionEnabledTitle": "Session expiration is enabled",
+  "peerAction.sessionDisabledTitle": "Session expiration is disabled",
+  "peerAction.sessionEnabledDescription":
+    "Session expiration for peer {{name}} was enabled successfully.",
+  "peerAction.sessionDisabledDescription":
+    "Session expiration for peer {{name}} was disabled successfully.",
+  "peerAction.sessionUpdating": "Updating session expiration...",
+  "peerAction.disableSshTitle": "Disable SSH Access?",
+  "peerAction.disableSshDescription":
+    "Starting with {{product}} v0.61.0, SSH access cannot be re-enabled from the dashboard after it is disabled. Create an explicit access-control policy and update the {{product}} client to restore SSH functionality.",
+  "peerAction.disable": "Disable",
+  "peerAction.viewDetails": "View Details",
+  "peerAction.bypassTooltip":
+    "Bypass the {{integration}} compliance check and allow this peer to connect. The bypass is removed automatically when the device becomes compliant.",
+  "peerAction.revokeBypass": "Revoke Bypass",
+  "peerAction.setupKeyExpirationInfo":
+    "Expiration is disabled for peers added with a setup key.",
+  "peerAction.enableSessionExpiration": "Enable Session Expiration",
+  "peerAction.disableSessionExpiration": "Disable Session Expiration",
+  "peerAction.enableSsh": "Enable SSH Access",
+  "peerAction.disableSsh": "Disable SSH Access",
 } as const;
 
 type TranslationKey = keyof typeof en;
@@ -528,6 +825,125 @@ const zhCN: Record<TranslationKey, string> = {
   "page.accessControl.title": "访问控制策略",
   "page.accessControl.description": "控制用户和智能体可以访问哪些网络资源。",
   "page.audit.description": "查看配置、访问策略、节点注册和登录等审计事件。",
+  // 活动与审计日志
+  "activity.page.title": "审计事件",
+  "activity.page.description":
+    "查看 {{product}} 中的配置变更、节点活动和登录记录。",
+  "activity.table.title": "审计事件",
+  "activity.table.code": "事件代码",
+  "activity.search.placeholder": "搜索事件、用户、节点或事件详情…",
+  "activity.filter.type": "类型",
+  "activity.filter.initiator": "发起人",
+  "activity.filter.typeSearch": "搜索事件…",
+  "activity.filter.typeCount": "{{count}} 种类型",
+  "activity.empty.title": "暂无审计事件",
+  "activity.empty.description":
+    "{{product}} 中的配置变更和登录记录会显示在这里。",
+  "activity.system": "系统",
+  "activity.external": "外部",
+  "activity.timestamp": "{{date}} {{time}}",
+  "activity.value.unknown": "未知",
+  "activity.description.from": "来自",
+  "activity.description.fallback": "事件：{{activity}}",
+  "activity.details.code": "事件代码",
+  "activity.details.meta": "元数据",
+  "activity.group.setupkey": "安装密钥",
+  "activity.group.dashboard": "管理平台",
+  "activity.group.policy": "策略",
+  "activity.group.route": "路由",
+  "activity.group.user": "用户",
+  "activity.group.serviceUser": "服务用户",
+  "activity.group.peer": "节点",
+  "activity.group.group": "群组",
+  "activity.group.account": "账号",
+  "activity.group.nameserver": "名称服务器",
+  "activity.group.personal": "访问令牌",
+  "activity.group.integration": "集成",
+  "activity.group.dns": "DNS",
+  "activity.group.posture": "设备状态检查",
+  "activity.group.network": "网络",
+  "activity.group.identityprovider": "身份提供商",
+  "activity.group.service": "服务",
+  "activity.group.reseller": "分销商",
+  "activity.description.setupKeyCreated": "安装密钥 {{name}}（{{key}}）已创建",
+  "activity.description.setupKeyDeleted": "安装密钥 {{name}}（{{key}}）已删除",
+  "activity.description.setupKeyRevoked": "安装密钥 {{name}}（{{key}}）已撤销",
+  "activity.description.peerAddedWithSetupKey":
+    "节点 {{name}} 已通过安装密钥 {{setupKey}} 加入，{{product}} IP 为 {{ip}}",
+  "activity.description.dashboardLogin": "{{username}} 已登录管理平台",
+  "activity.description.policyCreated": "策略 {{name}} 已创建",
+  "activity.description.policyUpdated": "策略 {{name}} 已更新",
+  "activity.description.policyDeleted": "策略 {{name}} 已删除",
+  "activity.description.routeCreated": "路由 {{name}}（{{target}}）已创建",
+  "activity.description.routeUpdated": "路由 {{name}}（{{target}}）已更新",
+  "activity.description.routeDeleted": "路由 {{name}}（{{target}}）已删除",
+  "activity.description.peerCreated":
+    "节点 {{name}} 已添加，{{product}} IP 为 {{ip}}",
+  "activity.description.peerUpdated":
+    "节点 {{name}}（{{product}} IP：{{ip}}）已更新",
+  "activity.description.peerDeleted":
+    "节点 {{name}}（{{product}} IP：{{ip}}）已删除",
+  "activity.description.userJoined": "用户 {{username}} 已加入 {{product}}",
+  "activity.description.userInvited": "已邀请 {{username}}（{{email}}）",
+  "activity.description.userCreated":
+    "{{initiator}} 已创建用户 {{username}}（{{email}}）",
+  "activity.description.userDeleted": "用户 {{username}}（{{email}}）已删除",
+  "activity.description.userBlocked": "用户 {{username}}（{{email}}）已停用",
+  "activity.description.userUnblocked": "用户 {{username}}（{{email}}）已恢复",
+  "activity.description.userApproved": "用户 {{username}}（{{email}}）已批准",
+  "activity.description.userRejected": "用户 {{username}}（{{email}}）已拒绝",
+  "activity.description.serviceUserCreated": "服务用户 {{name}} 已创建",
+  "activity.description.serviceUserDeleted": "服务用户 {{name}} 已删除",
+  "activity.description.peerLoginExpired": "节点 {{name}} 的登录已过期",
+  "activity.description.peerLoginExpiredReason":
+    "节点 {{name}} 的登录已过期：{{reason}}",
+  "activity.description.peerSshEnabled": "节点 {{name}} 的 SSH 服务已开启",
+  "activity.description.peerSshDisabled": "节点 {{name}} 的 SSH 服务已关闭",
+  "activity.description.peerRenamed": "节点 {{ip}} 已重命名为 {{name}}",
+  "activity.description.peerApproved": "节点 {{ip}} 已批准",
+  "activity.description.peerIpUpdated":
+    "节点 {{name}} 的 IP 已从 {{oldIp}} 更新为 {{ip}}",
+  "activity.description.groupCreated": "群组 {{name}} 已创建",
+  "activity.description.groupUpdated":
+    "群组 {{oldName}} 已重命名为 {{newName}}",
+  "activity.description.groupDeleted": "群组 {{name}} 已删除",
+  "activity.description.accountCreated": "{{initiator}} 已创建账号",
+  "activity.description.globalLoginExpirationUpdated": "全局登录有效期已更新",
+  "activity.description.globalLoginExpirationEnabled": "全局登录有效期已启用",
+  "activity.description.globalLoginExpirationDisabled": "全局登录有效期已停用",
+  "activity.description.accountNetworkRangeUpdated":
+    "账号网段已从 {{oldRange}} 更新为 {{newRange}}",
+  "activity.description.nameserverCreated": "名称服务器 {{name}} 已添加",
+  "activity.description.nameserverUpdated": "名称服务器 {{name}} 已更新",
+  "activity.description.nameserverDeleted": "名称服务器 {{name}} 已删除",
+  "activity.description.accessTokenCreated":
+    "用户 {{username}} 的访问令牌 {{name}} 已创建",
+  "activity.description.accessTokenDeleted":
+    "用户 {{username}} 的访问令牌 {{name}} 已删除",
+  "activity.description.integrationCreated": "{{platform}} 集成已创建",
+  "activity.description.integrationUpdated": "{{platform}} 集成已更新",
+  "activity.description.integrationDeleted": "{{platform}} 集成已删除",
+  "activity.description.postureCheckCreated": "设备状态检查 {{name}} 已创建",
+  "activity.description.postureCheckUpdated": "设备状态检查 {{name}} 已更新",
+  "activity.description.postureCheckDeleted": "设备状态检查 {{name}} 已删除",
+  "activity.description.networkCreated": "网络 {{name}} 已创建",
+  "activity.description.networkUpdated": "网络 {{name}} 已更新",
+  "activity.description.networkDeleted": "网络 {{name}} 已删除",
+  "activity.description.networkResourceCreated":
+    "资源 {{name}} 已在网络 {{network}} 中创建",
+  "activity.description.networkResourceUpdated":
+    "网络 {{network}} 中的资源 {{name}} 已更新",
+  "activity.description.networkResourceDeleted":
+    "资源 {{name}} 已从网络 {{network}} 中删除",
+  "activity.description.networkRouterCreated":
+    "网络 {{network}} 已添加路由节点",
+  "activity.description.networkRouterUpdated":
+    "网络 {{network}} 的路由节点已更新",
+  "activity.description.networkRouterDeleted":
+    "网络 {{network}} 的路由节点已移除",
+  "activity.description.identityProviderCreated": "身份提供商 {{name}} 已创建",
+  "activity.description.identityProviderUpdated": "身份提供商 {{name}} 已更新",
+  "activity.description.identityProviderDeleted": "身份提供商 {{name}} 已删除",
   "page.reverseProxy.description": "通过 CyberNet 反向代理安全发布服务。",
   "page.reverseProxy.beta":
     "CyberNet 反向代理目前处于测试阶段，正式发布前功能可能调整。",
@@ -869,6 +1285,144 @@ const zhCN: Record<TranslationKey, string> = {
   "invite.creating": "正在创建账号…",
   "invite.create": "创建账号",
   "invite.expires": "邀请将在 {{date}} 过期",
+  "common.back": "返回",
+  "common.close": "关闭",
+  "common.save": "保存",
+  "common.delete": "删除",
+  "accessTokens.title": "访问令牌",
+  "accessTokens.column.name": "名称",
+  "accessTokens.column.expires": "过期时间",
+  "accessTokens.column.lastUsed": "最近使用",
+  "accessTokens.lastUsedOn": "最近使用时间",
+  "accessTokens.emptyTitle": "暂无访问令牌",
+  "accessTokens.emptyDescription":
+    "你还没有访问令牌。添加令牌后即可访问 {{product}} API。",
+  "accessTokens.createTitle": "创建访问令牌",
+  "accessTokens.createDescription": "使用此令牌访问 {{product}} 公共 API。",
+  "accessTokens.createdTitle": "访问令牌创建成功！",
+  "accessTokens.createdDescription":
+    "该令牌不会再次显示，请立即复制并妥善保存在安全位置。",
+  "accessTokens.copySuccess": "访问令牌已复制到剪贴板！",
+  "accessTokens.createFailed": "无法创建访问令牌…",
+  "accessTokens.copyToClipboard": "复制到剪贴板",
+  "accessTokens.creatingTitle": "正在创建访问令牌",
+  "accessTokens.createdNotification": "{{name}} 已创建成功。",
+  "accessTokens.loading": "正在创建访问令牌…",
+  "accessTokens.name": "名称",
+  "accessTokens.nameHelp": "为令牌设置一个容易识别的名称。",
+  "accessTokens.namePlaceholder": "例如：基础设施令牌",
+  "accessTokens.expiresIn": "有效期",
+  "accessTokens.expiresHelp": "请输入 1 至 365 天。",
+  "accessTokens.days": "天",
+  "accessTokens.learnMore": "了解更多",
+  "accessTokens.documentation": "访问令牌",
+  "accessTokens.create": "创建令牌",
+  "posture.createTitle": "创建终端检查",
+  "posture.updateTitle": "更新终端检查",
+  "posture.description": "使用终端检查进一步限制网络访问。",
+  "posture.tab.checks": "检查项",
+  "posture.tab.general": "名称与说明",
+  "posture.nameLabel": "终端检查名称",
+  "posture.nameHelp": "为终端检查设置一个容易识别的名称。",
+  "posture.namePlaceholder": "例如：{{product}} 版本 > 0.25.0",
+  "posture.descriptionLabel": "说明（可选）",
+  "posture.descriptionHelp": "添加简短说明，补充此终端检查的用途。",
+  "posture.descriptionPlaceholder":
+    "例如：检查 {{product}} 版本是否高于 0.25.0",
+  "posture.learnMore": "了解更多",
+  "posture.documentation": "终端检查",
+  "posture.saveChanges": "保存更改",
+  "posture.version.title": "{{product}} 客户端版本",
+  "posture.version.description":
+    "仅允许运行指定 {{product}} 客户端版本的对等节点访问。",
+  "posture.version.minimum": "最低版本要求",
+  "posture.version.minimumHelp":
+    "仅运行不低于此 {{product}} 客户端版本的对等节点可以访问网络。",
+  "posture.version.invalid": "请输入有效版本，例如 0.2、0.2.0 或 0.2.0-alpha.1",
+  "posture.version.prefix": "版本",
+  "posture.version.documentation": "客户端版本检查",
+  "posture.process.title": "进程",
+  "posture.process.description": "根据对等节点上运行的进程限制网络访问。",
+  "posture.process.label": "进程",
+  "posture.process.help":
+    "添加 Linux、macOS 或 Windows 的可执行文件路径。仅当配置的进程正在运行时，对等节点才可以连接。",
+  "posture.process.invalidMac": "请输入有效的 macOS 文件路径",
+  "posture.process.invalidLinux": "请输入有效的 Unix 文件路径",
+  "posture.process.invalidWindows": "请输入有效的 Windows 文件路径",
+  "posture.process.add": "添加进程",
+  "posture.process.documentation": "进程检查",
+  "posture.table.name": "名称",
+  "posture.table.checks": "检查项",
+  "posture.table.policies": "策略",
+  "posture.table.all": "全部",
+  "posture.table.active": "已启用",
+  "posture.table.inactive": "未启用",
+  "posture.table.status": "状态",
+  "posture.table.feature": "终端检查",
+  "posture.table.singular": "终端检查",
+  "posture.table.search": "按名称和说明搜索…",
+  "posture.table.add": "添加终端检查",
+  "posture.emptyTitle": "尚未添加终端检查",
+  "posture.emptyDescription":
+    "添加终端检查可进一步限制网络访问，例如要求指定的 {{product}} 客户端版本、操作系统或位置。",
+  "posture.browse": "浏览检查项",
+  "posture.new": "新建终端检查",
+  "peerIp.editV4Title": "编辑对等节点 IP 地址",
+  "peerIp.editV6Title": "编辑对等节点 IPv6 地址",
+  "peerIp.editV4Description": "更新此对等节点的 {{product}} IP 地址。",
+  "peerIp.editV6Description": "更新此对等节点的 {{product}} IPv6 地址。",
+  "peerIp.invalidV4": "请输入有效的 IP 地址，例如 100.64.0.15",
+  "peerIp.invalidV6": "请输入有效的 IPv6 地址，例如 fd00:1234::1",
+  "peerIp.reconnectNotice": "更改将在对等节点重新连接后生效。",
+  "peerIssue.bypassed":
+    "管理员已绕过此对等节点的合规检查。设备恢复合规后，绕过状态会自动移除。",
+  "peerIssue.loginExpired":
+    "此对等节点的登录已过期。请在设备上的 {{product}} 客户端中重新认证，使其恢复在线。",
+  "peerIssue.nonCompliant":
+    "此对等节点不符合 {{integration}} 的合规要求，恢复合规或绕过检查前无法连接。",
+  "peerIssue.approvalRequired":
+    "此对等节点需要管理员批准后才能连接，请在该行的操作菜单中批准。",
+  "peerAction.approveTitle": "批准对等节点“{{name}}”？",
+  "peerAction.approveDescription": "确定要批准此对等节点吗？",
+  "peerAction.approve": "批准",
+  "peerAction.approvedTitle": "已批准对等节点 {{name}}",
+  "peerAction.approvedDescription": "此对等节点现在可以连接其他对等节点。",
+  "peerAction.approving": "正在批准对等节点…",
+  "peerAction.bypassTitle": "绕过“{{name}}”的合规检查？",
+  "peerAction.bypassDescription":
+    "此操作将覆盖合规检查并允许该对等节点连接。设备恢复合规后，绕过状态会自动移除。",
+  "peerAction.bypass": "绕过合规检查",
+  "peerAction.bypassedTitle": "已为 {{name}} 绕过合规检查",
+  "peerAction.canConnect": "此对等节点现在可以连接其他对等节点。",
+  "peerAction.bypassing": "正在绕过合规检查…",
+  "peerAction.revokeTitle": "撤销“{{name}}”的合规绕过？",
+  "peerAction.revokeDescription":
+    "此对等节点将恢复正常合规校验。如果仍不合规，它将失去网络访问权限。",
+  "peerAction.revoke": "撤销",
+  "peerAction.revokedTitle": "已撤销合规绕过",
+  "peerAction.revokedDescription": "对等节点 {{name}} 已恢复正常合规校验。",
+  "peerAction.revoking": "正在撤销合规绕过…",
+  "peerAction.sessionEnabledTitle": "会话过期已启用",
+  "peerAction.sessionDisabledTitle": "会话过期已停用",
+  "peerAction.sessionEnabledDescription":
+    "已成功为对等节点 {{name}} 启用会话过期。",
+  "peerAction.sessionDisabledDescription":
+    "已成功为对等节点 {{name}} 停用会话过期。",
+  "peerAction.sessionUpdating": "正在更新会话过期设置…",
+  "peerAction.disableSshTitle": "停用 SSH 访问？",
+  "peerAction.disableSshDescription":
+    "从 {{product}} v0.61.0 开始，停用 SSH 访问后无法再从管理平台重新启用。请创建明确的访问控制策略并更新 {{product}} 客户端，以恢复 SSH 功能。",
+  "peerAction.disable": "停用",
+  "peerAction.viewDetails": "查看详情",
+  "peerAction.bypassTooltip":
+    "绕过 {{integration}} 合规检查并允许此对等节点连接。设备恢复合规后，绕过状态会自动移除。",
+  "peerAction.revokeBypass": "撤销绕过",
+  "peerAction.setupKeyExpirationInfo":
+    "通过设置密钥添加的对等节点不会启用过期设置。",
+  "peerAction.enableSessionExpiration": "启用会话过期",
+  "peerAction.disableSessionExpiration": "停用会话过期",
+  "peerAction.enableSsh": "启用 SSH 访问",
+  "peerAction.disableSsh": "停用 SSH 访问",
 };
 
 const resources: Record<CyberNetLocale, Record<TranslationKey, string>> = {

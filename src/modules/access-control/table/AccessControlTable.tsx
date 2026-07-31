@@ -32,6 +32,7 @@ import {
 } from "@components/table/TableFilters";
 import GetStartedTest from "@components/ui/GetStartedTest";
 import type { ColumnDef, SortingState } from "@tanstack/react-table";
+import loadConfig from "@utils/config";
 import { removeAllSpaces } from "@utils/helpers";
 import { ClockFadingIcon, ExternalLinkIcon, PlusCircle } from "lucide-react";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -52,6 +53,8 @@ import AccessControlNameCell from "@/modules/access-control/table/AccessControlN
 import AccessControlProtoPortsCell from "@/modules/access-control/table/AccessControlProtoPortsCell";
 import AccessControlSourcesCell from "@/modules/access-control/table/AccessControlSourcesCell";
 import { FirewallGPTModal } from "@/modules/firewall-gpt/FirewallGPTModal";
+
+const config = loadConfig();
 
 type Props = {
   policies?: Policy[];
@@ -569,12 +572,7 @@ export default function AccessControlTable({
               learnMore={
                 <>
                   Learn more about
-                  <InlineLink
-                    href={
-                      "https://docs.netbird.io/how-to/manage-network-access"
-                    }
-                    target={"_blank"}
-                  >
+                  <InlineLink href={config.docsUrl} target={"_blank"}>
                     Access Controls
                     <ExternalLinkIcon size={12} />
                   </InlineLink>
@@ -625,9 +623,10 @@ export default function AccessControlTable({
                 <FullTooltip
                   content={
                     <div className={"max-w-sm text-xs"}>
-                      Show temporary policies created by the NetBird browser
-                      client. These policies are ephemeral and will be deleted
-                      automatically after a short period of time.
+                      Show temporary policies created by the{" "}
+                      {config.productName} browser client. These policies are
+                      ephemeral and will be deleted automatically after a short
+                      period of time.
                     </div>
                   }
                 >

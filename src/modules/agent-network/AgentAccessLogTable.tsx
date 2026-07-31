@@ -33,6 +33,7 @@ import {
 import GetStartedTest from "@components/ui/GetStartedTest";
 import MultipleGroups from "@components/ui/MultipleGroups";
 import ButtonGroup from "@components/ButtonGroup";
+import loadConfig from "@utils/config";
 import { cn, formatDuration } from "@utils/helpers";
 import type { ColumnDef, SortingState } from "@tanstack/react-table";
 import dayjs from "dayjs";
@@ -73,6 +74,8 @@ import AgentAccessLogExpandedRow from "@/modules/agent-network/AgentAccessLogExp
 import EmptyRow from "@/modules/common-table-rows/EmptyRow";
 import TextWithTooltip from "@components/ui/TextWithTooltip";
 import { generateColorFromUser } from "@utils/helpers";
+
+const config = loadConfig();
 
 type Props = {
   headingTarget?: HTMLHeadingElement | null;
@@ -283,9 +286,7 @@ export default function AgentAccessLogTable({
           <div className={"flex items-center gap-3"}>
             <StatusCell entry={row.original} />
             <span
-              className={
-                "text-nb-gray-300 text-[0.82rem] px-3 py-2 font-mono"
-              }
+              className={"text-nb-gray-300 text-[0.82rem] px-3 py-2 font-mono"}
             >
               {formatDuration(row.original.durationMs)}
             </span>
@@ -739,7 +740,7 @@ export default function AgentAccessLogTable({
           learnMore={
             <>
               Learn more about
-              <InlineLink href={"https://docs.netbird.io/"} target={"_blank"}>
+              <InlineLink href={config.docsUrl} target={"_blank"}>
                 Agent Network
                 <ExternalLinkIcon size={12} />
               </InlineLink>

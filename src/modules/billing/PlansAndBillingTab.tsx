@@ -4,6 +4,7 @@ import Paragraph from "@components/Paragraph";
 import Separator from "@components/Separator";
 import { VerticalTabs } from "@components/VerticalTabs";
 import * as Tabs from "@radix-ui/react-tabs";
+import loadConfig from "@utils/config";
 import { isNetBirdCloud } from "@utils/netbird";
 import { CreditCardIcon, ExternalLinkIcon } from "lucide-react";
 import * as React from "react";
@@ -19,6 +20,8 @@ import { PlanCard, PlanLoadingSkeleton } from "@/modules/billing/PlanCard";
 import { PlanCurrentPlan } from "@/modules/billing/PlanCurrentPlan";
 import { PlanSuccessModal } from "@/modules/billing/PlanSuccessModal";
 import { TrialGradientCard } from "@/modules/billing/trial/TrialGradientCard";
+
+const config = loadConfig();
 
 export const PlansAndBillingTab = () => {
   const { permission } = usePermissions();
@@ -205,8 +208,8 @@ const PlansAndBillingTabContent = () => {
         <div className={"max-w-3xl"}>
           <h2>
             {subscription?.active
-              ? "Update your NetBird Plan"
-              : "Upgrade your NetBird Plan"}
+              ? `Update your ${config.productName} Plan`
+              : `Upgrade your ${config.productName} Plan`}
           </h2>
 
           <Paragraph>
@@ -217,12 +220,12 @@ const PlansAndBillingTabContent = () => {
             active peers.
           </Paragraph>
           <Paragraph>
-            Find out which{" "}
-            <InlineLink href={"https://netbird.io/pricing"} target={"_blank"}>
-              Pricing Plan
+            Need help choosing a plan?{" "}
+            <InlineLink href={config.supportUrl} target={"_blank"}>
+              Contact Support
               <ExternalLinkIcon size={12} />
             </InlineLink>
-            suits you the best by visiting our website.
+            .
           </Paragraph>
 
           <div

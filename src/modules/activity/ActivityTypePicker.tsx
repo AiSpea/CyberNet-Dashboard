@@ -9,6 +9,7 @@ import { trim, uniqBy } from "lodash";
 import { SearchIcon } from "lucide-react";
 import * as React from "react";
 import { useMemo, useRef } from "react";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { ActivityEvent } from "@/interfaces/ActivityEvent";
 import ActivityTypeIcon from "@/modules/activity/ActivityTypeIcon";
 
@@ -29,11 +30,33 @@ type GroupedItem = {
   group: string;
 };
 
+const activityGroupKeys = {
+  setupkey: "activity.group.setupkey",
+  dashboard: "activity.group.dashboard",
+  policy: "activity.group.policy",
+  route: "activity.group.route",
+  user: "activity.group.user",
+  serviceUser: "activity.group.serviceUser",
+  peer: "activity.group.peer",
+  group: "activity.group.group",
+  account: "activity.group.account",
+  nameserver: "activity.group.nameserver",
+  personal: "activity.group.personal",
+  integration: "activity.group.integration",
+  dns: "activity.group.dns",
+  posture: "activity.group.posture",
+  network: "activity.group.network",
+  identityprovider: "activity.group.identityprovider",
+  service: "activity.group.service",
+  reseller: "activity.group.reseller",
+} as const;
+
 export function ActivityTypePicker({
   value,
   onChange,
   events,
 }: Readonly<Props>) {
+  const { t } = useLocale();
   const searchRef = useRef<HTMLInputElement>(null);
   const selected = value ?? [];
 
@@ -43,7 +66,7 @@ export function ActivityTypePicker({
       activity_code: event.activity_code,
       activity: event.activity,
       group: event.activity_code.startsWith("service.user")
-        ? "Service User"
+        ? "serviceUser"
         : event.activity_code.split(".")[0],
     }));
     return items.reduce<Record<string, GroupedItem[]>>((acc, item) => {
@@ -80,7 +103,7 @@ export function ActivityTypePicker({
               "dark:placeholder:text-nb-gray-400 font-light placeholder:text-neutral-500 pl-9",
             )}
             ref={searchRef}
-            placeholder={"Search event..."}
+            placeholder={t("activity.filter.typeSearch")}
           />
           <div
             className={
@@ -104,7 +127,13 @@ export function ActivityTypePicker({
                     "!text-nb-gray-400 text-xs uppercase font-medium tracking-wider pb-1 pl-2"
                   }
                 >
-                  {group}
+                  {group in activityGroupKeys
+                    ? t(
+                        activityGroupKeys[
+                          group as keyof typeof activityGroupKeys
+                        ],
+                      )
+                    : group}
                 </p>
                 <div className={"grid grid-cols-1 pl-1 gap-0.5"}>
                   {grouped[group].map((event) => {
@@ -150,8 +179,9 @@ export function ActivityTypePicker({
 
 export function formatActivityTypeChip(
   value: string[] | undefined,
+  multipleLabel?: string,
 ): string | null {
   if (!value || value.length === 0) return null;
   if (value.length === 1) return value[0];
-  return `${value.length} types`;
+  return multipleLabel ?? `${value.length} types`;
 }

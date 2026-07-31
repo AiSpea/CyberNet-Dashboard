@@ -10,6 +10,7 @@ import { PeerGroupSelector } from "@components/PeerGroupSelector";
 import { useHasChanges } from "@hooks/useHasChanges";
 import * as Tabs from "@radix-ui/react-tabs";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { validator } from "@utils/helpers";
 import { isNetBirdCloud } from "@utils/netbird";
 import cidr from "ip-cidr";
@@ -23,6 +24,8 @@ import { Account } from "@/interfaces/Account";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
 import { useGroups } from "@/contexts/GroupsProvider";
 import { SkeletonSettings } from "@components/skeletons/SkeletonSettings";
+
+const config = loadConfig();
 
 type Props = {
   account: Account;
@@ -339,12 +342,11 @@ function NetworkSettingsTabContent({ account }: Readonly<Props>) {
             helpText={
               <>
                 Resolves DNS for routed domains on the routing peer instead of
-                on the client. Requires NetBird client v0.35 or higher. Changes
-                will only take effect after restarting the clients.{" "}
+                on the client. Requires {config.productName} client v0.35 or
+                higher. Changes will only take effect after restarting the
+                clients.{" "}
                 <InlineLink
-                  href={
-                    "https://docs.netbird.io/how-to/accessing-entire-domains-within-networks#enabling-dns-wildcard-routing"
-                  }
+                  href={`${config.docsUrl}/how-to/accessing-entire-domains-within-networks#enabling-dns-wildcard-routing`}
                   target={"_blank"}
                   onClick={(e) => e.stopPropagation()}
                 >

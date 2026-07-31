@@ -1,7 +1,10 @@
 import FullTooltip from "@components/FullTooltip";
 import InlineLink from "@components/InlineLink";
+import loadConfig from "@utils/config";
 import { ExternalLinkIcon } from "lucide-react";
 import * as React from "react";
+
+const config = loadConfig();
 
 type Props = {
   children: React.ReactNode;
@@ -26,9 +29,7 @@ export const ExitNodeHelpTooltip = ({
             <div className={"mt-2"}>
               Learn more about{" "}
               <InlineLink
-                href={
-                  "https://docs.netbird.io/how-to/configuring-default-routes-for-internet-traffic"
-                }
+                href={config.docsUrl}
                 target={"_blank"}
                 className={"mr-1"}
               >

@@ -13,6 +13,7 @@ import Paragraph from "@components/Paragraph";
 import Separator from "@components/Separator";
 import { UserSelector } from "@components/UserSelector";
 import useFetchApi from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { ExternalLinkIcon, InfoIcon, UnlinkIcon } from "lucide-react";
 import * as React from "react";
@@ -20,6 +21,8 @@ import { useState } from "react";
 import { useTenants } from "@/cloud/msp/contexts/TenantsProvider";
 import { Tenant } from "@/cloud/msp/interfaces/Tenant";
 import { User } from "@/interfaces/User";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -82,7 +85,7 @@ export const MSPUnlinkModal = ({ open, setOpen, tenant }: Props) => {
             <div className={"w-full"}>
               <Paragraph className={"text-sm mt-auto"}>
                 Learn more about
-                <InlineLink href={"https://docs.netbird.io/"} target={"_blank"}>
+                <InlineLink href={config.docsUrl} target={"_blank"}>
                   Unlinking Tenants
                   <ExternalLinkIcon size={12} />
                 </InlineLink>

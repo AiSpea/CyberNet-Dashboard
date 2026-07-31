@@ -7,12 +7,15 @@ import Paragraph from "@components/Paragraph";
 import Steps from "@components/Steps";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
 import { Mark } from "@components/ui/Mark";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { ExternalLinkIcon, GlobeIcon } from "lucide-react";
 import * as React from "react";
 import { useState } from "react";
 import { useTenants } from "@/cloud/msp/contexts/TenantsProvider";
 import { Tenant } from "@/cloud/msp/interfaces/Tenant";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -93,9 +96,9 @@ export const MSPDomainVerificationModal = ({
           </Card>
 
           <Paragraph className={"text-sm mt-4"}>
-            {
-              "Note: DNS changes may take some time to apply. If NetBird doesn't find the record immediately, please wait a day and try again."
-            }
+            Note: DNS changes may take some time to apply. If{" "}
+            {config.productName} doesn&apos;t find the record immediately,
+            please wait a day and try again.
           </Paragraph>
 
           <div
@@ -103,23 +106,24 @@ export const MSPDomainVerificationModal = ({
               "bg-nb-gray-900/70 px-4 py-3 rounded-md border border-nb-gray-800/70 my-6 !text-nb-gray-300 text-sm"
             }
           >
-            If you do not have access to your DNS configuration, you can also
-            verify your domain by sending us an email to{" "}
+            If you do not have access to your DNS configuration, please{" "}
             <InlineLink
-              href={"mailto:support@netbird.io"}
+              href={config.supportUrl}
               className={"inline font-medium"}
             >
-              {" "}
-              support@netbird.io
-            </InlineLink>
-            . The email should be sent from the domain you are trying to verify.
+              contact support
+            </InlineLink>{" "}
+            for help with domain verification.
           </div>
         </div>
         <ModalFooter className={"items-center"}>
           <div className={"w-full"}>
             <Paragraph className={"text-sm mt-auto"}>
               Learn more about
-              <InlineLink href={"#"} target={"_blank"}>
+              <InlineLink
+                href={`${config.docsUrl}/how-to/msp-portal`}
+                target={"_blank"}
+              >
                 Domain Verification
                 <ExternalLinkIcon size={12} />
               </InlineLink>

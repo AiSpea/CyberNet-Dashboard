@@ -12,8 +12,13 @@ import { GradientFadedBackground } from "@components/ui/GradientFadedBackground"
 import { Lightbox } from "@components/ui/Lightbox";
 import { Mark } from "@components/ui/Mark";
 import { MinimalList } from "@components/ui/MinimalList";
-import { IconArrowLeft, IconArrowRight, IconInfoCircle } from "@tabler/icons-react";
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconInfoCircle,
+} from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn, validator } from "@utils/helpers";
 import { isEmpty } from "lodash";
 import {
@@ -28,7 +33,7 @@ import {
   Repeat,
   Settings2,
   Shield,
-  ShieldCheckIcon
+  ShieldCheckIcon,
 } from "lucide-react";
 import React, { useMemo, useReducer, useState } from "react";
 import { useSWRConfig } from "swr";
@@ -36,12 +41,20 @@ import integrationImage from "@/assets/integrations/sentinelone.png";
 import HelpText from "@/components/HelpText";
 import { PeerGroupSelector } from "@/components/PeerGroupSelector";
 import { Account } from "@/interfaces/Account";
-import { DEFAULT_SENTINELONE_MATCH_ATTRIBUTES, SentinelOneIntegration } from "@/interfaces/EDR";
+import {
+  DEFAULT_SENTINELONE_MATCH_ATTRIBUTES,
+  SentinelOneIntegration,
+} from "@/interfaces/EDR";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
-import { isValidSentinelOneApiUrl, matchAttributesReducer } from "@/modules/integrations/edr/sentinel-one/SentinelOne";
+import {
+  isValidSentinelOneApiUrl,
+  matchAttributesReducer,
+} from "@/modules/integrations/edr/sentinel-one/SentinelOne";
 import { SentinelOneMatchSettings } from "@/modules/integrations/edr/sentinel-one/SentinelOneMatchSettings";
 import SentinelOneUrlInput from "@/modules/integrations/edr/sentinel-one/SentinelOneUrlInput";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -130,7 +143,7 @@ export function SetupContent({ onSuccess, account }: Readonly<ModalProps>) {
 
     notify({
       title: "SentinelOne Integration",
-      description: `SentinelOne was successfully connected to NetBird.`,
+      description: `SentinelOne was successfully connected to ${config.productName}.`,
       promise: sentinelOneRequest
         .post({
           api_token: apiToken,
@@ -204,7 +217,7 @@ export function SetupContent({ onSuccess, account }: Readonly<ModalProps>) {
 
       <IntegrationModalHeader
         image={integrationImage}
-        title={"Connect NetBird with SentinelOne"}
+        title={`Connect ${config.productName} with SentinelOne`}
         description={
           "Restrict network access to devices managed by SentinelOne based on their security posture."
         }
@@ -319,9 +332,9 @@ export function SetupContent({ onSuccess, account }: Readonly<ModalProps>) {
             </Steps.Step>
             <Steps.Step step={3}>
               <p className={"font-normal"}>
-                Enter <Mark copy>NetBird Integration</Mark> as the name, a
-                optional description and select your preferred expiration date.
-                Click <Mark>Next</Mark>
+                Enter <Mark copy>{config.productName} Integration</Mark> as the
+                name, an optional description and select your preferred
+                expiration date. Click <Mark>Next</Mark>
               </p>
             </Steps.Step>
             <Steps.Step step={4} line={false}>

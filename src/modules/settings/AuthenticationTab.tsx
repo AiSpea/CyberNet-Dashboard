@@ -22,6 +22,7 @@ import { convertToSeconds } from "@hooks/useTimeFormatter";
 import * as Tabs from "@radix-ui/react-tabs";
 import { IconDevicesCheck } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import {
   CalendarClock,
@@ -41,6 +42,8 @@ import { Account } from "@/interfaces/Account";
 import { LockedFeatureBadge } from "@/modules/billing/locked-feature/LockedFeatureBadge";
 import { useIntegrations } from "@/modules/integrations/edr/useIntegrations";
 import { isNetBirdCloud } from "@utils/netbird";
+
+const config = loadConfig();
 
 type Props = {
   account: Account;
@@ -195,22 +198,12 @@ export default function AuthenticationTab({ account }: Readonly<Props>) {
             <h1>Authentication</h1>
             <Paragraph>
               Learn more about
-              <InlineLink
-                href={
-                  "https://docs.netbird.io/how-to/enforce-periodic-user-authentication"
-                }
-                target={"_blank"}
-              >
+              <InlineLink href={config.docsUrl} target={"_blank"}>
                 Authentication
                 <ExternalLinkIcon size={12} />
               </InlineLink>
               or{" "}
-              <InlineLink
-                href={
-                  "https://docs.netbird.io/how-to/multi-factor-authentication"
-                }
-                target={"_blank"}
-              >
+              <InlineLink href={config.docsUrl} target={"_blank"}>
                 MFA
                 <ExternalLinkIcon size={12} />
               </InlineLink>

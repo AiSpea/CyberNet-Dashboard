@@ -2,6 +2,7 @@ import Button from "@components/Button";
 import { Modal, ModalContent, ModalFooter } from "@components/modal/Modal";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
 import { useLocalStorage } from "@hooks/useLocalStorage";
+import loadConfig from "@utils/config";
 import dayjs from "dayjs";
 import { MailIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -9,6 +10,8 @@ import * as React from "react";
 import { useEffect, useMemo, useState } from "react";
 import NetBirdIcon from "@/assets/icons/NetBirdIcon";
 import { useBilling } from "@/contexts/BillingProvider";
+
+const config = loadConfig();
 
 export const LimitsReachedModal = () => {
   const { isFreePlan, usagePercentage, isTrial, isLoading, currentPlan } =
@@ -116,9 +119,9 @@ const LimitReachedContent = () => {
         </div>
         <ModalFooter separator={false} className={"gap-x-2 mt-1"}>
           <a
-            href={
-              "mailto:support@netbird.io?subject=Request%20for%20Assistance%3A%20Account%20Limit%20Reached"
-            }
+            href={config.supportUrl}
+            target={"_blank"}
+            rel={"noopener noreferrer"}
             className={"w-full"}
           >
             <Button className={"w-full"} variant={"secondary"}>

@@ -40,13 +40,13 @@ export default function Activity() {
           />
           <Breadcrumbs.Item
             href={"/events/audit"}
-            label={t("nav.auditEvents")}
+            label={t("activity.page.title")}
             icon={<LogsIcon size={18} />}
           />
         </Breadcrumbs>
-        <h1 ref={headingRef}>{t("nav.auditEvents")}</h1>
+        <h1 ref={headingRef}>{t("activity.page.title")}</h1>
         <Paragraph>
-          {t("page.audit.description")}{" "}
+          {t("activity.page.description", { product: config.productName })}{" "}
           <InlineLink href={config.docsUrl} target={"_blank"}>
             {t("common.learnMore")}
             <ExternalLinkIcon size={12} />

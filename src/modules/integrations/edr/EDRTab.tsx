@@ -2,6 +2,7 @@ import Breadcrumbs from "@components/Breadcrumbs";
 import InlineLink from "@components/InlineLink";
 import Paragraph from "@components/Paragraph";
 import * as Tabs from "@radix-ui/react-tabs";
+import loadConfig from "@utils/config";
 import { ExternalLinkIcon, ShieldCheck } from "lucide-react";
 import React from "react";
 import IntegrationIcon from "@/assets/icons/IntegrationIcon";
@@ -14,6 +15,8 @@ import { useIntegrations } from "../idp-sync/useIntegrations";
 import { Intune } from "./intune/Intune";
 import { FleetDM } from "@/modules/integrations/edr/fleetdm/FleetDM";
 import { Huntress } from "@/modules/integrations/edr/huntress/Huntress";
+
+const config = loadConfig();
 
 type Props = {
   account: Account;
@@ -44,12 +47,7 @@ export default function EDRTab({ account }: Props) {
           devices managed by the IT department.
         </Paragraph>
         <Paragraph>
-          <InlineLink
-            href={
-              "https://docs.netbird.io/how-to/endpoint-detection-and-response"
-            }
-            target={"_blank"}
-          >
+          <InlineLink href={config.docsUrl} target={"_blank"}>
             Learn more
             <ExternalLinkIcon size={12} />
           </InlineLink>

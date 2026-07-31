@@ -1,5 +1,6 @@
 import Button from "@components/Button";
 import FullTooltip from "@components/FullTooltip";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import {
   CreditCardIcon,
@@ -15,6 +16,8 @@ import { useBilling } from "@/contexts/BillingProvider";
 import { AccountUsageStats } from "@/interfaces/AccountUsageStats";
 import { Currency, Plan, Price } from "@/interfaces/Plan";
 import { PlanIcon } from "@/modules/billing/PlanIcon";
+
+const config = loadConfig();
 
 type Props = {
   currentPlan: Plan;
@@ -123,7 +126,7 @@ export const PlanCurrentPlan = ({
           <div
             className={"flex gap-2 items-center text-sm text-nb-gray-300 mb-4"}
           >
-            {`You currently have access to NetBird's full set of features & integrations. `}
+            {`You currently have access to ${config.productName}'s full set of features & integrations. `}
             {currentPlan.name == "Team" &&
               `Your Team plan remains active during this trial. `}
             {`After the trial, you will return to your ${currentPlan.name} plan unless you choose to upgrade.`}

@@ -11,18 +11,16 @@ import Steps from "@components/Steps";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
 import { Mark } from "@components/ui/Mark";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+import loadConfig from "@utils/config";
 import { cn, validator } from "@utils/helpers";
 import { isEmpty } from "lodash";
-import {
-  ExternalLinkIcon,
-  GlobeIcon,
-  PlusCircle,
-  Repeat,
-} from "lucide-react";
+import { ExternalLinkIcon, GlobeIcon, PlusCircle, Repeat } from "lucide-react";
 import React, { useMemo, useState } from "react";
 import slackImage from "@/assets/integrations/slack.png";
 import { NotificationWebhookChannel as SlackTarget } from "@/interfaces/NotificationChannel";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -97,10 +95,8 @@ function SlackModalContent({ onSave }: Readonly<ModalContentProps>) {
 
       <IntegrationModalHeader
         image={slackImage}
-        title={"Connect NetBird with Slack"}
-        description={
-          "Receive NetBird notification events directly in your Slack channel via an Incoming Webhook."
-        }
+        title={`Connect ${config.productName} with Slack`}
+        description={`Receive ${config.productName} notification events directly in your Slack channel via an Incoming Webhook.`}
       />
 
       {step === 0 && (
@@ -128,8 +124,8 @@ function SlackModalContent({ onSave }: Readonly<ModalContentProps>) {
             <Steps.Step step={2} line={false}>
               <p className={"font-normal"}>
                 Set the app name to{" "}
-                <Mark copy={true}>NetBird Notifications</Mark> and select your
-                workspace. After that click <Mark>Create App</Mark>
+                <Mark copy={true}>{config.productName} Notifications</Mark> and
+                select your workspace. After that click <Mark>Create App</Mark>
               </p>
             </Steps.Step>
           </Steps>
@@ -147,7 +143,8 @@ function SlackModalContent({ onSave }: Readonly<ModalContentProps>) {
             <Steps.Step step={1}>
               <p className={"font-normal"}>
                 In the app settings, go to <Mark>Incoming Webhooks</Mark> and
-                toggle <Mark>Activate Incoming Webhooks</Mark> to <Mark>On</Mark>
+                toggle <Mark>Activate Incoming Webhooks</Mark> to{" "}
+                <Mark>On</Mark>
               </p>
             </Steps.Step>
             <Steps.Step step={2}>

@@ -1,20 +1,93 @@
 import FullTooltip from "@components/FullTooltip";
 import { Label } from "@components/Label";
 import { IconInfoCircle } from "@tabler/icons-react";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { isLocalDev, isProduction } from "@utils/netbird";
 import { isEmpty } from "lodash";
 import { GlobeIcon } from "lucide-react";
 import React, { useMemo } from "react";
 import RoundedFlag from "@/assets/countries/RoundedFlag";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { useCountries } from "@/contexts/CountryProvider";
 import { ActivityEvent } from "@/interfaces/ActivityEvent";
+
+const config = loadConfig();
+
+const commonActivityDescriptionKeys = {
+  "setupkey.add": "activity.description.setupKeyCreated",
+  "setupkey.delete": "activity.description.setupKeyDeleted",
+  "setupkey.revoke": "activity.description.setupKeyRevoked",
+  "peer.setupkey.add": "activity.description.peerAddedWithSetupKey",
+  "dashboard.login": "activity.description.dashboardLogin",
+  "policy.add": "activity.description.policyCreated",
+  "policy.update": "activity.description.policyUpdated",
+  "policy.delete": "activity.description.policyDeleted",
+  "route.add": "activity.description.routeCreated",
+  "route.update": "activity.description.routeUpdated",
+  "route.delete": "activity.description.routeDeleted",
+  "user.peer.add": "activity.description.peerCreated",
+  "user.peer.update": "activity.description.peerUpdated",
+  "user.peer.delete": "activity.description.peerDeleted",
+  "peer.user.add": "activity.description.peerCreated",
+  "user.join": "activity.description.userJoined",
+  "user.invite": "activity.description.userInvited",
+  "user.create": "activity.description.userCreated",
+  "user.delete": "activity.description.userDeleted",
+  "user.block": "activity.description.userBlocked",
+  "user.unblock": "activity.description.userUnblocked",
+  "user.approve": "activity.description.userApproved",
+  "user.reject": "activity.description.userRejected",
+  "service.user.create": "activity.description.serviceUserCreated",
+  "service.user.delete": "activity.description.serviceUserDeleted",
+  "peer.ssh.enable": "activity.description.peerSshEnabled",
+  "peer.ssh.disable": "activity.description.peerSshDisabled",
+  "peer.rename": "activity.description.peerRenamed",
+  "peer.approve": "activity.description.peerApproved",
+  "peer.ip.update": "activity.description.peerIpUpdated",
+  "group.add": "activity.description.groupCreated",
+  "group.update": "activity.description.groupUpdated",
+  "group.delete": "activity.description.groupDeleted",
+  "account.create": "activity.description.accountCreated",
+  "account.setting.peer.login.expiration.update":
+    "activity.description.globalLoginExpirationUpdated",
+  "account.setting.peer.login.expiration.enable":
+    "activity.description.globalLoginExpirationEnabled",
+  "account.setting.peer.login.expiration.disable":
+    "activity.description.globalLoginExpirationDisabled",
+  "account.network.range.update":
+    "activity.description.accountNetworkRangeUpdated",
+  "nameserver.group.add": "activity.description.nameserverCreated",
+  "nameserver.group.update": "activity.description.nameserverUpdated",
+  "nameserver.group.delete": "activity.description.nameserverDeleted",
+  "personal.access.token.create": "activity.description.accessTokenCreated",
+  "personal.access.token.delete": "activity.description.accessTokenDeleted",
+  "integration.create": "activity.description.integrationCreated",
+  "integration.update": "activity.description.integrationUpdated",
+  "integration.delete": "activity.description.integrationDeleted",
+  "posture.check.created": "activity.description.postureCheckCreated",
+  "posture.check.updated": "activity.description.postureCheckUpdated",
+  "posture.check.deleted": "activity.description.postureCheckDeleted",
+  "network.create": "activity.description.networkCreated",
+  "network.update": "activity.description.networkUpdated",
+  "network.delete": "activity.description.networkDeleted",
+  "network.resource.create": "activity.description.networkResourceCreated",
+  "network.resource.update": "activity.description.networkResourceUpdated",
+  "network.resource.delete": "activity.description.networkResourceDeleted",
+  "network.router.create": "activity.description.networkRouterCreated",
+  "network.router.update": "activity.description.networkRouterUpdated",
+  "network.router.delete": "activity.description.networkRouterDeleted",
+  "identityprovider.create": "activity.description.identityProviderCreated",
+  "identityprovider.update": "activity.description.identityProviderUpdated",
+  "identityprovider.delete": "activity.description.identityProviderDeleted",
+} as const;
 
 type Props = {
   event: ActivityEvent;
 };
 
 export default function ActivityDescription({ event }: Props) {
+  const { t } = useLocale();
   const m = event.meta;
   const meta = useMemo(() => {
     if (event.meta) {
@@ -33,7 +106,60 @@ export default function ActivityDescription({ event }: Props) {
     }
   }, [event.meta]);
 
-  if (!m) return null;
+  if (!m) {
+    return (
+      <div className={"inline"}>
+        {t("activity.description.fallback", {
+          activity: event.activity || event.activity_code,
+        })}
+      </div>
+    );
+  }
+
+  const descriptionValues = {
+    product: config.productName,
+    name: m.name ?? "",
+    key: m.key ?? "",
+    ip: m.ip ?? m.peer_ip ?? "",
+    oldIp: m.old_ip ?? "",
+    setupKey: m.setup_key_name ?? "",
+    username: m.username ?? "",
+    email: m.email ?? "",
+    initiator: event.initiator_name || config.productName,
+    target: String(m.domains || m.network_range || ""),
+    reason: m.reason ?? "",
+    oldName: m.old_name ?? "",
+    newName: m.new_name ?? "",
+    oldRange: m.old_network_range ?? "",
+    newRange: m.new_network_range ?? "",
+    platform: m.platform || config.productName,
+    network: m.network_name ?? "",
+  };
+
+  if (event.activity_code == "peer.login.expire") {
+    return (
+      <div className={"inline"}>
+        {t(
+          m.reason
+            ? "activity.description.peerLoginExpiredReason"
+            : "activity.description.peerLoginExpired",
+          descriptionValues,
+        )}
+      </div>
+    );
+  }
+
+  const commonDescriptionKey =
+    commonActivityDescriptionKeys[
+      event.activity_code as keyof typeof commonActivityDescriptionKeys
+    ];
+  if (commonDescriptionKey) {
+    return (
+      <div className={"inline"}>
+        {t(commonDescriptionKey, descriptionValues)}
+      </div>
+    );
+  }
 
   /**
    * Setup Key
@@ -67,8 +193,8 @@ export default function ActivityDescription({ event }: Props) {
     return (
       <div className={"inline"}>
         Peer <Value>{m.name}</Value> <PeerConnectionInfo meta={m} /> was added
-        with the NetBird IP <Value>{m.ip}</Value> using the setup key{" "}
-        <Value>{m.setup_key_name}</Value>
+        with the {config.productName} IP <Value>{m.ip}</Value> using the setup
+        key <Value>{m.setup_key_name}</Value>
       </div>
     );
 
@@ -168,7 +294,7 @@ export default function ActivityDescription({ event }: Props) {
     return (
       <div className={"inline"}>
         Peer <Value>{m.name}</Value> <PeerConnectionInfo meta={m} /> with
-        NetBird IP <Value>{m.ip}</Value> was deleted
+        {config.productName} IP <Value>{m.ip}</Value> was deleted
       </div>
     );
 
@@ -176,7 +302,7 @@ export default function ActivityDescription({ event }: Props) {
     return (
       <div className={"inline"}>
         Peer <Value>{m.name}</Value> <PeerConnectionInfo meta={m} /> was added
-        with the NetBird IP <Value>{m.ip}</Value>
+        with the {config.productName} IP <Value>{m.ip}</Value>
       </div>
     );
 
@@ -184,14 +310,14 @@ export default function ActivityDescription({ event }: Props) {
     return (
       <div className={"inline"}>
         Peer <Value>{m.name}</Value> <PeerConnectionInfo meta={m} /> with
-        NetBird IP <Value>{m.ip}</Value> was updated
+        {config.productName} IP <Value>{m.ip}</Value> was updated
       </div>
     );
 
   if (event.activity_code == "user.join")
     return (
       <div className={"inline"}>
-        User <Value>{m.username}</Value> joined NetBird
+        User <Value>{m.username}</Value> joined {config.productName}
       </div>
     );
 
@@ -207,7 +333,8 @@ export default function ActivityDescription({ event }: Props) {
     return (
       <div className={"inline"}>
         <Value>{event.meta.username}</Value> <Value>{event.meta.email}</Value>{" "}
-        was created by <Value>{event?.initiator_name || "NetBird"}</Value>
+        was created by{" "}
+        <Value>{event?.initiator_name || config.productName}</Value>
       </div>
     );
 
@@ -345,15 +472,15 @@ export default function ActivityDescription({ event }: Props) {
     return (
       <div className={"inline"}>
         Group <Value>{m.group}</Value> was removed from the peer with the
-        NetBird IP <Value>{m.peer_ip}</Value>
+        {config.productName} IP <Value>{m.peer_ip}</Value>
       </div>
     );
 
   if (event.activity_code == "peer.group.add")
     return (
       <div className={"inline"}>
-        Group <Value>{m.group}</Value> was added to the peer with the NetBird IP{" "}
-        <Value>{m.peer_ip}</Value>
+        Group <Value>{m.group}</Value> was added to the peer with the{" "}
+        {config.productName} IP <Value>{m.peer_ip}</Value>
       </div>
     );
 
@@ -402,15 +529,15 @@ export default function ActivityDescription({ event }: Props) {
   if (event.activity_code == "peer.rename")
     return (
       <div className={"inline"}>
-        Peer with the NetBird IP <Value>{m.ip}</Value> was renamed to{" "}
-        <Value>{m.name}</Value>
+        Peer with the {config.productName} IP <Value>{m.ip}</Value> was renamed
+        to <Value>{m.name}</Value>
       </div>
     );
 
   if (event.activity_code == "peer.approve")
     return (
       <div className={"inline"}>
-        Peer with the NetBird IP <Value>{m.ip}</Value> was approved
+        Peer with the {config.productName} IP <Value>{m.ip}</Value> was approved
       </div>
     );
 
@@ -426,7 +553,7 @@ export default function ActivityDescription({ event }: Props) {
     return (
       <div className={"inline"}>
         Peer <Value>{m.name}</Value> <PeerConnectionInfo meta={m} /> was added
-        with the NetBird IP <Value>{m.ip}</Value>
+        with the {config.productName} IP <Value>{m.ip}</Value>
       </div>
     );
 
@@ -653,8 +780,9 @@ export default function ActivityDescription({ event }: Props) {
   if (event.activity_code == "integrated-validator.peer.compliance-bypassed")
     return (
       <div className={"inline"}>
-        Peer <Value>{m?.name}</Value> with the NetBird IP <Value>{m?.ip}</Value>{" "}
-        compliance bypassed for <Value>{m?.platform}</Value> integration
+        Peer <Value>{m?.name}</Value> with the {config.productName} IP{" "}
+        <Value>{m?.ip}</Value> compliance bypassed for{" "}
+        <Value>{m?.platform}</Value> integration
         {m?.original_reason && (
           <>
             {" "}
@@ -669,8 +797,9 @@ export default function ActivityDescription({ event }: Props) {
   )
     return (
       <div className={"inline"}>
-        Peer <Value>{m?.name}</Value> with the NetBird IP <Value>{m?.ip}</Value>{" "}
-        compliance bypass revoked for <Value>{m?.platform}</Value> integration
+        Peer <Value>{m?.name}</Value> with the {config.productName} IP{" "}
+        <Value>{m?.ip}</Value> compliance bypass revoked for{" "}
+        <Value>{m?.platform}</Value> integration
       </div>
     );
 
@@ -945,15 +1074,19 @@ export default function ActivityDescription({ event }: Props) {
 
   return (
     <div className={"flex gap-2.5 items-center"}>
-      <span className={"mb-[1px]"}>{event.activity}</span>
+      <span className={"mb-[1px]"}>
+        {t("activity.description.fallback", {
+          activity: event.activity || event.activity_code,
+        })}
+      </span>
 
       {isLocalDev() && !isProduction() && (
         <FullTooltip
           content={
             <div className={"pb-1"}>
-              <Label className={"mb-3"}>Activity Code</Label>
+              <Label className={"mb-3"}>{t("activity.details.code")}</Label>
               <Value>{event.activity_code}</Value>
-              <Label className={"my-3"}>Meta</Label>
+              <Label className={"my-3"}>{t("activity.details.meta")}</Label>
               {meta &&
                 meta.map((item) => (
                   <React.Fragment key={item?.key}>
@@ -998,21 +1131,22 @@ function PeerConnectionInfo({ meta }: { meta: any }) {
     !isEmpty(meta?.location_country_code) ||
     !isEmpty(meta?.location_connection_ip);
   const { countries } = useCountries();
+  const { t } = useLocale();
 
   const countryText = useMemo(() => {
-    if (!countries) return "Unknown";
+    if (!countries) return t("activity.value.unknown");
     const country = countries.find(
       (c) => c.country_code === meta?.location_country_code,
     );
-    if (!country) return "Unknown";
+    if (!country) return t("activity.value.unknown");
     if (!meta?.location_city_name) return country.country_name;
     return `${country.country_name}, ${meta?.location_city_name}`;
-  }, [countries, meta]);
+  }, [countries, meta, t]);
 
   return hasMeta ? (
     <>
       {" "}
-      from{" "}
+      {t("activity.description.from")}{" "}
       {meta?.location_connection_ip && (
         <Value>{meta?.location_connection_ip}</Value>
       )}{" "}

@@ -59,6 +59,7 @@ import NetBirdIcon from "@/assets/icons/NetBirdIcon";
 import Badge from "@components/Badge";
 import { usePathname } from "next/navigation";
 import React, { useMemo, useState } from "react";
+import loadConfig from "@utils/config";
 import { useSWRConfig } from "swr";
 import { useDialog } from "@/contexts/DialogProvider";
 import { useGroups } from "@/contexts/GroupsProvider";
@@ -74,6 +75,8 @@ import {
 } from "@/interfaces/User";
 import UserInviteModal from "@/modules/users/UserInviteModal";
 import { useAccount } from "@/modules/account/useAccount";
+
+const config = loadConfig();
 
 // Name cell for invites - same styling as UserNameCell but for invites
 function InviteNameCell({ invite }: { invite: UserInvite }) {
@@ -593,12 +596,7 @@ export default function UserInvitesTable({
           learnMore={
             <>
               Learn more about
-              <InlineLink
-                href={
-                  "https://docs.netbird.io/how-to/add-users-to-your-network"
-                }
-                target={"_blank"}
-              >
+              <InlineLink href={config.docsUrl} target={"_blank"}>
                 Users
                 <ExternalLinkIcon size={12} />
               </InlineLink>

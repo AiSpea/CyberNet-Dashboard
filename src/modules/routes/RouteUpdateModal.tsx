@@ -21,6 +21,7 @@ import { Textarea } from "@components/Textarea";
 import { DomainsTooltip } from "@components/ui/DomainListBadge";
 import { getOperatingSystem } from "@hooks/useOperatingSystem";
 import { IconDirectionSign } from "@tabler/icons-react";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { uniqBy } from "lodash";
 import {
@@ -43,6 +44,8 @@ import { Peer } from "@/interfaces/Peer";
 import { Route } from "@/interfaces/Route";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
 import { RoutingPeerMasqueradeSwitch } from "@/modules/networks/routing-peers/RoutingPeerMasqueradeSwitch";
+
+const config = loadConfig();
 
 type Props = {
   route: Route;
@@ -194,7 +197,9 @@ function RouteUpdateModalContent({ onSuccess, route, cell }: ModalProps) {
   const [masquerade, setMasquerade] = useState<boolean>(
     route?.masquerade ?? true,
   );
-  const [isForced, setIsForced] = useState<boolean>(route?.skip_auto_apply === false);
+  const [isForced, setIsForced] = useState<boolean>(
+    route?.skip_auto_apply === false,
+  );
 
   // Refs to manage focus on tab change
   const networkRangeRef = useRef<HTMLInputElement>(null);
@@ -461,17 +466,17 @@ function RouteUpdateModalContent({ onSuccess, route, cell }: ModalProps) {
             />
 
             {isExitNode && (
-                              <FancyToggleSwitch
-                  value={isForced}
-                  onChange={setIsForced}
-                  label={
-                    <>
-                      <IconDirectionSign size={15} />
-                      Auto Apply Route
-                    </>
-                  }
-                  helpText={"Automatically apply this exit node to your distribution groups. This requires NetBird client v0.55.0 or higher."}
-                />
+              <FancyToggleSwitch
+                value={isForced}
+                onChange={setIsForced}
+                label={
+                  <>
+                    <IconDirectionSign size={15} />
+                    Auto Apply Route
+                  </>
+                }
+                helpText={`Automatically apply this exit node to your distribution groups. This requires ${config.productName} client v0.55.0 or higher.`}
+              />
             )}
 
             {!isExitNode && (
@@ -516,9 +521,7 @@ function RouteUpdateModalContent({ onSuccess, route, cell }: ModalProps) {
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
             <InlineLink
-              href={
-                "https://docs.netbird.io/how-to/routing-traffic-to-private-networks"
-              }
+              href={`${config.docsUrl}/how-to/routing-traffic-to-private-networks`}
               target={"_blank"}
             >
               Network Routes

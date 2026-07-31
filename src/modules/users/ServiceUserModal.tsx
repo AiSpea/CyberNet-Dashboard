@@ -16,11 +16,14 @@ import Paragraph from "@components/Paragraph";
 import Separator from "@components/Separator";
 import { IconSettings2 } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { ExternalLinkIcon, PlusCircle, User2 } from "lucide-react";
 import React, { useMemo, useState } from "react";
 import { useSWRConfig } from "swr";
 import { Role, User } from "@/interfaces/User";
 import { UserRoleSelector } from "@/modules/users/UserRoleSelector";
+
+const config = loadConfig();
 
 type Props = {
   children: React.ReactNode;
@@ -112,10 +115,7 @@ export function ServiceUserModalContent({ onSuccess }: Readonly<ModalProps>) {
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
-            <InlineLink
-              href={"https://docs.netbird.io/how-to/access-netbird-public-api"}
-              target={"_blank"}
-            >
+            <InlineLink href={config.docsUrl} target={"_blank"}>
               Service Users
               <ExternalLinkIcon size={12} />
             </InlineLink>

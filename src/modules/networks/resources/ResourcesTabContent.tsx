@@ -7,7 +7,10 @@ import { NetworkResource } from "@/interfaces/Network";
 import ResourcesTable from "@/modules/networks/resources/ResourcesTable";
 import Paragraph from "@components/Paragraph";
 import InlineLink from "@components/InlineLink";
+import loadConfig from "@utils/config";
 import { ExternalLinkIcon } from "lucide-react";
+
+const config = loadConfig();
 
 type ResourcesSectionProps = {
   data?: NetworkResource[];
@@ -24,10 +27,7 @@ export const ResourcesTabContent = ({
         <div>
           <Paragraph>
             Add resources to this network to control what peers can access.{" "}
-            <InlineLink
-              href={"https://docs.netbird.io/how-to/networks#resources"}
-              target={"_blank"}
-            >
+            <InlineLink href={config.docsUrl} target={"_blank"}>
               Learn more
               <ExternalLinkIcon size={12} />
             </InlineLink>

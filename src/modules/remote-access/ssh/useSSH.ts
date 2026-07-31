@@ -1,5 +1,8 @@
 import { useCallback, useRef, useState } from "react";
 import { useOidcAccessToken } from "@axa-fr/react-oidc";
+import loadConfig from "@utils/config";
+
+const dashboardConfig = loadConfig();
 
 interface SSHConfig {
   hostname: string;
@@ -22,8 +25,7 @@ export enum SSHStatus {
   CONNECTING = 2,
 }
 
-export const SSH_DOCS_LINK =
-  "https://docs.netbird.io/how-to/browser-client#ssh-connection";
+export const SSH_DOCS_LINK = `${dashboardConfig.docsUrl}/how-to/browser-client#ssh-connection`;
 
 const SSH_DETECTION_TIMEOUT_MS = 20000;
 
@@ -53,7 +55,10 @@ export const useSSH = (client: any) => {
           );
           console.log("Detection:", { requiresJwt, hasToken: !!accessToken });
         } catch (detectionErr) {
-          console.error("Detection failed, falling back to pubkey:", detectionErr);
+          console.error(
+            "Detection failed, falling back to pubkey:",
+            detectionErr,
+          );
         }
 
         if (requiresJwt && !accessToken) {

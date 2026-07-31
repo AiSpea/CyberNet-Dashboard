@@ -68,18 +68,17 @@ const ListItem = ({ userId }: Props) => {
       label={
         <>
           <ShieldCheckIcon size={16} />
-          NetBird MFA
+          {config.productName} MFA
           <FullTooltip
             variant={"lighter"}
             content={
               <div className={"text-xs max-w-xs"}>
-                NetBird MFA is primarily intended for users who log in with
-                email and password. You may not need NetBird MFA if your SSO
-                provider (e.g., Google, Microsoft) already has MFA enabled.{" "}
+                {config.productName} MFA is primarily intended for users who log
+                in with email and password. You may not need{" "}
+                {config.productName} MFA if your SSO provider (e.g., Google,
+                Microsoft) already has MFA enabled.{" "}
                 <InlineLink
-                  href={
-                    "https://docs.netbird.io/how-to/multi-factor-authentication"
-                  }
+                  href={`${config.docsUrl}/how-to/multi-factor-authentication`}
                   target={"_blank"}
                 >
                   Learn more

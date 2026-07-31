@@ -1,3 +1,5 @@
+import loadConfig from "@utils/config";
+
 export enum NotificationChannelType {
   Email = "email",
   Webhook = "webhook",
@@ -41,8 +43,7 @@ export const ALL_NOTIFICATION_EVENT_TYPES = Object.values(
   NotificationEventType,
 );
 
-export const NOTIFICATION_CHANNELS_DOCS_LINK =
-  "https://docs.netbird.io/manage/settings/notifications";
+const notificationDocsUrl = loadConfig().docsUrl;
 
-export const NOTIFICATION_CHANNELS_WEBHOOK_DOCS_LINK =
-  "https://docs.netbird.io/manage/settings/notifications#webhook-notifications";
+export const NOTIFICATION_CHANNELS_DOCS_LINK = notificationDocsUrl;
+export const NOTIFICATION_CHANNELS_WEBHOOK_DOCS_LINK = notificationDocsUrl;

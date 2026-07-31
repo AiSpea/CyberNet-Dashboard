@@ -1,3 +1,7 @@
+import loadConfig from "@utils/config";
+
+const dashboardConfig = loadConfig();
+
 export interface IronRDPModule {
   SessionBuilder: new () => SessionBuilder;
   DesktopSize: new (width: number, height: number) => DesktopSize;
@@ -195,9 +199,7 @@ export class IronRDPWASMBridge {
       // resized in-session (Session.resize) instead of reconnecting. Gated to
       // hosts known to handle it (Windows); xrdp mishandles the reactivation.
       if (enableDisplayControl && this.ironrdp.Extension) {
-        builder.extension(
-          new this.ironrdp.Extension("display_control", true),
-        );
+        builder.extension(new this.ironrdp.Extension("display_control", true));
       }
       if (canvas) {
         const ctx = canvas.getContext("2d");
@@ -214,7 +216,9 @@ export class IronRDPWASMBridge {
       }
       // RDCleanPath proxy is required for IronRDP
       if (!netbirdClient || !netbirdClient.createRDPProxy) {
-        throw new Error("NetBird client with RDP proxy support is required");
+        throw new Error(
+          `${dashboardConfig.productName} client with RDP proxy support is required`,
+        );
       }
       const proxyURL = await netbirdClient.createRDPProxy(
         hostname,

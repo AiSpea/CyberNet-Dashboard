@@ -9,6 +9,7 @@ import { LockedFeatureInfoCard } from "@/modules/billing/locked-feature/LockedFe
 import { LockedFeatureOverlay } from "@/modules/billing/locked-feature/LockedFeatureOverlay";
 import Firehose from "@/modules/integrations/event-streaming/amazon/firehose/Firehose";
 import S3 from "@/modules/integrations/event-streaming/amazon/s3/S3";
+import { eventStreamingConfig } from "@/modules/integrations/event-streaming/branding";
 import Datadog from "@/modules/integrations/event-streaming/datadog/Datadog";
 import GenericHTTP from "@/modules/integrations/event-streaming/generic-http/GenericHTTP";
 
@@ -31,14 +32,10 @@ export default function EventStreamingTab() {
         </Breadcrumbs>
         <h1>Event Streaming</h1>
         <Paragraph>
-          Event Streaming allows you to stream NetBirds audit & traffic events
-          to different third-party services.
+          {`Event Streaming allows you to stream ${eventStreamingConfig.productName}'s audit & traffic events to different third-party services.`}
         </Paragraph>
         <Paragraph>
-          <InlineLink
-            href={"https://docs.netbird.io/how-to/activity-event-streaming"}
-            target={"_blank"}
-          >
+          <InlineLink href={eventStreamingConfig.docsUrl} target={"_blank"}>
             Learn more
             <ExternalLinkIcon size={12} />
           </InlineLink>

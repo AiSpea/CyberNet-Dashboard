@@ -2,9 +2,12 @@ import Button from "@components/Button";
 import { Callout } from "@components/Callout";
 import { Modal, ModalContent, ModalFooter } from "@components/modal/Modal";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
+import loadConfig from "@utils/config";
 import { GlobeIcon } from "lucide-react";
 import * as React from "react";
 import { DistributorCustomer } from "@/cloud/distributor/interfaces/Distributor";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -42,7 +45,7 @@ export const DistributorAccountExistsModal = ({
             {customer?.domain}
           </div>
           <div className={"text-xl font-medium text-center mb-1"}>
-            This NetBird account already <br />
+            This {config.productName} account already <br />
             exists in our system
           </div>
           <div className={"text-sm text-nb-gray-300 text-center"}>

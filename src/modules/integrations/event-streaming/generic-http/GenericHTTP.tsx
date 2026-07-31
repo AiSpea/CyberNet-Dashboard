@@ -10,6 +10,7 @@ import integrationImage from "@/assets/integrations/generic-http.png";
 import { usePermissions } from "@/contexts/PermissionsProvider";
 import { useIsLicensed } from "@/hooks/useIsLicensed";
 import { EventStream } from "@/interfaces/EventStream";
+import { eventStreamingConfig } from "@/modules/integrations/event-streaming/branding";
 import GenericHTTPModal from "@/modules/integrations/event-streaming/generic-http/GenericHTTPModal";
 import { IntegrationCard } from "@/modules/integrations/IntegrationCard";
 
@@ -74,8 +75,8 @@ export default function GenericHTTP() {
         name="Generic HTTP"
         description="Provide your custom HTTP endpoint to stream audit & traffic events."
         url={{
-          title: "docs.netbird.io",
-          href: "https://docs.netbird.io/how-to/stream-activity-to-generic-http",
+          title: `${eventStreamingConfig.productName} Docs`,
+          href: eventStreamingConfig.docsUrl,
         }}
         image={integrationImage}
         data={genericHTTPIntegration}

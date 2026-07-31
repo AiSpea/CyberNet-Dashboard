@@ -2,10 +2,13 @@ import Button from "@components/Button";
 import { Modal, ModalClose, ModalContent } from "@components/modal/Modal";
 import Paragraph from "@components/Paragraph";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { useSearchParams } from "next/navigation";
 import * as React from "react";
 import { useState } from "react";
+
+const config = loadConfig();
 
 export const PlanSuccessModal = () => {
   const params = useSearchParams();
@@ -25,11 +28,11 @@ export const PlanSuccessModal = () => {
         >
           <h2 className={"text-xl my-0 leading-[1.5] mb-2"}>
             Thank you for subscribing <br />
-            to NetBird! 🎉
+            to {config.productName}! 🎉
           </h2>
           <Paragraph className={cn("text-sm text-center max-w-xs")}>
             Your subscription has been successfully activated. You have now full
-            access to all NetBird features of your selected plan.
+            access to all {config.productName} features of your selected plan.
           </Paragraph>
           <ModalClose asChild={true}>
             <Button variant={"primary"} className={"w-full mt-4"} size={"xs"}>

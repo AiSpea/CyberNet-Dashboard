@@ -2,11 +2,15 @@ import Button from "@components/Button";
 import Paragraph from "@components/Paragraph";
 import { IconCirclePlus } from "@tabler/icons-react";
 import useFetchApi from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { FolderSearch } from "lucide-react";
 import * as React from "react";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { usePermissions } from "@/contexts/PermissionsProvider";
 import { PostureCheck } from "@/interfaces/PostureCheck";
+
+const config = loadConfig();
 
 export function PostureCheckNoChecksInfo({
   onAddClick,
@@ -15,6 +19,7 @@ export function PostureCheckNoChecksInfo({
   onAddClick: () => void;
   onBrowseClick: () => void;
 }) {
+  const { t } = useLocale();
   const { permission } = usePermissions();
 
   const { data: postureChecks } =
@@ -28,12 +33,10 @@ export function PostureCheckNoChecksInfo({
         }
       >
         <h2 className={"text-lg my-0 leading-[1.5 text-center]"}>
-          {"You haven't added any posture checks yet"}
+          {t("posture.emptyTitle")}
         </h2>
         <Paragraph className={cn("text-sm text-center max-w-md mt-1")}>
-          Add various posture checks to further restrict access in your network.
-          E.g., only clients with a specific NetBird client version, operating
-          system or location are allowed to connect.
+          {t("posture.emptyDescription", { product: config.productName })}
         </Paragraph>
       </div>
       <div className={"flex items-center justify-center gap-4 mt-5"}>
@@ -48,7 +51,7 @@ export function PostureCheckNoChecksInfo({
           onClick={onBrowseClick}
         >
           <FolderSearch size={14} />
-          Browse Checks
+          {t("posture.browse")}
         </Button>
         <Button
           variant={"primary"}
@@ -57,7 +60,7 @@ export function PostureCheckNoChecksInfo({
           disabled={!permission.policies.create || !permission.policies.update}
         >
           <IconCirclePlus size={14} />
-          New Posture Check
+          {t("posture.new")}
         </Button>
       </div>
     </div>

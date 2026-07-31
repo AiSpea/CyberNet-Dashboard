@@ -19,6 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/Tabs";
 import { Textarea } from "@components/Textarea";
 import InputDomain, { domainReducer } from "@components/ui/InputDomain";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import cidr from "ip-cidr";
 import { uniqueId } from "lodash";
@@ -39,6 +40,8 @@ import DNSIcon from "@/assets/icons/DNSIcon";
 import { usePermissions } from "@/contexts/PermissionsProvider";
 import { Nameserver, NameserverGroup } from "@/interfaces/Nameserver";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
+
+const config = loadConfig();
 
 type Props = {
   children?: React.ReactNode;
@@ -260,7 +263,10 @@ export function NameserverModalContent({
 
       <Tabs defaultValue={tab} onValueChange={(v) => setTab(v)} value={tab}>
         <TabsList justify={"start"} className={"px-8"}>
-          <TabsTrigger value={"nameserver"} data-testid="nameserver-tab-nameserver">
+          <TabsTrigger
+            value={"nameserver"}
+            data-testid="nameserver-tab-nameserver"
+          >
             <ServerIcon
               size={16}
               className={
@@ -480,10 +486,7 @@ export function NameserverModalContent({
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
-            <InlineLink
-              href={"https://docs.netbird.io/how-to/manage-dns-in-your-network"}
-              target={"_blank"}
-            >
+            <InlineLink href={config.docsUrl} target={"_blank"}>
               DNS
               <ExternalLinkIcon size={12} />
             </InlineLink>

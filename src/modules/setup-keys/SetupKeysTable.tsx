@@ -23,6 +23,7 @@ import {
 import GetStartedTest from "@components/ui/GetStartedTest";
 import NoResults from "@components/ui/NoResults";
 import { ColumnDef, SortingState } from "@tanstack/react-table";
+import loadConfig from "@utils/config";
 import dayjs from "dayjs";
 import { ExternalLinkIcon, PlusCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -42,6 +43,8 @@ import SetupKeyGroupsCell from "@/modules/setup-keys/SetupKeyGroupsCell";
 import SetupKeyModal from "@/modules/setup-keys/SetupKeyModal";
 import SetupKeyNameCell from "@/modules/setup-keys/SetupKeyNameCell";
 import SetupKeyUsageCell from "@/modules/setup-keys/SetupKeyUsageCell";
+
+const config = loadConfig();
 
 export const SetupKeysTableColumns: ColumnDef<SetupKey>[] = [
   {
@@ -181,10 +184,8 @@ export default function SetupKeysTable({
   // only offers groups that actually appear in the table.
   const tableGroups = useMemo<Group[]>(
     () =>
-      (uniqBy(
-        setupKeys?.flatMap((k) => k.groups || []),
-        "name",
-      ) as Group[]) || [],
+      (uniqBy(setupKeys?.flatMap((k) => k.groups || []), "name") as Group[]) ||
+      [],
     [setupKeys],
   );
 
@@ -336,12 +337,7 @@ export default function SetupKeysTable({
               learnMore={
                 <>
                   Learn more about
-                  <InlineLink
-                    href={
-                      "https://docs.netbird.io/how-to/register-machines-using-setup-keys"
-                    }
-                    target={"_blank"}
-                  >
+                  <InlineLink href={config.docsUrl} target={"_blank"}>
                     Setup Keys
                     <ExternalLinkIcon size={12} />
                   </InlineLink>

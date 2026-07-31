@@ -8,6 +8,7 @@ import DataTableHeader from "@components/table/DataTableHeader";
 import DescriptionWithTooltip from "@components/ui/DescriptionWithTooltip";
 import GetStartedTest from "@components/ui/GetStartedTest";
 import { ColumnDef, SortingState } from "@tanstack/react-table";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { ExternalLinkIcon, PlusCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -20,6 +21,8 @@ import AIProviderLogo from "@/modules/agent-network/AIProviderLogo";
 import AIProviderModal from "@/modules/agent-network/AIProviderModal";
 import { useProviderCatalog } from "@/modules/agent-network/useProviderCatalog";
 import AgentProviderActionCell from "@/modules/agent-network/table/AgentProviderActionCell";
+
+const config = loadConfig();
 
 function NameCell({ provider }: { provider: AIProvider }) {
   const { getById } = useProviderCatalog();
@@ -57,7 +60,9 @@ function NameCell({ provider }: { provider: AIProvider }) {
         </p>
         <DescriptionWithTooltip
           className={"text-left mt-0.5"}
-          text={`${catalog?.name ?? provider.providerId} · ${provider.upstreamUrl}`}
+          text={`${catalog?.name ?? provider.providerId} · ${
+            provider.upstreamUrl
+          }`}
           maxChars={40}
         />
       </div>
@@ -136,59 +141,54 @@ export default function AgentProvidersTable({
         />
       )}
       <DataTable
-      headingTarget={headingTarget}
-      isLoading={isLoading}
-      text={"Providers"}
-      sorting={sorting}
-      setSorting={setSorting}
-      columns={columns}
-      data={providers}
-      searchPlaceholder={"Search by name..."}
-      onRowClick={(row) => {
-        setEditingProvider(row.original);
-        setEditOpen(true);
-      }}
-      getStartedCard={
-        <GetStartedTest
-          icon={
-            <SquareIcon
-              icon={<AIAccessIcon className={"fill-nb-gray-200"} size={20} />}
-              color={"gray"}
-              size={"large"}
-            />
-          }
-          title={"Connect a provider"}
-          description={
-            "Route OpenAI, Anthropic, and other LLM APIs through NetBird to enforce access control, track token spend, and capture prompts."
-          }
-          button={
-            <div className={"gap-x-4 flex items-center justify-center"}>
+        headingTarget={headingTarget}
+        isLoading={isLoading}
+        text={"Providers"}
+        sorting={sorting}
+        setSorting={setSorting}
+        columns={columns}
+        data={providers}
+        searchPlaceholder={"Search by name..."}
+        onRowClick={(row) => {
+          setEditingProvider(row.original);
+          setEditOpen(true);
+        }}
+        getStartedCard={
+          <GetStartedTest
+            icon={
+              <SquareIcon
+                icon={<AIAccessIcon className={"fill-nb-gray-200"} size={20} />}
+                color={"gray"}
+                size={"large"}
+              />
+            }
+            title={"Connect a provider"}
+            description={`Route OpenAI, Anthropic, and other LLM APIs through ${config.productName} to enforce access control, track token spend, and capture prompts.`}
+            button={
+              <div className={"gap-x-4 flex items-center justify-center"}>
+                <AddProviderButton />
+              </div>
+            }
+            learnMore={
+              <>
+                Learn more about
+                <InlineLink href={config.docsUrl} target={"_blank"}>
+                  Agent Network Providers
+                  <ExternalLinkIcon size={12} />
+                </InlineLink>
+              </>
+            }
+          />
+        }
+        rightSide={() =>
+          providers.length > 0 && (
+            <div className={cn("gap-x-4 ml-auto flex")}>
               <AddProviderButton />
             </div>
-          }
-          learnMore={
-            <>
-              Learn more about
-              <InlineLink
-                href={"https://docs.netbird.io/agent-network/providers"}
-                target={"_blank"}
-              >
-                Agent Network Providers
-                <ExternalLinkIcon size={12} />
-              </InlineLink>
-            </>
-          }
-        />
-      }
-      rightSide={() =>
-        providers.length > 0 && (
-          <div className={cn("gap-x-4 ml-auto flex")}>
-            <AddProviderButton />
-          </div>
-        )
-      }
-      initialPageSize={25}
-    />
+          )
+        }
+        initialPageSize={25}
+      />
     </>
   );
 }

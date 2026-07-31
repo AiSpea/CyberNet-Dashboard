@@ -5,6 +5,7 @@ import { Input } from "@components/Input";
 import { Label } from "@components/Label";
 import { ModalClose, ModalFooter } from "@components/modal/Modal";
 import Paragraph from "@components/Paragraph";
+import loadConfig from "@utils/config";
 import { cn, validator } from "@utils/helpers";
 import { isEmpty, uniqueId } from "lodash";
 import {
@@ -18,8 +19,11 @@ import * as React from "react";
 import { useMemo, useState } from "react";
 import AppleIcon from "@/assets/icons/AppleIcon";
 import WindowsIcon from "@/assets/icons/WindowsIcon";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { Process, ProcessCheck } from "@/interfaces/PostureCheck";
 import { PostureCheckCard } from "@/modules/posture-checks/ui/PostureCheckCard";
+
+const config = loadConfig();
 
 type Props = {
   value?: ProcessCheck;
@@ -28,6 +32,7 @@ type Props = {
 };
 
 export const PostureCheckProcess = ({ value, onChange, disabled }: Props) => {
+  const { t } = useLocale();
   const [open, setOpen] = useState(false);
 
   return (
@@ -36,10 +41,8 @@ export const PostureCheckProcess = ({ value, onChange, disabled }: Props) => {
       setOpen={setOpen}
       key={open ? 1 : 0}
       active={value?.processes && value?.processes?.length > 0}
-      title={"Process"}
-      description={
-        "Restrict access in your network based on running processes of a peer."
-      }
+      title={t("posture.process.title")}
+      description={t("posture.process.description")}
       icon={<ServerCogIcon size={18} />}
       iconClass={"bg-gradient-to-tr from-nb-gray-500 to-nb-gray-300"}
       modalWidthClass={"max-w-xl"}
@@ -58,6 +61,7 @@ export const PostureCheckProcess = ({ value, onChange, disabled }: Props) => {
 };
 
 const CheckContent = ({ value, onChange, disabled }: Props) => {
+  const { t } = useLocale();
   const [processes, setProcesses] = useState<Process[]>(
     value?.processes
       ? value.processes.map((p) => {
@@ -115,24 +119,24 @@ const CheckContent = ({ value, onChange, disabled }: Props) => {
           errorMacPath: p?.mac_path
             ? validator.isValidUnixFilePath(p?.mac_path || "")
               ? ""
-              : "Please enter a valid macOS file path"
+              : t("posture.process.invalidMac")
             : "",
           errorLinuxPath: p?.linux_path
             ? validator.isValidUnixFilePath(p?.linux_path || "")
               ? ""
-              : "Please enter a valid Unix file path"
+              : t("posture.process.invalidLinux")
             : "",
           errorWindowsPath: p?.windows_path
             ? validator.isValidWindowsFilePath(p?.windows_path || "")
               ? ""
-              : "Please enter a valid Windows file path"
+              : t("posture.process.invalidWindows")
             : "",
         };
       });
     } else {
       return [];
     }
-  }, [processes]);
+  }, [processes, t]);
 
   const hasErrorsOrIsEmpty = useMemo(() => {
     if (processes.length === 0) return true;
@@ -153,12 +157,8 @@ const CheckContent = ({ value, onChange, disabled }: Props) => {
       <div className={"flex flex-col px-8 gap-2 pb-6"}>
         <div className={"flex justify-between items-start gap-10 mt-2"}>
           <div>
-            <Label>Processes</Label>
-            <HelpText className={""}>
-              Add the path of an executable file of the process. You can define
-              a path for Linux, macOS and Windows. Peers will only be allowed to
-              connect if the process is running on their system.
-            </HelpText>
+            <Label>{t("posture.process.label")}</Label>
+            <HelpText className={""}>{t("posture.process.help")}</HelpText>
           </div>
         </div>
         {processes.length > 0 && (
@@ -198,7 +198,7 @@ const CheckContent = ({ value, onChange, disabled }: Props) => {
                         />
                       }
                       placeholder={
-                        "/Applications/NetBird.app/Contents/MacOS/netbird"
+                        "/Applications/CyberNet.app/Contents/MacOS/cybernet-ui"
                       }
                       value={p.mac_path}
                       error={
@@ -227,7 +227,7 @@ const CheckContent = ({ value, onChange, disabled }: Props) => {
                           )}
                         />
                       }
-                      placeholder={`C:\\ProgramData\\NetBird\\netbird.exe`}
+                      placeholder={`C:\\Program Files\\CyberNet\\cybernet-ui.exe`}
                       value={p.windows_path}
                       errorTooltip={true}
                       errorTooltipPosition={"top-right"}
@@ -268,27 +268,25 @@ const CheckContent = ({ value, onChange, disabled }: Props) => {
           disabled={disabled}
         >
           <PlusCircle size={16} />
-          Add Process
+          {t("posture.process.add")}
         </Button>
       </div>
       <ModalFooter className={"items-center"}>
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
-            Learn more about
+            {t("posture.learnMore")}
             <InlineLink
-              href={
-                "https://docs.netbird.io/how-to/manage-posture-checks#process-check"
-              }
+              href={`${config.docsUrl}/how-to/manage-posture-checks#process-check`}
               target={"_blank"}
             >
-              Process Check
+              {t("posture.process.documentation")}
               <ExternalLinkIcon size={12} />
             </InlineLink>
           </Paragraph>
         </div>
         <div className={"flex gap-3 w-full justify-end"}>
           <ModalClose asChild={true}>
-            <Button variant={"secondary"}>Cancel</Button>
+            <Button variant={"secondary"}>{t("common.cancel")}</Button>
           </ModalClose>
           <Button
             variant={"primary"}
@@ -308,7 +306,7 @@ const CheckContent = ({ value, onChange, disabled }: Props) => {
               }
             }}
           >
-            Save
+            {t("common.save")}
           </Button>
         </div>
       </ModalFooter>

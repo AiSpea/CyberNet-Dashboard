@@ -4,6 +4,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@components/Popover";
 import TextWithTooltip from "@components/ui/TextWithTooltip";
 import { VirtualScrollAreaList } from "@components/VirtualScrollAreaList";
 import { useSearch } from "@hooks/useSearch";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { ChevronsUpDown, MapPin } from "lucide-react";
 import * as React from "react";
@@ -11,6 +12,8 @@ import { memo, useState } from "react";
 import { useElementSize } from "@/hooks/useElementSize";
 import { User } from "@/interfaces/User";
 import { SmallUserAvatar } from "@/modules/users/SmallUserAvatar";
+
+const config = loadConfig();
 
 const MapPinIcon = memo(() => <MapPin size={12} />);
 MapPinIcon.displayName = "MapPinIcon";
@@ -209,7 +212,11 @@ export const UserListItem = ({
           )}
         >
           <TextWithTooltip
-            text={user?.email || "NetBird"}
+            text={
+              isSystemUser
+                ? config.productName
+                : user?.email || config.productName
+            }
             maxChars={maxChars}
           />
         </span>

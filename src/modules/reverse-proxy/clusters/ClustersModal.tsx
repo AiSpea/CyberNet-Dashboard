@@ -112,10 +112,9 @@ export const ClustersModal = ({ open, onOpenChange }: Props) => {
     return "";
   }, [domain]);
 
-  // Same convention as the add-peer modals: prefer the configured gRPC
-  // endpoint so self-hosted and stage deployments point at their own
-  // management service; fall back to the cloud default.
-  const managementUrl = GRPC_API_ORIGIN || "https://api.netbird.io:443";
+  // Prefer the configured gRPC endpoint. When it is omitted, the same-origin
+  // management API is also the public h2c entrypoint in self-hosted installs.
+  const managementUrl = GRPC_API_ORIGIN || config.apiOrigin;
 
   const tokenValue = token || "<TOKEN>";
 

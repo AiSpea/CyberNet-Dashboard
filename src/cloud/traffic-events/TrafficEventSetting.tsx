@@ -7,6 +7,7 @@ import { notify } from "@components/Notification";
 import { PeerGroupSelector } from "@components/PeerGroupSelector";
 import { useHasChanges } from "@hooks/useHasChanges";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import {
   ArrowLeftRightIcon,
@@ -24,12 +25,13 @@ import { Account } from "@/interfaces/Account";
 import { LockedFeatureBadge } from "@/modules/billing/locked-feature/LockedFeatureBadge";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
 
+const config = loadConfig();
+
 type Props = {
   account: Account;
 };
 
-export const TRAFFIC_EVENTS_DOC_LINK =
-  "https://docs.netbird.io/how-to/traffic-events-logging";
+export const TRAFFIC_EVENTS_DOC_LINK = `${config.docsUrl}/how-to/traffic-events-logging`;
 
 export const TrafficEventSetting = ({ account }: Props) => {
   const { permission } = usePermissions();
@@ -83,8 +85,7 @@ export const TrafficEventSetting = ({ account }: Props) => {
     if (toggle) {
       choice = await confirm({
         title: "Enable Traffic Reporting (Kernel)?",
-        description:
-          "Note: Enabling this setting will lead to a higher CPU usage than usual on the NetBird client.",
+        description: `Note: Enabling this setting will lead to a higher CPU usage than usual on the ${config.productName} client.`,
         confirmText: "Enable",
         cancelText: "Cancel",
         type: "default",
@@ -157,8 +158,8 @@ export const TrafficEventSetting = ({ account }: Props) => {
               }
               helpText={
                 <>
-                  Enable traffic events for all peers. This requires NetBird
-                  client v0.39 or higher.
+                  Enable traffic events for all peers. This requires the{" "}
+                  {config.productName} client v0.39 or higher.
                 </>
               }
               disabled={!permission.settings.update}

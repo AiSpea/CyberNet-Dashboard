@@ -14,6 +14,7 @@ import {
   IconInfoCircle,
 } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { isEmpty } from "lodash";
 import {
@@ -39,6 +40,8 @@ import { IntuneIntegration } from "@/interfaces/EDR";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
 import azureGrantAdmin from "@/modules/integrations/edr/intune/images/azure-grant-admin-conset.png";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -121,7 +124,7 @@ export function SetupContent({ onSuccess, account }: Readonly<ModalProps>) {
 
     notify({
       title: "Intune Integration",
-      description: `Intune was successfully connected to NetBird.`,
+      description: `Intune was successfully connected to ${config.productName}.`,
       promise: intuneRequest
         .post({
           secret: clientSecret,
@@ -166,7 +169,7 @@ export function SetupContent({ onSuccess, account }: Readonly<ModalProps>) {
 
       <IntegrationModalHeader
         image={integrationImage}
-        title={"Connect NetBird with Intune"}
+        title={`Connect ${config.productName} with Intune`}
         description={
           "Restrict network access to IT-managed devices marked Compliant in Intune. Follow the steps below to get started."
         }
@@ -265,7 +268,7 @@ export function SetupContent({ onSuccess, account }: Readonly<ModalProps>) {
             data={[
               {
                 label: "Name",
-                value: "NetBird",
+                value: config.productName,
               },
               {
                 label: "Account Types",
@@ -334,8 +337,8 @@ export function SetupContent({ onSuccess, account }: Readonly<ModalProps>) {
             </Steps.Step>
             <Steps.Step step={3}>
               <p className={"font-normal"}>
-                Add <Mark copy>NetBird</Mark> as the description and click{" "}
-                <Mark>Add</Mark>
+                Add <Mark copy>{config.productName}</Mark> as the description
+                and click <Mark>Add</Mark>
               </p>
             </Steps.Step>
             <Steps.Step step={4} line={false}>
@@ -384,8 +387,8 @@ export function SetupContent({ onSuccess, account }: Readonly<ModalProps>) {
             </Steps.Step>
             <Steps.Step step={2} line={false}>
               <p className={"font-normal"}>
-                Select <Mark>NetBird</Mark> application in overview page and
-                enter your <Mark>Application (client) ID</Mark> and{" "}
+                Select <Mark>{config.productName}</Mark> application in overview
+                page and enter your <Mark>Application (client) ID</Mark> and{" "}
                 <Mark>Directory (tenant) ID</Mark>
               </p>
             </Steps.Step>

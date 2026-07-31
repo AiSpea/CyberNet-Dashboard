@@ -2,15 +2,29 @@ import Button from "@components/Button";
 import HelpText from "@components/HelpText";
 import { Input } from "@components/Input";
 import { Label } from "@components/Label";
-import { Modal, ModalClose, ModalContent, ModalFooter } from "@components/modal/Modal";
+import {
+  Modal,
+  ModalClose,
+  ModalContent,
+  ModalFooter,
+} from "@components/modal/Modal";
 import { notify } from "@components/Notification";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/Tabs";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
 import { useHasChanges } from "@hooks/useHasChanges";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
-import { AlertOctagon, Box, Cog, Folder, FolderGit2, KeyRound, RefreshCcw } from "lucide-react";
+import {
+  AlertOctagon,
+  Box,
+  Cog,
+  Folder,
+  FolderGit2,
+  KeyRound,
+  RefreshCcw,
+} from "lucide-react";
 import React, { useState } from "react";
 import { useSWRConfig } from "swr";
 import integrationImage from "@/assets/integrations/intune.png";
@@ -21,6 +35,8 @@ import { useGroups } from "@/contexts/GroupsProvider";
 import { IntuneIntegration } from "@/interfaces/EDR";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
+
+const appConfig = loadConfig();
 
 type Props = {
   open: boolean;
@@ -323,9 +339,9 @@ export function ConfigurationContent({
             </Label>
             <HelpText className={"max-w-lg mt-2"}>
               Deleting this integration will remove the ability to sync users
-              and groups from your IdP to NetBird. If you delete the integration
-              you will need to reconfigure it again to enable the
-              synchronization.
+              and groups from your IdP to {appConfig.productName}. If you delete
+              the integration you will need to reconfigure it again to enable
+              the synchronization.
             </HelpText>
           </div>
           <Button

@@ -2,6 +2,7 @@ import Button from "@components/Button";
 import { notify } from "@components/Notification";
 import { SkeletonIntegration } from "@components/skeletons/SkeletonIntegration";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import dayjs from "dayjs";
 import { isEmpty } from "lodash";
 import { HistoryIcon, Settings } from "lucide-react";
@@ -26,8 +27,7 @@ type Props = {
 export const HUNTRESS_DOCUMENTATION_URL =
   "https://support.huntress.io/hc/en-us/articles/4408425850515-Managed-Microsoft-Defender-Terms-and-Definitions";
 
-export const HUNTRESS_NETBIRD_DOCUMENTATION_URL =
-  "https://docs.netbird.io/how-to/huntress-edr";
+export const HUNTRESS_NETBIRD_DOCUMENTATION_URL = loadConfig().docsUrl;
 
 export const Huntress = ({ account }: Props) => {
   const { mutate } = useSWRConfig();

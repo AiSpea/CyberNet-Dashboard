@@ -5,6 +5,7 @@ import SkeletonTable from "@components/skeletons/SkeletonTable";
 import { RestrictedAccess } from "@components/ui/RestrictedAccess";
 import * as Tabs from "@radix-ui/react-tabs";
 import useFetchApi from "@utils/api";
+import loadConfig from "@utils/config";
 import { ExternalLinkIcon, KeyRound } from "lucide-react";
 import React, { lazy, Suspense, useMemo } from "react";
 import SettingsIcon from "@/assets/icons/SettingsIcon";
@@ -12,6 +13,8 @@ import { useGroups } from "@/contexts/GroupsProvider";
 import { usePermissions } from "@/contexts/PermissionsProvider";
 import { Group } from "@/interfaces/Group";
 import { SetupKey } from "@/interfaces/SetupKey";
+
+const config = loadConfig();
 
 const SetupKeysTable = lazy(
   () => import("@/modules/setup-keys/SetupKeysTable"),
@@ -56,12 +59,7 @@ export default function SetupKeysTab() {
         <Paragraph>
           Setup keys are pre-authentication keys that allow to register new
           machines in your network.{" "}
-          <InlineLink
-            href={
-              "https://docs.netbird.io/how-to/register-machines-using-setup-keys"
-            }
-            target={"_blank"}
-          >
+          <InlineLink href={config.docsUrl} target={"_blank"}>
             Learn more
             <ExternalLinkIcon size={12} />
           </InlineLink>

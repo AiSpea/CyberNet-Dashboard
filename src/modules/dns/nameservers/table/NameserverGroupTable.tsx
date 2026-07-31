@@ -22,6 +22,7 @@ import {
 } from "@components/table/TableFilters";
 import GetStartedTest from "@components/ui/GetStartedTest";
 import { ColumnDef, SortingState } from "@tanstack/react-table";
+import loadConfig from "@utils/config";
 import { ExternalLinkIcon, PlusCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { useMemo, useState } from "react";
@@ -40,6 +41,8 @@ import NameserverDistributionGroupsCell from "@/modules/dns/nameservers/table/Na
 import NameserverMatchDomainsCell from "@/modules/dns/nameservers/table/NameserverMatchDomainsCell";
 import NameserverNameCell from "@/modules/dns/nameservers/table/NameserverNameCell";
 import NameserverNameserversCell from "@/modules/dns/nameservers/table/NameserverNameserversCell";
+
+const config = loadConfig();
 
 export const NameserverGroupTableColumns: ColumnDef<NameserverGroup>[] = [
   {
@@ -93,8 +96,7 @@ export const NameserverGroupTableColumns: ColumnDef<NameserverGroup>[] = [
   {
     id: "group_names_filter",
     accessorFn: (row) =>
-      ((row as NameserverGroup & { _group_names?: string[] })._group_names) ??
-      [],
+      (row as NameserverGroup & { _group_names?: string[] })._group_names ?? [],
     filterFn: "arrIncludesSome",
   },
   {
@@ -302,12 +304,7 @@ export default function NameserverGroupTable({
               learnMore={
                 <>
                   Learn more about
-                  <InlineLink
-                    href={
-                      "https://docs.netbird.io/how-to/manage-dns-in-your-network"
-                    }
-                    target={"_blank"}
-                  >
+                  <InlineLink href={config.docsUrl} target={"_blank"}>
                     DNS
                     <ExternalLinkIcon size={12} />
                   </InlineLink>

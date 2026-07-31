@@ -6,6 +6,7 @@ import { Label } from "@components/Label";
 import { ModalClose, ModalFooter } from "@components/modal/Modal";
 import Paragraph from "@components/Paragraph";
 import { RadioGroup, RadioGroupItem } from "@components/RadioGroup";
+import loadConfig from "@utils/config";
 import cidr from "ip-cidr";
 import { isEmpty, uniqueId } from "lodash";
 import {
@@ -20,6 +21,8 @@ import * as React from "react";
 import { useMemo, useState } from "react";
 import { PeerNetworkRangeCheck } from "@/interfaces/PostureCheck";
 import { PostureCheckCard } from "@/modules/posture-checks/ui/PostureCheckCard";
+
+const config = loadConfig();
 
 type Props = {
   value?: PeerNetworkRangeCheck;
@@ -192,12 +195,7 @@ const CheckContent = ({ value, onChange, disabled }: Props) => {
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
-            <InlineLink
-              href={
-                "https://docs.netbird.io/how-to/manage-posture-checks#peer-network-range-check"
-              }
-              target={"_blank"}
-            >
+            <InlineLink href={config.docsUrl} target={"_blank"}>
               Peer Network Range Check
               <ExternalLinkIcon size={12} />
             </InlineLink>

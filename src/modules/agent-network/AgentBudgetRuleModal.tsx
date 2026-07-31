@@ -18,6 +18,7 @@ import ModalHeader from "@components/modal/ModalHeader";
 import Paragraph from "@components/Paragraph";
 import { PeerGroupSelector } from "@components/PeerGroupSelector";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/Tabs";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import {
   ChevronsUpDown,
@@ -42,6 +43,8 @@ import {
   PolicyLimits,
 } from "@/modules/agent-network/data/mockData";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -103,8 +106,7 @@ function AgentBudgetRuleModalContent({
   const accountWide =
     targetGroupsRaw.length === 0 && targetUserIds.length === 0;
 
-  const hasAnyLimit =
-    limits.tokenLimit.enabled || limits.budgetLimit.enabled;
+  const hasAnyLimit = limits.tokenLimit.enabled || limits.budgetLimit.enabled;
 
   const submitDisabled = useMemo(() => {
     if (name.trim().length === 0) return true;
@@ -193,9 +195,8 @@ function AgentBudgetRuleModalContent({
                   <HelpTooltip
                     content={
                       <>
-                        Restrict this rule to members of the selected
-                        groups. Leave empty (and no users) to apply
-                        account-wide.
+                        Restrict this rule to members of the selected groups.
+                        Leave empty (and no users) to apply account-wide.
                       </>
                     }
                   />
@@ -224,8 +225,8 @@ function AgentBudgetRuleModalContent({
                   <HelpTooltip
                     content={
                       <>
-                        Restrict this rule to specific users. Leave empty
-                        (and no groups) to apply account-wide.
+                        Restrict this rule to specific users. Leave empty (and
+                        no groups) to apply account-wide.
                       </>
                     }
                   />
@@ -244,8 +245,7 @@ function AgentBudgetRuleModalContent({
                 <span className={"text-amber-400 font-medium"}>
                   account-wide
                 </span>{" "}
-                — every agent-network request is counted against its
-                caps.
+                — every agent-network request is counted against its caps.
               </div>
             )}
           </div>
@@ -258,7 +258,7 @@ function AgentBudgetRuleModalContent({
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
-            <InlineLink href={"https://docs.netbird.io/"} target={"_blank"}>
+            <InlineLink href={config.docsUrl} target={"_blank"}>
               Agent Network
               <ExternalLinkIcon size={12} />
             </InlineLink>
@@ -283,10 +283,7 @@ function AgentBudgetRuleModalContent({
               )}
               {tab === "limits" && (
                 <>
-                  <Button
-                    variant={"secondary"}
-                    onClick={() => setTab("rule")}
-                  >
+                  <Button variant={"secondary"} onClick={() => setTab("rule")}>
                     Back
                   </Button>
                   <Button
@@ -370,7 +367,10 @@ function UserMultiSelect({
   }, [users, query]);
 
   const selectedUsers = useMemo(
-    () => value.map((id) => users.find((u) => u.id === id)).filter(Boolean) as User[],
+    () =>
+      value
+        .map((id) => users.find((u) => u.id === id))
+        .filter(Boolean) as User[],
     [users, value],
   );
 
@@ -452,9 +452,7 @@ function UserMultiSelect({
                     key={u.id}
                     className={cn(
                       "flex items-center gap-3 p-2 rounded cursor-pointer transition-colors",
-                      checked
-                        ? "bg-netbird/10"
-                        : "hover:bg-nb-gray-900/50",
+                      checked ? "bg-netbird/10" : "hover:bg-nb-gray-900/50",
                     )}
                   >
                     <Checkbox

@@ -20,10 +20,12 @@ import { useLocalStorage } from "@hooks/useLocalStorage";
 import { IconCirclePlus } from "@tabler/icons-react";
 import type { ColumnDef, SortingState } from "@tanstack/react-table";
 import useFetchApi from "@utils/api";
+import loadConfig from "@utils/config";
 import { ExternalLinkIcon, ShieldCheck } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { useMemo, useState } from "react";
 import { useSWRConfig } from "swr";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { usePermissions } from "@/contexts/PermissionsProvider";
 import { Policy } from "@/interfaces/Policy";
 import { PostureCheck } from "@/interfaces/PostureCheck";
@@ -37,17 +39,36 @@ import { PostureCheckNameCell } from "@/modules/posture-checks/table/cells/Postu
 import { PostureCheckPolicyUsageCell } from "@/modules/posture-checks/table/cells/PostureCheckPolicyUsageCell";
 import PoliciesProvider from "@/contexts/PoliciesProvider";
 
+const config = loadConfig();
+
 type Props = {
   isLoading: boolean;
   postureChecks: PostureCheck[] | undefined;
   headingTarget?: HTMLHeadingElement | null;
 };
 
+const postureColumnLabels = {
+  name: "posture.table.name",
+  checks: "posture.table.checks",
+  policies: "posture.table.policies",
+} as const;
+
+function PostureColumnLabel({
+  label,
+}: Readonly<{ label: keyof typeof postureColumnLabels }>) {
+  const { t } = useLocale();
+  return <>{t(postureColumnLabels[label])}</>;
+}
+
 const Columns: ColumnDef<PostureCheck>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
-      return <DataTableHeader column={column}>Name</DataTableHeader>;
+      return (
+        <DataTableHeader column={column}>
+          <PostureColumnLabel label={"name"} />
+        </DataTableHeader>
+      );
     },
     cell: ({ row }) => <PostureCheckNameCell check={row.original} />,
   },
@@ -60,14 +81,22 @@ const Columns: ColumnDef<PostureCheck>[] = [
     id: "checks",
     accessorFn: (row) => Object.keys(row.checks).length,
     header: ({ column }) => {
-      return <DataTableHeader column={column}>Checks</DataTableHeader>;
+      return (
+        <DataTableHeader column={column}>
+          <PostureColumnLabel label={"checks"} />
+        </DataTableHeader>
+      );
     },
     cell: ({ row }) => <PostureCheckChecksCell check={row.original} />,
   },
   {
     id: "access_control_usage",
     header: ({ column }) => {
-      return <DataTableHeader column={column}>Policies</DataTableHeader>;
+      return (
+        <DataTableHeader column={column}>
+          <PostureColumnLabel label={"policies"} />
+        </DataTableHeader>
+      );
     },
     cell: ({ row }) => <PostureCheckPolicyUsageCell check={row.original} />,
   },
@@ -84,6 +113,7 @@ export default function PostureCheckTable({
   isLoading,
   headingTarget,
 }: Props) {
+  const { t } = useLocale();
   const { permission } = usePermissions();
   const { data: policies } = useFetchApi<Policy[]>("/policies");
   const { mutate } = useSWRConfig();
@@ -125,18 +155,30 @@ export default function PostureCheckTable({
 
   const statusOptions = useMemo<RadioOption<boolean | undefined>[]>(
     () => [
-      { value: undefined, label: "All", dotClass: "bg-nb-gray-500" },
-      { value: true, label: "Active", dotClass: "bg-green-500" },
-      { value: false, label: "Inactive", dotClass: "bg-nb-gray-700" },
+      {
+        value: undefined,
+        label: t("posture.table.all"),
+        dotClass: "bg-nb-gray-500",
+      },
+      {
+        value: true,
+        label: t("posture.table.active"),
+        dotClass: "bg-green-500",
+      },
+      {
+        value: false,
+        label: t("posture.table.inactive"),
+        dotClass: "bg-nb-gray-700",
+      },
     ],
-    [],
+    [t],
   );
 
   const filterDefs = useMemo<TableFilterDef[]>(
     () => [
       {
         id: "active",
-        label: "Status",
+        label: t("posture.table.status"),
         renderPicker: (p) => (
           <RadioPicker
             value={p.value as boolean | undefined}
@@ -149,7 +191,7 @@ export default function PostureCheckTable({
           formatRadioChip(v as boolean | undefined, statusOptions),
       },
     ],
-    [statusOptions],
+    [statusOptions, t],
   );
 
   return (
@@ -166,7 +208,7 @@ export default function PostureCheckTable({
 
       <LockedFeatureInfoCard
         className={"px-4 sm:px-6 md:px-8 mt-0 mb-8"}
-        featureText={"Posture Checks"}
+        featureText={t("posture.table.feature")}
         feature={"POSTURE_CHECKS"}
       />
 
@@ -178,7 +220,7 @@ export default function PostureCheckTable({
           <DataTable
             headingTarget={headingTarget}
             isLoading={isLoading}
-            text={"Posture Check"}
+            text={t("posture.table.singular")}
             sorting={sorting}
             wrapperClassName={""}
             setSorting={setSorting}
@@ -198,7 +240,7 @@ export default function PostureCheckTable({
               setCurrentCellClicked(cell);
             }}
             data={data}
-            searchPlaceholder={"Search by name and description..."}
+            searchPlaceholder={t("posture.table.search")}
             rightSide={() => (
               <>
                 {data && data?.length > 0 && (
@@ -214,7 +256,7 @@ export default function PostureCheckTable({
                     }}
                   >
                     <IconCirclePlus size={16} />
-                    Add Posture Check
+                    {t("posture.table.add")}
                   </Button>
                 )}
               </>
@@ -228,10 +270,10 @@ export default function PostureCheckTable({
                     size={"large"}
                   />
                 }
-                title={"Create Posture Check"}
-                description={
-                  "Add posture checks to further restrict access in your network. E.g., only clients with a specific NetBird client version, operating system or location are allowed to connect."
-                }
+                title={t("posture.createTitle")}
+                description={t("posture.emptyDescription", {
+                  product: config.productName,
+                })}
                 button={
                   <Button
                     variant={"primary"}
@@ -242,19 +284,17 @@ export default function PostureCheckTable({
                     onClick={() => setPostureCheckModal(true)}
                   >
                     <IconCirclePlus size={16} />
-                    Create Posture Check
+                    {t("posture.createTitle")}
                   </Button>
                 }
                 learnMore={
                   <>
-                    Learn more about
+                    {t("posture.learnMore")}
                     <InlineLink
-                      href={
-                        "https://docs.netbird.io/how-to/manage-posture-checks"
-                      }
+                      href={`${config.docsUrl}/how-to/manage-posture-checks`}
                       target={"_blank"}
                     >
-                      Posture Checks
+                      {t("posture.documentation")}
                       <ExternalLinkIcon size={12} />
                     </InlineLink>
                   </>

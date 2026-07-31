@@ -3,6 +3,7 @@ import FullTooltip from "@components/FullTooltip";
 import { notify } from "@components/Notification";
 import { PeerGroupSelector } from "@components/PeerGroupSelector";
 import { IconCircleX, IconInfoCircle } from "@tabler/icons-react";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { motion } from "framer-motion";
 import { concat, merge } from "lodash";
@@ -20,6 +21,8 @@ import { FirewallGptResponseMessage } from "@/modules/firewall-gpt/FirewallGPTRe
 import PostureCheckModal from "@/modules/posture-checks/modal/PostureCheckModal";
 import { PostureCheckChecksCell } from "@/modules/posture-checks/table/cells/PostureCheckChecksCell";
 import { usePostureCheck } from "@/modules/posture-checks/usePostureCheck";
+
+const config = loadConfig();
 
 type Props = {
   policy: Policy;
@@ -215,7 +218,7 @@ export const FirewallGptPolicyPreview = ({
         } as Policy;
 
         notify({
-          title: "NetBird's Smart Firewall",
+          title: `${config.productName}'s Smart Firewall`,
           preventSuccessToast: true,
           description: `Policy ${policyObj?.name} was successfully created.`,
           promise: createPolicyRequest(policyObj)

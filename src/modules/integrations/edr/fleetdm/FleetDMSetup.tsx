@@ -12,6 +12,7 @@ import {
   IconInfoCircle,
 } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn, validator } from "@utils/helpers";
 import { isEmpty } from "lodash";
 import {
@@ -42,6 +43,8 @@ import useGroupHelper from "@/modules/groups/useGroupHelper";
 import { matchAttributesReducer } from "@/modules/integrations/edr/fleetdm/FleetDM";
 import { FleetDMMatchSettings } from "@/modules/integrations/edr/fleetdm/FleetDMMatchSettings";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -134,7 +137,7 @@ export function SetupContent({ onSuccess, account }: Readonly<ModalProps>) {
 
     notify({
       title: "FleetDM Integration",
-      description: `FleetDM was successfully connected to NetBird.`,
+      description: `FleetDM was successfully connected to ${config.productName}.`,
       promise: fleetDMRequest
         .post({
           api_token: apiToken,
@@ -191,7 +194,7 @@ export function SetupContent({ onSuccess, account }: Readonly<ModalProps>) {
 
       <IntegrationModalHeader
         image={integrationImage}
-        title={"Connect NetBird with FleetDM"}
+        title={`Connect ${config.productName} with FleetDM`}
         description={
           "Restrict network access to devices managed by FleetDM based on their compliance policies."
         }

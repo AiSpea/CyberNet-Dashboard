@@ -49,10 +49,10 @@ export const MSPTrialExpiredModal = () => {
   // Do not show the modal if there is no tenant context, or no MSP account, or trial is not expired
   if (!isAccountWithMSPParent || !mspAccount || !isTrialExpired) return;
 
-  const mailToEmail =
-    mspInfo?.reseller_status === "active"
-      ? "support@netbird.io"
-      : mspInfo?.parent_owner_email || "support@netbird.io";
+  const supportHref =
+    mspInfo?.reseller_status !== "active" && mspInfo?.parent_owner_email
+      ? `mailto:${mspInfo.parent_owner_email}?subject=Request%20for%20Assistance%3A%20Trial%20Expired`
+      : config.supportUrl;
 
   return (
     <Modal open={true} onOpenChange={undefined}>
@@ -69,18 +69,19 @@ export const MSPTrialExpiredModal = () => {
             <div className={"text-sm text-nb-gray-300 text-center"}>
               <TenantName currentAccount={currentAccount} />
               has reached the end of the free trial period. To continue using
-              NetBird, please upgrade the plan for this tenant.
+              {config.productName}, please upgrade the plan for this tenant.
             </div>
           ) : mspInfo?.reseller_status === "active" ? (
             <div className={"text-sm text-nb-gray-300 text-center"}>
               Your account has reached the end of the free trial period. <br />{" "}
-              To continue using NetBird, please contact your distributor.
+              To continue using {config.productName}, please contact your
+              distributor.
             </div>
           ) : (
             <div className={"text-sm text-nb-gray-300 text-center"}>
               Your account has reached the end of the free trial period. To
-              continue using NetBird, please contact your account administrator{" "}
-              <MSPName />.
+              continue using {config.productName}, please contact your account
+              administrator <MSPName />.
             </div>
           )}
         </div>
@@ -107,10 +108,7 @@ export const MSPTrialExpiredModal = () => {
               <LogOutIcon size={15} className={"shrink-0"} />
               Logout
             </Button>
-            <a
-              href={`mailto:${mailToEmail}?subject=Request%20for%20Assistance%3A%20Trial%20Expired`}
-              className={"w-full"}
-            >
+            <a href={supportHref} className={"w-full"}>
               <Button className={"w-full"} variant={"primary"}>
                 <MailIcon size={15} className={"shrink-0"} />
                 Get Support

@@ -32,6 +32,7 @@ import GetStartedTest from "@components/ui/GetStartedTest";
 import MultipleGroups from "@components/ui/MultipleGroups";
 import { IconCirclePlus } from "@tabler/icons-react";
 import { ColumnDef, SortingState } from "@tanstack/react-table";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import {
   ExternalLinkIcon,
@@ -61,6 +62,8 @@ import {
 import { useAIProviders } from "@/modules/agent-network/AIProvidersProvider";
 import AIProviderLogo from "@/modules/agent-network/AIProviderLogo";
 import AgentPolicyModal from "@/modules/agent-network/AgentPolicyModal";
+
+const config = loadConfig();
 
 function NameCell({ policy }: { policy: AgentPolicy }) {
   return (
@@ -508,7 +511,7 @@ export default function AgentPoliciesTable({ headingTarget }: Readonly<Props>) {
             learnMore={
               <>
                 Learn more about
-                <InlineLink href={"https://docs.netbird.io/"} target={"_blank"}>
+                <InlineLink href={config.docsUrl} target={"_blank"}>
                   Agent Network
                   <ExternalLinkIcon size={12} />
                 </InlineLink>

@@ -5,11 +5,14 @@ import { DropdownInfoText } from "@components/DropdownInfoText";
 import { VirtualScrollAreaList } from "@components/VirtualScrollAreaList";
 import TextWithTooltip from "@components/ui/TextWithTooltip";
 import { useSearch } from "@hooks/useSearch";
+import loadConfig from "@utils/config";
 import { sortBy, uniqBy } from "lodash";
 import { UserCircle2 } from "lucide-react";
 import * as React from "react";
 import { useMemo } from "react";
 import { SmallUserAvatar } from "@/modules/users/SmallUserAvatar";
+
+const config = loadConfig();
 
 // UsersPicker — single-select search list mirroring the Activity ›
 // Audit Logs user filter. The value stored on the column filter is the
@@ -32,7 +35,10 @@ const ALL_USERS_ID = "all-users";
 
 const searchPredicate = (item: UserOption, query: string) => {
   const q = query.toLowerCase();
-  if (item.email === "NetBird" && "NetBird System".toLowerCase().includes(q))
+  if (
+    item.email === "NetBird" &&
+    `${config.productName} System`.toLowerCase().includes(q)
+  )
     return true;
   if (item.name?.toLowerCase().includes(q)) return true;
   if (item.email?.toLowerCase().includes(q)) return true;
@@ -74,9 +80,7 @@ export function UsersPicker({ value, onChange, close, options }: Props) {
 
       {options.length === 0 && !search && (
         <div className={"max-w-xs mx-auto"}>
-          <DropdownInfoText>
-            {"No users available to select."}
-          </DropdownInfoText>
+          <DropdownInfoText>{"No users available to select."}</DropdownInfoText>
         </div>
       )}
 
@@ -105,8 +109,7 @@ export function UsersPicker({ value, onChange, close, options }: Props) {
           renderItem={(user) => {
             const isSystemUser = user.email === "NetBird";
             const isSelected =
-              value === user.email ||
-              (user.id === ALL_USERS_ID && !value);
+              value === user.email || (user.id === ALL_USERS_ID && !value);
             return (
               <div
                 className={"flex items-center gap-2 w-full"}
@@ -129,7 +132,9 @@ export function UsersPicker({ value, onChange, close, options }: Props) {
                 )}
 
                 <div className={"flex flex-col text-xs w-full min-w-0"}>
-                  <span className={"text-nb-gray-200 flex items-center gap-1.5"}>
+                  <span
+                    className={"text-nb-gray-200 flex items-center gap-1.5"}
+                  >
                     <TextWithTooltip
                       text={isSystemUser ? "System" : user?.name || user?.id}
                       maxChars={22}
@@ -141,7 +146,11 @@ export function UsersPicker({ value, onChange, close, options }: Props) {
                     }
                   >
                     <TextWithTooltip
-                      text={user?.email || "NetBird"}
+                      text={
+                        isSystemUser
+                          ? config.productName
+                          : user?.email || config.productName
+                      }
                       maxChars={22}
                     />
                   </span>

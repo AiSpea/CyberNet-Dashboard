@@ -29,6 +29,7 @@ import { useSWRConfig } from "swr";
 import integrationImage from "@/assets/integrations/generic-http.png";
 import { useDialog } from "@/contexts/DialogProvider";
 import { EventStream } from "@/interfaces/EventStream";
+import { eventStreamingConfig } from "@/modules/integrations/event-streaming/branding";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
 import { useWebhookConfig } from "@/cloud/webhooks/useWebhookConfig";
 import { WebhookGeneralTabContent } from "@/cloud/webhooks/WebhookGeneralTabContent";
@@ -208,7 +209,8 @@ export function GenericHTTPModalContent({
     return !config.headerError;
   }, [config.headerError, config.authHeaderConflict]);
 
-  const canCreateOrUpdate = config.canContinueToHeaders && canContinueToBodyTemplate;
+  const canCreateOrUpdate =
+    config.canContinueToHeaders && canContinueToBodyTemplate;
 
   return (
     <ModalContent
@@ -224,9 +226,11 @@ export function GenericHTTPModalContent({
         title={
           stream
             ? "Generic HTTP Configuration"
-            : "Connect NetBird with Generic HTTP"
+            : `Connect ${eventStreamingConfig.productName} with Generic HTTP`
         }
-        description={`Start streaming your NetBird audit & traffic events to a Generic HTTP endpoint. ${
+        description={`Start streaming your ${
+          eventStreamingConfig.productName
+        } audit & traffic events to a Generic HTTP endpoint. ${
           stream ? "" : "Follow the steps to get started."
         }`}
       />
@@ -247,7 +251,10 @@ export function GenericHTTPModalContent({
             />
             General
           </TabsTrigger>
-          <TabsTrigger value={"headers"} disabled={!config.canContinueToHeaders}>
+          <TabsTrigger
+            value={"headers"}
+            disabled={!config.canContinueToHeaders}
+          >
             <FileCode2Icon
               size={16}
               className={
@@ -258,7 +265,9 @@ export function GenericHTTPModalContent({
           </TabsTrigger>
           <TabsTrigger
             value={"template"}
-            disabled={!canContinueToBodyTemplate || !config.canContinueToHeaders}
+            disabled={
+              !canContinueToBodyTemplate || !config.canContinueToHeaders
+            }
           >
             <BracesIcon
               size={16}
@@ -316,10 +325,9 @@ export function GenericHTTPModalContent({
                 template. Please refer to the documentation for more details on
                 how to use them.
                 <InlineLink
-                  href={
-                    "https://docs.netbird.io/how-to/stream-activity-to-generic-http#custom-body-template-optional"
-                  }
+                  href={eventStreamingConfig.docsUrl}
                   className={"relative top-[0px] ml-1"}
+                  target={"_blank"}
                 >
                   Body Template Variables
                   <ExternalLinkIcon size={12} />
@@ -359,12 +367,7 @@ export function GenericHTTPModalContent({
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
-            <InlineLink
-              href={
-                "https://docs.netbird.io/how-to/stream-activity-to-generic-http"
-              }
-              target={"_blank"}
-            >
+            <InlineLink href={eventStreamingConfig.docsUrl} target={"_blank"}>
               Generic HTTP Streaming
               <ExternalLinkIcon size={12} />
             </InlineLink>
@@ -394,7 +397,9 @@ export function GenericHTTPModalContent({
           {tab === "headers" && !stream && (
             <Button
               variant={"primary"}
-              disabled={!config.canContinueToHeaders || !canContinueToBodyTemplate}
+              disabled={
+                !config.canContinueToHeaders || !canContinueToBodyTemplate
+              }
               onClick={() => setTab("template")}
             >
               Continue

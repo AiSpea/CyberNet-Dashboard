@@ -2,11 +2,14 @@ import { InlineButtonLink } from "@components/InlineLink";
 import { Modal, ModalClose, ModalContent } from "@components/modal/Modal";
 import ModalHeader from "@components/modal/ModalHeader";
 import Paragraph from "@components/Paragraph";
+import loadConfig from "@utils/config";
 import { CreditCardIcon } from "lucide-react";
 import * as React from "react";
 import { useTenantPlan } from "@/cloud/msp/hooks/useTenantPlan";
 import { Tenant } from "@/cloud/msp/interfaces/Tenant";
 import { PlanCard, PlanLoadingSkeleton } from "@/modules/billing/PlanCard";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -51,7 +54,7 @@ const MSPSubscriptionModalContent = ({
     >
       <ModalHeader
         icon={<CreditCardIcon size={18} />}
-        title={`NetBird Plan for ${tenant.name}`}
+        title={`${config.productName} Plan for ${tenant.name}`}
         description={"Select the plan that best fits your tenant's needs."}
         color={"netbird"}
       />

@@ -1,12 +1,15 @@
 import FullTooltip from "@components/FullTooltip";
 import { ScrollArea } from "@components/ScrollArea";
 import TextWithTooltip from "@components/ui/TextWithTooltip";
+import loadConfig from "@utils/config";
 import { cn, generateColorFromString } from "@utils/helpers";
 import { orderBy } from "lodash";
 import * as React from "react";
 import { useMemo } from "react";
 import { User } from "@/interfaces/User";
 import { SmallUserAvatar } from "@/modules/users/SmallUserAvatar";
+
+const config = loadConfig();
 
 type Props = {
   users: User[];
@@ -66,7 +69,11 @@ export const HorizontalUsersStack = ({
                   </span>
                   <span className={"text-nb-gray-350 font-light"}>
                     <TextWithTooltip
-                      text={user?.email || "NetBird"}
+                      text={
+                        user?.email === "NetBird"
+                          ? config.productName
+                          : user?.email || config.productName
+                      }
                       maxChars={500}
                     />
                   </span>
