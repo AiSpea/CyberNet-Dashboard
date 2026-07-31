@@ -5,6 +5,11 @@ import AppLayout from "@/layouts/AppLayout";
 export const metadata: Metadata = {
   title: `${globalMetaTitle}`,
   description:
-    "NetBird combines a configuration-free peer-to-peer private network and a centralized access control system in a single open-source platform",
+    "CyberNet private network and access management dashboard, powered by NetBird.",
+  applicationName: "CyberNet",
+  icons: {
+    icon: "/cybernet-app-icon.png",
+    apple: "/cybernet-app-icon.png",
+  },
 };
 export default AppLayout;

@@ -1,8 +1,6 @@
 import { cn } from "@utils/helpers";
 import Image from "next/image";
 import * as React from "react";
-import NetBirdLogoMark from "@/assets/netbird.svg";
-import NetBirdLogoFull from "@/assets/netbird-full.svg";
 
 type Props = {
   size?: "default" | "large";
@@ -11,32 +9,35 @@ type Props = {
 
 const sizes = {
   default: {
-    desktop: 22,
-    mobile: 30,
+    mark: 34,
+    text: "text-xl",
   },
   large: {
-    desktop: 24,
-    mobile: 40,
+    mark: 42,
+    text: "text-2xl",
   },
 };
 
 export const NetBirdLogo = ({ size = "default", mobile = true }: Props) => {
   return (
-    <>
+    <span className="inline-flex items-center gap-2.5">
       <Image
-        src={NetBirdLogoFull}
-        height={sizes[size].desktop}
-        alt={"NetBird Logo"}
-        className={cn(mobile && "hidden md:block")}
+        src="/cybernet-app-icon.png"
+        width={sizes[size].mark}
+        height={sizes[size].mark}
+        alt="CyberNet"
+        priority
+        className="rounded-[28%]"
       />
-      {mobile && (
-        <Image
-          src={NetBirdLogoMark}
-          width={sizes[size].mobile}
-          alt={"NetBird Logo"}
-          className={cn(mobile && "md:hidden ml-4")}
-        />
-      )}
-    </>
+      <span
+        className={cn(
+          "font-semibold tracking-tight text-slate-900 dark:text-white",
+          sizes[size].text,
+          mobile && "hidden md:inline",
+        )}
+      >
+        CyberNet
+      </span>
+    </span>
   );
 };

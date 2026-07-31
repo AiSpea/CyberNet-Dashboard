@@ -1,4 +1,23 @@
-# NetBird Dashboard
+# CyberNet Dashboard
+
+CyberNet Dashboard is the customized web control plane for the CyberNet
+clients. It is maintained as a GitHub fork of the official NetBird Dashboard,
+keeps the upstream API contract, and is deployed together with the combined
+NetBird server from one Dokploy Compose project.
+
+- Production deployment: [`deploy/README.md`](deploy/README.md)
+- Production Compose: [`deploy/compose.dokploy.yml`](deploy/compose.dokploy.yml)
+- Upstream project: [netbirdio/dashboard](https://github.com/netbirdio/dashboard)
+- CyberNet source: [AiSpea/CyberNet-Dashboard](https://github.com/AiSpea/CyberNet-Dashboard)
+
+The compatible baseline is NetBird Dashboard `v2.90.8`; this fork also includes
+the next upstream Linux installation documentation commit. The deployment pins
+the combined NetBird server to `0.76.0`.
+
+This project remains licensed under the GNU Affero General Public License v3.0.
+The original copyright, license, authors, and upstream history are retained.
+
+## Upstream README
 
 This project is the UI for NetBird's Management service.
 

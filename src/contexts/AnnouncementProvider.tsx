@@ -13,7 +13,7 @@ import { usePermissions } from "@/contexts/PermissionsProvider";
 import { isNetBirdCloud } from "@utils/netbird";
 
 const ANNOUNCEMENTS_URL =
-  "https://raw.githubusercontent.com/netbirdio/dashboard/main/announcements.json";
+  "https://raw.githubusercontent.com/AiSpea/CyberNet-Dashboard/main/announcements.json";
 const STORAGE_KEY = "netbird-announcements";
 const CACHE_DURATION_MS = 30 * 60 * 1000;
 

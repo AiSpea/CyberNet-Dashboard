@@ -1,0 +1,132 @@
+name: cybernet
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "5"
+
+services:
+  config-preflight:
+    image: busybox:1.36.1@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+    restart: "no"
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        test -s /config/config.yaml
+        grep -q '^server:' /config/config.yaml
+        grep -q '^[[:space:]]*authSecret:' /config/config.yaml
+        grep -q '^[[:space:]]*dataDir:' /config/config.yaml
+        grep -q '^[[:space:]]*store:' /config/config.yaml
+    volumes:
+      - netbird_config:/config:ro
+    networks:
+      - dokploy-network
+    labels:
+      traefik.enable: "false"
+    logging: *default-logging
+
+  data-preflight:
+    image: busybox:1.36.1@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+    restart: "no"
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        test -s /data/store.db
+    volumes:
+      - netbird_data:/data:ro
+    networks:
+      - dokploy-network
+    labels:
+      traefik.enable: "false"
+    logging: *default-logging
+
+  dashboard:
+    image: ${CYBERNET_DASHBOARD_IMAGE:-ghcr.io/aispea/cybernet-dashboard:main}
+    pull_policy: always
+    restart: unless-stopped
+    environment:
+      NETBIRD_MGMT_API_ENDPOINT: https://${CYBERNET_DOMAIN:?set CYBERNET_DOMAIN}
+      NETBIRD_MGMT_GRPC_API_ENDPOINT: https://${CYBERNET_DOMAIN:?set CYBERNET_DOMAIN}
+      AUTH_AUDIENCE: ${NETBIRD_AUTH_AUDIENCE:-netbird-dashboard}
+      AUTH_CLIENT_ID: ${NETBIRD_AUTH_CLIENT_ID:-netbird-dashboard}
+      # This is a public PKCE client. Never put a secret in a downloadable SPA.
+      AUTH_CLIENT_SECRET: ""
+      AUTH_AUTHORITY: https://${CYBERNET_DOMAIN:?set CYBERNET_DOMAIN}/oauth2
+      USE_AUTH0: "false"
+      AUTH_SUPPORTED_SCOPES: ${NETBIRD_AUTH_SUPPORTED_SCOPES:-openid profile email groups}
+      AUTH_REDIRECT_URI: /nb-auth
+      AUTH_SILENT_REDIRECT_URI: /nb-silent-auth
+      NETBIRD_TOKEN_SOURCE: ${NETBIRD_TOKEN_SOURCE:-accessToken}
+      NETBIRD_LICENSED: ${NETBIRD_LICENSED:-false}
+      NETBIRD_CLOUD: "false"
+      NETBIRD_AGENT_NETWORK_ONLY: ${NETBIRD_AGENT_NETWORK_ONLY:-false}
+      NETBIRD_AGENT_NETWORK_ENABLED: ${NETBIRD_AGENT_NETWORK_ENABLED:-false}
+      NETBIRD_CSP: ${NETBIRD_CSP:-}
+    networks:
+      - dokploy-network
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: ${DOKPLOY_NETWORK:-dokploy-network}
+      traefik.http.routers.cybernet-dashboard.rule: Host(`${CYBERNET_DOMAIN:?set CYBERNET_DOMAIN}`)
+      traefik.http.routers.cybernet-dashboard.entrypoints: ${TRAEFIK_ENTRYPOINT:-websecure}
+      traefik.http.routers.cybernet-dashboard.tls: "true"
+      traefik.http.routers.cybernet-dashboard.tls.certresolver: ${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      traefik.http.routers.cybernet-dashboard.priority: "1"
+      traefik.http.routers.cybernet-dashboard.service: cybernet-dashboard
+      traefik.http.services.cybernet-dashboard.loadbalancer.server.port: "80"
+    logging: *default-logging
+
+  netbird-server:
+    image: netbirdio/netbird-server:0.76.0@sha256:3f08491f06864ba69bd6f596e99bb98647023b79edbcd0352ed928c899fd267a
+    restart: unless-stopped
+    depends_on:
+      config-preflight:
+        condition: service_completed_successfully
+      data-preflight:
+        condition: service_completed_successfully
+    command:
+      - --config
+      - /etc/netbird/config.yaml
+    volumes:
+      - netbird_data:/var/lib/netbird
+      - netbird_config:/etc/netbird:ro
+    ports:
+      - ${NETBIRD_STUN_PORT:-3478}:${NETBIRD_STUN_PORT:-3478}/udp
+    networks:
+      - dokploy-network
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: ${DOKPLOY_NETWORK:-dokploy-network}
+      traefik.http.routers.cybernet-grpc.rule: Host(`${CYBERNET_DOMAIN:?set CYBERNET_DOMAIN}`) && (PathPrefix(`/signalexchange.SignalExchange/`) || PathPrefix(`/management.ManagementService/`) || PathPrefix(`/management.ProxyService/`))
+      traefik.http.routers.cybernet-grpc.entrypoints: ${TRAEFIK_ENTRYPOINT:-websecure}
+      traefik.http.routers.cybernet-grpc.tls: "true"
+      traefik.http.routers.cybernet-grpc.tls.certresolver: ${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      traefik.http.routers.cybernet-grpc.priority: "100"
+      traefik.http.routers.cybernet-grpc.service: cybernet-server-h2c
+      traefik.http.routers.cybernet-backend.rule: Host(`${CYBERNET_DOMAIN:?set CYBERNET_DOMAIN}`) && (PathPrefix(`/relay`) || PathPrefix(`/ws-proxy/`) || PathPrefix(`/api`) || PathPrefix(`/oauth2`))
+      traefik.http.routers.cybernet-backend.entrypoints: ${TRAEFIK_ENTRYPOINT:-websecure}
+      traefik.http.routers.cybernet-backend.tls: "true"
+      traefik.http.routers.cybernet-backend.tls.certresolver: ${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      traefik.http.routers.cybernet-backend.priority: "100"
+      traefik.http.routers.cybernet-backend.service: cybernet-server-http
+      traefik.http.services.cybernet-server-http.loadbalancer.server.port: "80"
+      traefik.http.services.cybernet-server-h2c.loadbalancer.server.port: "80"
+      traefik.http.services.cybernet-server-h2c.loadbalancer.server.scheme: h2c
+    stop_grace_period: 30s
+    logging: *default-logging
+
+volumes:
+  netbird_data:
+    external: true
+    name: ${NETBIRD_DATA_VOLUME:?set NETBIRD_DATA_VOLUME to the existing data volume}
+  netbird_config:
+    external: true
+    name: ${NETBIRD_CONFIG_VOLUME:?set NETBIRD_CONFIG_VOLUME to the existing config volume}
+
+networks:
+  dokploy-network:
+    external: true
+    name: ${DOKPLOY_NETWORK:-dokploy-network}

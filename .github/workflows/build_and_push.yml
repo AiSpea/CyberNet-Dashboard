@@ -1,126 +1,252 @@
-name: build and push
+name: Validate and publish CyberNet Dashboard
+
 on:
+  pull_request:
   push:
     branches:
       - main
     tags:
-      - "**"
-  pull_request:
+      - "v*"
+  workflow_dispatch:
 
-# Cancel in-progress runs on the same ref (PR or branch) when a new commit
-# arrives, so we don't waste CI building superseded commits.
 concurrency:
-  group: build-and-push-${{ github.workflow }}-${{ github.ref }}
+  group: cybernet-dashboard-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  DOCKERHUB_IMAGE: netbirdio/dashboard
-  GHCR_IMAGE: ghcr.io/netbirdio/dashboard-cloud
+  GHCR_IMAGE: ghcr.io/aispea/cybernet-dashboard
 
 jobs:
-  build_n_push:
+  validate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v5
+      - name: Check out source
+        uses: actions/checkout@v5
 
-      - name: setup-node
+      - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "22"
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - run: echo '{}' > .local-config.json
+      - name: Download verified IronRDP assets
+        run: ./scripts/fetch-ironrdp.sh
 
-      - name: Download IronRDP release TS files
-        uses: robinraju/release-downloader@v1.7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: netbirdio/IronRDP
-          tag: v0.0.2
-          fileName: "*.ts"
-          out-file-path: 'public/ironrdp-pkg'
+      - name: Prepare local build configuration
+        run: printf '{}\n' > .local-config.json
 
-      - name: Download IronRDP release JS files
-        uses: robinraju/release-downloader@v1.7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: netbirdio/IronRDP
-          tag: v0.0.2
-          fileName: "*.js"
-          out-file-path: 'public/ironrdp-pkg'
-
-      - name: Download IronRDP release WASM file
-        uses: robinraju/release-downloader@v1.7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: netbirdio/IronRDP
-          tag: v0.0.2
-          fileName: "ironrdp_web_bg.wasm"
-          out-file-path: 'public/ironrdp-pkg'
-
-      - name: Get version from tag
-        id: version
-        run: |
-          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-          else
-            echo "version=development" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Build
+      - name: Build static dashboard
         run: npm run build
         env:
-          NEXT_PUBLIC_DASHBOARD_VERSION: ${{ steps.version.outputs.version }}
-      -
-        name: Set up QEMU
+          NEXT_PUBLIC_DASHBOARD_VERSION: ${{ github.ref_name }}-${{ github.sha }}
+
+      - name: Type-check
+        run: npm exec tsc -- --noEmit
+
+  container-check:
+    needs: validate
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v5
+
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
+
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      -
-        name: Docker meta
+
+      - name: Build the production image without publishing
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: false
+          tags: ${{ env.GHCR_IMAGE }}:pr-${{ github.event.pull_request.number }}
+          build-args: |
+            DASHBOARD_VERSION=pr-${{ github.event.pull_request.number }}-${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  publish:
+    needs: validate
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v5
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Generate image metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: |
-            ${{ env.DOCKERHUB_IMAGE }}
-            ${{ env.GHCR_IMAGE }}
-          flavor: |
-            latest=false
+          images: ${{ env.GHCR_IMAGE }}
+          flavor: latest=false
           tags: |
-            type=schedule
-            type=ref,event=branch
+            type=raw,value=main,enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             type=ref,event=tag
-            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/') }}
-            type=ref,event=pr
-            type=sha
+            type=sha,prefix=sha-
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.NB_DOCKER_USER }}
-          password: ${{ secrets.NB_DOCKER_TOKEN }}
-
-      - name: Log in to the GitHub Container registry
+      - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+      - name: Build and publish
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: docker/Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
-          platforms: linux/amd64,linux/arm64,linux/arm
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            DASHBOARD_VERSION=${{ github.ref_name }}-${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-      - run: |
-          echo '### Pushed tags' >> $GITHUB_STEP_SUMMARY
-          echo '${{ steps.meta.outputs.tags }}' >> $GITHUB_STEP_SUMMARY
+      - name: Record published tags
+        run: |
+          {
+            echo "### Published image tags"
+            echo '```'
+            echo "${{ steps.meta.outputs.tags }}"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    needs: publish
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      vars.DOKPLOY_AUTODEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+    steps:
+      - name: Trigger Dokploy Compose deployment
+        env:
+          DOKPLOY_API_TOKEN: ${{ secrets.DOKPLOY_API_TOKEN }}
+          DOKPLOY_COMPOSE_ID: ${{ vars.DOKPLOY_COMPOSE_ID }}
+          CYBERNET_PUBLIC_URL: ${{ vars.CYBERNET_PUBLIC_URL }}
+        run: |
+          test -n "$DOKPLOY_API_TOKEN"
+          test -n "$DOKPLOY_COMPOSE_ID"
+          test -n "$CYBERNET_PUBLIC_URL"
+
+          deployment_title="GitHub ${GITHUB_SHA}"
+          request_body="$(jq -cn \
+            --arg composeId "$DOKPLOY_COMPOSE_ID" \
+            --arg title "$deployment_title" \
+            '{composeId: $composeId, title: $title}')"
+
+          curl \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --connect-timeout 10 \
+            --max-time 120 \
+            --output /tmp/dokploy-response.json \
+            --request POST \
+            --header "x-api-key: ${DOKPLOY_API_TOKEN}" \
+            --header 'Content-Type: application/json' \
+            --data "$request_body" \
+            https://dokploy.aisp24.com/api/compose.deploy
+
+          echo "Dokploy accepted the Compose deployment request; waiting for its deployment record."
+
+          deployment_done=false
+          for attempt in $(seq 1 120); do
+            compose_json="$(curl \
+              --fail \
+              --silent \
+              --show-error \
+              --retry 3 \
+              --retry-delay 2 \
+              --connect-timeout 10 \
+              --max-time 30 \
+              --get \
+              --header "x-api-key: ${DOKPLOY_API_TOKEN}" \
+              --data-urlencode "composeId=${DOKPLOY_COMPOSE_ID}" \
+              https://dokploy.aisp24.com/api/compose.one)"
+
+            deployment_status="$(printf '%s' "$compose_json" | jq -r \
+              --arg title "$deployment_title" \
+              '[.deployments[]? | select(.title == $title)] | sort_by(.createdAt) | last | .status // "pending"')"
+
+            case "$deployment_status" in
+              done)
+                deployment_done=true
+                break
+                ;;
+              error)
+                printf '%s\n' "Dokploy deployment failed." >&2
+                exit 1
+                ;;
+              pending|running)
+                ;;
+              *)
+                printf '%s\n' "Unexpected Dokploy deployment status: ${deployment_status}" >&2
+                exit 1
+                ;;
+            esac
+
+            sleep 5
+          done
+
+          if [ "$deployment_done" != true ]; then
+            printf '%s\n' "Timed out waiting for Dokploy deployment." >&2
+            exit 1
+          fi
+
+          expect_status() {
+            path="$1"
+            expected="$2"
+            for attempt in $(seq 1 24); do
+              actual="$(curl \
+                --silent \
+                --show-error \
+                --connect-timeout 10 \
+                --max-time 30 \
+                --output /dev/null \
+                --write-out '%{http_code}' \
+                "${CYBERNET_PUBLIC_URL}${path}" || true)"
+              if [ "$actual" = "$expected" ]; then
+                return 0
+              fi
+              sleep 5
+            done
+            printf '%s\n' \
+              "Probe ${path} expected HTTP ${expected}, received ${actual:-no response}." >&2
+            return 1
+          }
+
+          expect_status /healthz 200
+          expect_status /oauth2/.well-known/openid-configuration 200
+          expect_status /api/accounts 401
+          expect_status /relay 426
+
+          echo "Dokploy deployment and public route probes succeeded."
