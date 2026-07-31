@@ -25,6 +25,9 @@ env:
 
 jobs:
   playwright-run:
+    # This suite pulls NetBird's private management-cloud and reverse-proxy
+    # images. Forks opt in only after configuring the matching registry token.
+    if: github.repository_owner == 'netbirdio' || vars.ENABLE_CLOUD_E2E == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
