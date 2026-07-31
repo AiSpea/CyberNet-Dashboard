@@ -13,7 +13,7 @@ function Card({ children, className, ...props }: Props) {
     <div
       {...props}
       className={cn(
-        "bg-nb-gray-940 rounded-md border border-nb-gray-900 w-1/2 overflow-hidden",
+        "bg-nb-surface-raised rounded-md border border-nb-border-subtle w-1/2 overflow-hidden",
         className,
       )}
     >
@@ -50,7 +50,7 @@ function CardListItem({
   return (
     <li
       className={cn(
-        "flex justify-between px-4 border-b border-nb-gray-900 py-3.5 last:border-b-0 items-center h-full",
+        "flex justify-between px-4 border-b border-nb-border-subtle py-3.5 last:border-b-0 items-center h-full",
         className,
       )}
     >
@@ -100,8 +100,8 @@ const CardTextItem = ({
   return (
     <div
       className={cn(
-        "text-right text-nb-gray-400 text-[0.84rem] flex items-center gap-2",
-        copy && "cursor-pointer hover:text-nb-gray-300 transition-all",
+        "text-right text-nb-content-secondary text-[0.84rem] flex items-center gap-2",
+        copy && "cursor-pointer hover:text-nb-content-primary transition-all",
       )}
       onClick={() =>
         copy &&

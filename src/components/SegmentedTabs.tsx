@@ -31,7 +31,7 @@ function List({
   return (
     <TabsList
       className={cn(
-        "bg-nb-gray-930/70 p-1.5 rounded-t-lg flex justify-center gap-1 border border-b-0 border-nb-gray-900",
+        "bg-nb-surface-subtle p-1.5 rounded-t-lg flex justify-center gap-1 border border-b-0 border-nb-border-subtle",
         className,
       )}
     >
@@ -61,10 +61,10 @@ function Trigger({
       className={cn(
         "px-4 py-2 text-sm rounded-md w-full transition-all data-[disabled]:opacity-10",
         value == currentValue
-          ? "bg-nb-gray-900"
+          ? "bg-nb-surface-muted text-nb-content-primary"
           : disabled
           ? ""
-          : "text-nb-gray-400 hover:bg-nb-gray-900/50",
+          : "text-nb-content-secondary hover:bg-nb-surface-hover hover:text-nb-content-primary",
         className,
       )}
       value={value}
@@ -87,7 +87,7 @@ function Content({
     <TabsContent
       value={value}
       className={
-        "bg-nb-gray-930/70 px-4 pt-2 pb-5 rounded-b-md mt-0 border border-t-0  border-nb-gray-900"
+        "bg-nb-surface-subtle px-4 pt-2 pb-5 rounded-b-md mt-0 border border-t-0 border-nb-border-subtle"
       }
     >
       {children}

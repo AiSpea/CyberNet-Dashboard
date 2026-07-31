@@ -3,116 +3,159 @@
 @tailwind utilities;
 
 :root {
-    --toasts-before: 0;
-    --lift: 1;
+  --toasts-before: 0;
+  --lift: 1;
+
+  /*
+     * CyberNet neutral tokens
+     *
+     * The physical nb-gray scale remains stable for intentional fixed-color
+     * elements. These semantic tokens describe surfaces, content, and borders
+     * so shared UI primitives can follow the active theme. Values are
+     * space-separated RGB channels so Tailwind opacity modifiers still work.
+     */
+  --nb-surface-canvas: 255 255 255;
+  --nb-surface-raised: 255 255 255;
+  --nb-surface-muted: 237 240 242;
+  --nb-surface-subtle: 249 250 251;
+  --nb-surface-hover: 228 231 233;
+  --nb-surface-inverse: 24 26 29;
+  --nb-content-primary: 37 40 45;
+  --nb-content-secondary: 83 93 103;
+  --nb-content-muted: 97 110 121;
+  --nb-content-inverse: 244 246 247;
+  --nb-border-default: 203 210 214;
+  --nb-border-subtle: 228 231 233;
+  --nb-border-strong: 124 137 148;
+  --nb-skeleton-base: 228 231 233;
+  --nb-skeleton-highlight: 244 246 247;
+
+  color-scheme: light;
 }
 
-html{
-    @apply bg-nb-gray;
+.dark {
+  --nb-surface-canvas: 24 26 29;
+  --nb-surface-raised: 30 33 35;
+  --nb-surface-muted: 37 40 45;
+  --nb-surface-subtle: 28 30 33;
+  --nb-surface-hover: 46 50 56;
+  --nb-surface-inverse: 244 246 247;
+  --nb-content-primary: 244 246 247;
+  --nb-content-secondary: 203 210 214;
+  --nb-content-muted: 163 173 181;
+  --nb-content-inverse: 24 26 29;
+  --nb-border-default: 63 68 75;
+  --nb-border-subtle: 46 50 56;
+  --nb-border-strong: 124 137 148;
+  --nb-skeleton-base: 37 40 45;
+  --nb-skeleton-highlight: 51 55 62;
+
+  color-scheme: dark;
+}
+
+html {
+  @apply bg-nb-surface-canvas text-nb-content-primary;
 }
 
 h1 {
-    @apply text-2xl font-medium text-gray-700 dark:text-nb-gray-100 my-1;
+  @apply text-2xl font-medium text-gray-700 dark:text-nb-gray-100 my-1;
 }
 h2 {
-    @apply text-xl font-medium text-gray-700 dark:text-nb-gray-100 my-1;
+  @apply text-xl font-medium text-gray-700 dark:text-nb-gray-100 my-1;
 }
 p {
-    @apply font-light tracking-wide text-gray-700 dark:text-zinc-50 text-sm;
+  @apply font-light tracking-wide text-gray-700 dark:text-zinc-50 text-sm;
 }
 
 .p-default {
-    @apply px-4 sm:px-6 md:px-8;
+  @apply px-4 sm:px-6 md:px-8;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
-[placeholder]{
-    text-overflow:ellipsis;
+[placeholder] {
+  text-overflow: ellipsis;
 }
 
-.animated-gradient-bg{
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-    height: 100%;
+.animated-gradient-bg {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  height: 100%;
 }
 
 @keyframes gradient {
-    0% {
-        background-position: 0 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0 50%;
-    }
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
 }
 
 .sticky {
-    position: sticky !important;
-    left: 0;
-    top: 0;
-    z-index: 1;
+  position: sticky !important;
+  left: 0;
+  top: 0;
+  z-index: 1;
 }
 
-
 .table-fixed-scroll {
-    display: table;
-    position: relative;
-    width: 100%;
+  display: table;
+  position: relative;
+  width: 100%;
 }
 
 .stepper-bg-variant .step-circle {
-    @apply !border-nb-gray-940;
+  @apply !border-nb-gray-940;
 }
 
-.webkit-scroll{
-    -webkit-overflow-scrolling: touch;
-    -webkit-transform: translate3d(0, 0, 0);
+.webkit-scroll {
+  -webkit-overflow-scrolling: touch;
+  -webkit-transform: translate3d(0, 0, 0);
 }
-
 
 /**
  * Timescape Root element
  */
 .timescape {
-    @apply flex items-center gap-[1px] rounded-md py-2 px-3 select-none w-fit cursor-text bg-nb-gray-900;
+  @apply flex items-center gap-[1px] rounded-md py-2 px-3 select-none w-fit cursor-text bg-nb-gray-900;
 }
 
 /**
  * Date and time input elements
  */
 .timescape input {
-    @apply cursor-text px-0.5 py-1 bg-transparent h-fit border-0 outline-0 select-none box-content caret-transparent text-nb-gray-200 text-sm placeholder-nb-gray-300;
-    font-variant-numeric: tabular-nums;
-    /* For the calculation of the input width these are important */
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
+  @apply cursor-text px-0.5 py-1 bg-transparent h-fit border-0 outline-0 select-none box-content caret-transparent text-nb-gray-200 text-sm placeholder-nb-gray-300;
+  font-variant-numeric: tabular-nums;
+  /* For the calculation of the input width these are important */
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }
 
 .timescape input:focus {
-    @apply bg-nb-gray-700 text-white rounded py-1 px-0.5 border-0 outline-0;
+  @apply bg-nb-gray-700 text-white rounded py-1 px-0.5 border-0 outline-0;
 }
 
 /**
  * Separator elements
  */
 .timescape .separator {
-    @apply text-gray-400 m-0 text-[80%] -top-[1px] relative;
+  @apply text-gray-400 m-0 text-[80%] -top-[1px] relative;
 }
-
 
 /**
  * Fade in animation
@@ -122,81 +165,85 @@ p {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-
 .animate-slow-ping {
-    animation: ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite
+  animation: ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 @keyframes ping {
-    75%, 100% {
-        transform: scale(2);
-        opacity: 0;
-    }
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
 }
 
 .animate-slow-pulse {
-    animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite
+  animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-
 @keyframes pulse {
-    60% {
-        opacity: 0.5;
-    }
+  60% {
+    opacity: 0.5;
+  }
 }
 
 @keyframes bg-scroll {
-    0% {
-        background-position: 0% 100%;
-    }
-    100% {
-        background-position: 0% 0%;
-    }
+  0% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
 }
 
 .animate-bg-scroll {
-    animation: bg-scroll 4s linear infinite;
+  animation: bg-scroll 4s linear infinite;
 }
 .animate-bg-scroll-faster {
-    animation: bg-scroll 1.8s linear infinite;
+  animation: bg-scroll 1.8s linear infinite;
 }
 
 /**
  * Terminal (xterm)
  */
 .xterm {
-    @apply m-0 p-1 box-border h-full w-full;
+  @apply m-0 p-1 box-border h-full w-full;
 }
 
 .xterm-viewport {
-    @apply m-0 p-0 box-border;
+  @apply m-0 p-0 box-border;
 }
 
 /* Disable sonner's opacity fade-in for custom toasts, but respect visibility */
 [data-sonner-toast][data-visible="true"] {
-    opacity: 1 !important;
+  opacity: 1 !important;
 }
-
 
 /* Adjust sonner stacking: less shrink and less lift per toast */
 [data-sonner-toast][data-expanded="false"][data-front="false"] {
-    --scale: calc(var(--toasts-before) * 0.03 - 1) !important;
-    --lift-amount: calc(var(--lift) * 10px) !important;
+  --scale: calc(var(--toasts-before) * 0.03 - 1) !important;
+  --lift-amount: calc(var(--lift) * 10px) !important;
 }
 
 /* Override stacked toast removal to move up instead of down */
-[data-sonner-toast][data-removed='true'][data-front='false'][data-swipe-out='false'][data-expanded='false'] {
-    --y: translateY(calc(var(--lift) * -20%)) !important;
+[data-sonner-toast][data-removed="true"][data-front="false"][data-swipe-out="false"][data-expanded="false"] {
+  --y: translateY(calc(var(--lift) * -20%)) !important;
 
-    opacity: 0 !important;
-    transition: transform 400ms ease, opacity 300ms ease !important;
+  opacity: 0 !important;
+  transition:
+    transform 400ms ease,
+    opacity 300ms ease !important;
 }
 
 /* Control Center */
-.react-flow__node-groupNode .selected{
-    @apply border-netbird;
+.react-flow__node-groupNode .selected {
+  @apply border-netbird;
 }

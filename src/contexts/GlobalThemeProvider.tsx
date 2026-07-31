@@ -24,7 +24,10 @@ export function GlobalThemeProvider({
       disableTransitionOnChange
       {...props}
     >
-      <SkeletonTheme baseColor={"#25282d"} highlightColor={"#33373e"}>
+      <SkeletonTheme
+        baseColor={"rgb(var(--nb-skeleton-base))"}
+        highlightColor={"rgb(var(--nb-skeleton-highlight))"}
+      >
         {children}
       </SkeletonTheme>
     </NextThemesProvider>

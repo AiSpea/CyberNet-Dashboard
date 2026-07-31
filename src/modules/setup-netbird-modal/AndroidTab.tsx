@@ -1,18 +1,26 @@
-import Code from "@components/Code";
+import { Callout } from "@components/Callout";
 import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
-import { GRPC_API_ORIGIN } from "@utils/netbird";
-import { DownloadIcon, ShoppingBagIcon } from "lucide-react";
-import Link from "next/link";
+import {
+  AlertTriangleIcon,
+  LogInIcon,
+  PlayCircleIcon,
+  ShoppingBagIcon,
+} from "lucide-react";
 import React from "react";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
-import Button from "@components/Button";
-import loadConfig from "@/utils/config";
 import { useLocale } from "@/contexts/LocaleProvider";
+import ClientDownloadAction from "@/modules/setup-netbird-modal/ClientDownloadAction";
 
-const config = loadConfig();
+type Props = {
+  downloadUrl?: string;
+  downloadLoading?: boolean;
+};
 
-export default function AndroidTab() {
+export default function AndroidTab({
+  downloadUrl,
+  downloadLoading,
+}: Readonly<Props>) {
   const { t } = useLocale();
   return (
     <TabsContent value={String(OperatingSystem.ANDROID)}>
@@ -23,33 +31,37 @@ export default function AndroidTab() {
         </p>
         <Steps>
           <Steps.Step step={1}>
-            <p>{t("install.mobileBuild")}</p>
-            <div className={"flex gap-4 mt-1"}>
-              <Link href={config.androidDownloadUrl} target={"_blank"}>
-                <Button variant="primary">
-                  <DownloadIcon size={14} />
-                  {t("install.downloadCyberNet")}
-                </Button>
-              </Link>
+            <p>{t("install.androidDownloadDescription")}</p>
+            <div className={"flex gap-4 mt-1 flex-wrap"}>
+              <ClientDownloadAction
+                url={downloadUrl}
+                loading={downloadLoading}
+                label={t("install.downloadAndroid")}
+              />
             </div>
+            {downloadUrl?.includes("/0.1.1/") && (
+              <Callout
+                variant="warning"
+                icon={
+                  <AlertTriangleIcon size={15} className="mt-0.5 shrink-0" />
+                }
+                className="mt-3 max-w-xl"
+              >
+                {t("install.androidMigrationWarning")}
+              </Callout>
+            )}
           </Steps.Step>
-          {GRPC_API_ORIGIN && (
-            <Steps.Step step={2}>
-              <p>{t("install.changeServer")}</p>
-              <Code>
-                <Code.Line>{GRPC_API_ORIGIN}</Code.Line>
-              </Code>
-            </Steps.Step>
-          )}
-
-          <Steps.Step step={GRPC_API_ORIGIN ? 3 : 2}>
-            <p>
-              {/* eslint-disable-next-line react/no-unescaped-entities */}
-              {t("install.connectButton")}
+          <Steps.Step step={2}>
+            <p className="flex items-center gap-2">
+              <PlayCircleIcon size={16} className="text-netbird" />
+              {t("install.mobileOpenAfterInstall")}
             </p>
           </Steps.Step>
-          <Steps.Step step={GRPC_API_ORIGIN ? 4 : 3} line={false}>
-            <p>{t("auth.signInAccount")}</p>
+          <Steps.Step step={3} line={false}>
+            <p className="flex items-center gap-2">
+              <LogInIcon size={16} className="text-netbird" />
+              {t("install.signInAndConnect")}
+            </p>
           </Steps.Step>
         </Steps>
       </TabsContentPadding>

@@ -211,7 +211,7 @@ export default function GroupsSettings({ account }: Props) {
                   <div
                     className={cn(
                       !jwtGroupSync && "opacity-50 pointer-events-none",
-                      "flex flex-col gap-6 bg-nb-gray-940 px-6 pt-5 pb-6 border border-nb-gray-930 rounded-b-md relative mx-3",
+                      "flex flex-col gap-6 bg-nb-surface-subtle px-6 pt-5 pb-6 border border-nb-border-subtle rounded-b-md relative mx-3",
                     )}
                   >
                     <div>
@@ -223,7 +223,10 @@ export default function GroupsSettings({ account }: Props) {
                       </HelpText>
                       <Input
                         customPrefix={
-                          <Braces size={16} className={"text-nb-gray-300"} />
+                          <Braces
+                            size={16}
+                            className={"text-nb-content-muted"}
+                          />
                         }
                         onKeyDown={(event) => {
                           if (event.code === "Space") event.preventDefault();
@@ -270,7 +273,7 @@ export default function GroupsSettings({ account }: Props) {
                                 <X
                                   size={12}
                                   className={
-                                    "cursor-pointer group-hover:text-nb-gray-100 transition-all shrink-0"
+                                    "cursor-pointer group-hover:text-nb-content-primary transition-all shrink-0"
                                   }
                                 />
                               </Badge>
@@ -281,7 +284,7 @@ export default function GroupsSettings({ account }: Props) {
                           customPrefix={
                             <ShieldCheck
                               size={16}
-                              className={"text-nb-gray-300"}
+                              className={"text-nb-content-muted"}
                             />
                           }
                           placeholder={"Add a group and press Enter"}

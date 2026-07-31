@@ -178,7 +178,7 @@ export default function ClientUpdateSettingsTab() {
             />
             <div>
               <h2 className="text-base">{t("updates.productName")}</h2>
-              <p className="text-xs text-nb-gray-400">
+              <p className="text-xs text-nb-content-muted">
                 CyberNet Dashboard / OAuth
               </p>
             </div>
@@ -226,7 +226,7 @@ export default function ClientUpdateSettingsTab() {
           </div>
         </section>
 
-        <section className="mt-10 border-t border-nb-gray-900 pt-8">
+        <section className="mt-10 border-t border-nb-border-subtle pt-8">
           <div className="flex items-center gap-2 mb-5">
             <Globe2 size={17} />
             <h2 className="text-base">{t("updates.title")}</h2>
@@ -294,7 +294,7 @@ export default function ClientUpdateSettingsTab() {
           </div>
         </section>
 
-        <section className="mt-10 border-t border-nb-gray-900 pt-8">
+        <section className="mt-10 border-t border-nb-border-subtle pt-8">
           <div className="flex items-center gap-2 mb-5">
             <ShieldCheck size={17} />
             <h2 className="text-base">{t("updates.platformUrls")}</h2>
@@ -341,7 +341,7 @@ function Field({
     <div className={className}>
       <Label>{label}</Label>
       {children}
-      {hint && <p className="mt-1.5 text-xs text-nb-gray-400">{hint}</p>}
+      {hint && <p className="mt-1.5 text-xs text-nb-content-muted">{hint}</p>}
     </div>
   );
 }

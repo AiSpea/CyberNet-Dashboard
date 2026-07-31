@@ -40,6 +40,7 @@ import WindowsTab from "@/modules/setup-netbird-modal/WindowsTab";
 import { useLocale } from "@/contexts/LocaleProvider";
 import loadConfig from "@/utils/config";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
+import useClientDownloads from "@/modules/setup-netbird-modal/useClientDownloads";
 
 const config = loadConfig();
 
@@ -56,9 +57,8 @@ type Props = {
   style?: React.CSSProperties;
   // Tri-state audience selector:
   //   true      – user device (laptop/phone): mobile shown, Docker hidden.
-  //   false     – server: mobile hidden, Docker shown, key-generation UI.
-  //   undefined – legacy: keep historical heuristic (mobile shown unless
-  //               a setupKey is already provided; Docker shown).
+  //   false     – server: Linux/Docker setup-key enrollment only.
+  //   undefined – regular account flow unless a setupKey is provided.
   isUserDevice?: boolean;
   showLanguageSwitcher?: boolean;
 };
@@ -126,6 +126,7 @@ export function SetupModalContent({
   const [isFirstRun] = useLocalStorage<boolean>("netbird-first-run", true);
   const pathname = usePathname();
   const isInstallPage = pathname === "/install";
+  const { downloads, loading: downloadsLoading } = useClientDownloads();
 
   // Server flow generates its own setup key when the caller hasn't
   // supplied one. The generated value lives here so the OS tabs and
@@ -133,13 +134,13 @@ export function SetupModalContent({
   const [generatedKey, setGeneratedKey] = useState<SetupKey | undefined>();
   const effectiveSetupKey = setupKey ?? generatedKey?.key;
 
-  // Visibility rules:
-  //   hideDocker  – only when explicitly a user-device flow.
-  //   hideMobile  – server flow (explicit false), or legacy callers
-  //                 that already have a setupKey (routing peers etc.).
-  //   showKeyGen  – server flow, and the caller didn't pre-supply a key.
-  const hideDocker = isUserDevice === true;
-  const hideMobile = isUserDevice === false || !!setupKey;
+  // Account-based device enrollment and unattended server enrollment are two
+  // different journeys. Keep setup keys and commands in the server-only Linux
+  // and Docker path; desktop and mobile users should only install and sign in.
+  const isServerFlow = isUserDevice === false || !!setupKey;
+  const hideDocker = !isServerFlow;
+  const hideMobile = isServerFlow;
+  const hideDesktopApps = isServerFlow;
   const showKeyGenerator = isUserDevice === false && !setupKey;
 
   // setupKeyPlaceholder keeps the `--setup-key SETUP_KEY` token visible
@@ -211,11 +212,7 @@ export function SetupModalContent({
         </div>
       )}
 
-      <Tabs
-        defaultValue={String(
-          isUserDevice === false || setupKey ? OperatingSystem.LINUX : os,
-        )}
-      >
+      <Tabs defaultValue={String(isServerFlow ? OperatingSystem.LINUX : os)}>
         <TabsList justify={tabAlignment} className={"pt-2 px-3"}>
           <TabsTrigger value={String(OperatingSystem.LINUX)}>
             <ShellIcon
@@ -226,22 +223,26 @@ export function SetupModalContent({
             Linux
           </TabsTrigger>
 
-          <TabsTrigger value={String(OperatingSystem.WINDOWS)}>
-            <WindowsIcon
-              className={
-                "fill-nb-gray-500 group-data-[state=active]/trigger:fill-netbird transition-all"
-              }
-            />
-            Windows
-          </TabsTrigger>
-          <TabsTrigger value={String(OperatingSystem.APPLE)}>
-            <AppleIcon
-              className={
-                "fill-nb-gray-500 group-data-[state=active]/trigger:fill-netbird transition-all"
-              }
-            />
-            macOS
-          </TabsTrigger>
+          {!hideDesktopApps && (
+            <>
+              <TabsTrigger value={String(OperatingSystem.WINDOWS)}>
+                <WindowsIcon
+                  className={
+                    "fill-nb-gray-500 group-data-[state=active]/trigger:fill-netbird transition-all"
+                  }
+                />
+                Windows
+              </TabsTrigger>
+              <TabsTrigger value={String(OperatingSystem.APPLE)}>
+                <AppleIcon
+                  className={
+                    "fill-nb-gray-500 group-data-[state=active]/trigger:fill-netbird transition-all"
+                  }
+                />
+                macOS
+              </TabsTrigger>
+            </>
+          )}
 
           {!hideMobile && (
             <>
@@ -283,25 +284,29 @@ export function SetupModalContent({
           showSetupKeyInfo={showOnlyRoutingPeerOS}
           hostname={hostname}
         />
-        <WindowsTab
-          setupKey={effectiveSetupKey}
-          setupKeyContent={setupKeyContent}
-          setupKeyPlaceholder={setupKeyPlaceholder}
-          showSetupKeyInfo={showOnlyRoutingPeerOS}
-          hostname={hostname}
-        />
-        <MacOSTab
-          setupKey={effectiveSetupKey}
-          setupKeyContent={setupKeyContent}
-          setupKeyPlaceholder={setupKeyPlaceholder}
-          showSetupKeyInfo={showOnlyRoutingPeerOS}
-          hostname={hostname}
-        />
+        {!hideDesktopApps && (
+          <>
+            <WindowsTab
+              downloadUrl={downloads.windows}
+              downloadLoading={downloadsLoading}
+            />
+            <MacOSTab
+              downloadUrl={downloads.darwin}
+              downloadLoading={downloadsLoading}
+            />
+          </>
+        )}
 
         {!hideMobile && (
           <>
-            <AndroidTab />
-            <IOSTab />
+            <AndroidTab
+              downloadUrl={downloads.android}
+              downloadLoading={downloadsLoading}
+            />
+            <IOSTab
+              downloadUrl={downloads.ios}
+              downloadLoading={downloadsLoading}
+            />
           </>
         )}
 

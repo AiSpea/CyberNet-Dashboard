@@ -12,7 +12,7 @@ function CardTable({ children, className }: CardTableProps) {
   return (
     <div
       className={cn(
-        "bg-nb-gray-940 rounded-md border border-nb-gray-900 w-full overflow-hidden",
+        "bg-nb-surface-raised rounded-md border border-nb-border-subtle w-full overflow-hidden",
         className,
       )}
     >
@@ -24,12 +24,7 @@ function CardTable({ children, className }: CardTableProps) {
 function CardTableHeader({ children, className }: CardTableProps) {
   return (
     <thead>
-      <tr
-        className={cn(
-          "border-b border-nb-gray-900",
-          className,
-        )}
-      >
+      <tr className={cn("border-b border-nb-border-subtle", className)}>
         {children}
       </tr>
     </thead>
@@ -49,10 +44,7 @@ function CardTableHeaderCell({
 }: CardTableHeaderCellProps) {
   return (
     <th
-      className={cn(
-        "px-4 py-2.5 text-left text-sm font-normal",
-        className,
-      )}
+      className={cn("px-4 py-2.5 text-left text-sm font-normal", className)}
       style={width ? { width } : undefined}
     >
       {children}
@@ -73,7 +65,7 @@ function CardTableRow({ children, className }: CardTableRowProps) {
   return (
     <tr
       className={cn(
-        "border-b border-nb-gray-900 last:border-b-0",
+        "border-b border-nb-border-subtle last:border-b-0",
         className,
       )}
     >
@@ -105,12 +97,11 @@ function CardTableCell({
     >
       <div
         className={cn(
-          "text-nb-gray-400 text-sm flex items-center gap-2",
-          copy && "cursor-pointer hover:text-nb-gray-300 transition-all",
+          "text-nb-content-secondary text-sm flex items-center gap-2",
+          copy && "cursor-pointer hover:text-nb-content-primary transition-all",
         )}
         onClick={() =>
-          copy &&
-          copyToClipBoard(`${copyText} has been copied to clipboard.`)
+          copy && copyToClipBoard(`${copyText} has been copied to clipboard.`)
         }
       >
         {children}

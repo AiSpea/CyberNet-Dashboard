@@ -15,7 +15,7 @@ export default function PageContainer({
     <div
       className={cn(
         className,
-        "relative flex-auto overflow-auto bg-nb-gray z-1 focus:outline-none",
+        "relative flex-auto overflow-auto bg-nb-surface-canvas text-nb-content-primary z-1 focus:outline-none",
         isNavigationCollapsed && "md:pl-[70px]",
       )}
     >

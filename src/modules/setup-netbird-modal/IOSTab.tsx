@@ -1,18 +1,20 @@
-import Code from "@components/Code";
 import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
-import { GRPC_API_ORIGIN } from "@utils/netbird";
-import { DownloadIcon, ShoppingBagIcon } from "lucide-react";
-import Link from "next/link";
+import { LogInIcon, PlayCircleIcon, ShoppingBagIcon } from "lucide-react";
 import React from "react";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
-import Button from "@components/Button";
-import loadConfig from "@/utils/config";
 import { useLocale } from "@/contexts/LocaleProvider";
+import ClientDownloadAction from "@/modules/setup-netbird-modal/ClientDownloadAction";
 
-const config = loadConfig();
+type Props = {
+  downloadUrl?: string;
+  downloadLoading?: boolean;
+};
 
-export default function IOSTab() {
+export default function IOSTab({
+  downloadUrl,
+  downloadLoading,
+}: Readonly<Props>) {
   const { t } = useLocale();
   return (
     <TabsContent value={String(OperatingSystem.IOS)}>
@@ -23,33 +25,26 @@ export default function IOSTab() {
         </p>
         <Steps>
           <Steps.Step step={1}>
-            <p>{t("install.mobileBuild")}</p>
-            <div className={"flex gap-4 mt-1"}>
-              <Link href={config.iosDownloadUrl} target={"_blank"}>
-                <Button variant="primary">
-                  <DownloadIcon size={14} />
-                  {t("install.downloadCyberNet")}
-                </Button>
-              </Link>
+            <p>{t("install.iosDownloadDescription")}</p>
+            <div className={"flex gap-4 mt-1 flex-wrap"}>
+              <ClientDownloadAction
+                url={downloadUrl}
+                loading={downloadLoading}
+                label={t("install.openTestFlight")}
+              />
             </div>
           </Steps.Step>
-          {GRPC_API_ORIGIN && (
-            <Steps.Step step={2}>
-              <p>{t("install.changeServer")}</p>
-              <Code>
-                <Code.Line>{GRPC_API_ORIGIN}</Code.Line>
-              </Code>
-            </Steps.Step>
-          )}
-
-          <Steps.Step step={GRPC_API_ORIGIN ? 3 : 2}>
-            <p>
-              {/* eslint-disable-next-line react/no-unescaped-entities */}
-              {t("install.connectButton")}
+          <Steps.Step step={2}>
+            <p className="flex items-center gap-2">
+              <PlayCircleIcon size={16} className="text-netbird" />
+              {t("install.mobileOpenAfterInstall")}
             </p>
           </Steps.Step>
-          <Steps.Step step={GRPC_API_ORIGIN ? 4 : 3} line={false}>
-            <p>{t("auth.signInAccount")}</p>
+          <Steps.Step step={3} line={false}>
+            <p className="flex items-center gap-2">
+              <LogInIcon size={16} className="text-netbird" />
+              {t("install.signInAndConnect")}
+            </p>
           </Steps.Step>
         </Steps>
       </TabsContentPadding>

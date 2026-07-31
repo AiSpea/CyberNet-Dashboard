@@ -71,7 +71,9 @@ function DashboardPageContent({
     <div className={cn("flex flex-col h-screen", mobileNavOpen && "flex")}>
       {mobileNavOpen && (
         <motion.div
-          className={"h-screen bg-nb-gray-950 w-11/12 max-w-[22rem]"}
+          className={
+            "h-screen bg-nb-surface-canvas text-nb-content-primary w-11/12 max-w-[22rem]"
+          }
           layout={true}
           transition={{
             type: "spring",
@@ -95,10 +97,10 @@ function DashboardPageContent({
             <div className={"flex items-center gap-3 max-w-[22rem]"}>
               <UserAvatar size={"small"} />
               <div className="flex flex-col space-y-1">
-                <p className="font-medium leading-none dark:text-gray-300">
+                <p className="font-medium leading-none text-nb-content-primary">
                   {user?.name}
                 </p>
-                <p className="text-xs leading-none dark:text-gray-400">
+                <p className="text-xs leading-none text-nb-content-secondary">
                   {user?.email}
                 </p>
               </div>
@@ -122,7 +124,7 @@ function DashboardPageContent({
           layout={"position"}
           className={cn(
             mobileNavOpen
-              ? "border border-nb-gray-900 shadow-inner overflow-hidden rounded-xl fixed scale-75"
+              ? "border border-nb-border-subtle shadow-inner overflow-hidden rounded-xl fixed scale-75"
               : "",
           )}
           transition={{
