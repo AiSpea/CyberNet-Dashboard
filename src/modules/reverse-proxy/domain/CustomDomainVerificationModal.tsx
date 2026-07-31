@@ -23,6 +23,10 @@ import {
 import Paragraph from "@components/Paragraph";
 import InlineLink from "@components/InlineLink";
 import { isNetBirdCloud } from "@/utils/netbird";
+import loadConfig from "@utils/config";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -40,6 +44,7 @@ export const CustomDomainVerificationModal = ({
   targetCluster,
 }: Props) => {
   const { domains } = useReverseProxies();
+  const { t } = useLocale();
 
   const handleStartVerification = () => {
     onStartVerification(domain);
@@ -140,9 +145,9 @@ export const CustomDomainVerificationModal = ({
                 )}
 
                 <Callout variant={"warning"}>
-                  DNS changes may take some time to propagate. If NetBird does
-                  not find the record immediately, please wait up to 24 hours
-                  and try again.
+                  {t("reverseProxy.dnsPropagation", {
+                    product: config.productName,
+                  })}
                 </Callout>
               </>
             )}

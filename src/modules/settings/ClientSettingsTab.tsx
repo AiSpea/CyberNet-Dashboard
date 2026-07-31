@@ -15,6 +15,7 @@ import { Callout } from "@components/Callout";
 import { useHasChanges } from "@hooks/useHasChanges";
 import * as Tabs from "@radix-ui/react-tabs";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn, validator } from "@utils/helpers";
 import {
   AlertTriangle,
@@ -34,11 +35,14 @@ import ReverseProxyIcon from "@/assets/icons/ReverseProxyIcon";
 import { useAgentNetworkMode } from "@/modules/agent-network/useAgentNetworkMode";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
 import { useGroups } from "@/contexts/GroupsProvider";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { SkeletonSettings } from "@components/skeletons/SkeletonSettings";
 
 type Props = {
   account: Account;
 };
+
+const config = loadConfig();
 
 const latestOrCustomVersion = [
   {
@@ -68,6 +72,8 @@ export default function ClientSettingsTab({ account }: Readonly<Props>) {
 function ClientSettingsTabContent({ account }: Readonly<Props>) {
   const { permission } = usePermissions();
   const { enabled: agentNetworkEnabled } = useAgentNetworkMode();
+  const { t } = useLocale();
+  const productValues = { product: config.productName };
 
   const { mutate } = useSWRConfig();
   const saveRequest = useApiCall<Account>("/accounts/" + account.id, true);
@@ -272,15 +278,13 @@ function ClientSettingsTabContent({ account }: Readonly<Props>) {
               />
             </Label>
             <HelpText>
-              Configure how NetBird clients receive update notifications. When
-              enabled, users will be prompted to install the selected version.
-              This requires at least NetBird{" "}
-              <span className={"text-white font-medium"}>v0.61.0</span>.{" "}
-              <InlineLink
-                href={"https://docs.netbird.io/manage/peers/auto-update"}
-                target={"_blank"}
-              >
-                Learn more
+              {t("clientSettings.autoUpdateDescription", productValues)}{" "}
+              {t("clientSettings.minimumVersion", {
+                ...productValues,
+                version: "v0.61.0",
+              })}{" "}
+              <InlineLink href={config.docsUrl} target={"_blank"}>
+                {t("common.learnMore")}
                 <ExternalLinkIcon size={12} />
               </InlineLink>
             </HelpText>
@@ -333,9 +337,7 @@ function ClientSettingsTabContent({ account }: Readonly<Props>) {
                   />
                 }
               >
-                Enabling automatic updates will restart the NetBird client
-                during updates, which can temporarily disrupt active
-                connections. Use with caution in production environments.
+                {t("clientSettings.autoUpdateWarning", productValues)}
               </Callout>
             )}
           </div>
@@ -347,16 +349,14 @@ function ClientSettingsTabContent({ account }: Readonly<Props>) {
                 Expose Services from CLI
               </Label>
               <HelpText>
-                Allow peers to expose local services through the NetBird reverse
-                proxy using the CLI. <br /> This requires at least NetBird{" "}
-                <span className={"text-white font-medium"}>v0.66.0</span>.{" "}
-                <InlineLink
-                  href={
-                    "https://docs.netbird.io/manage/reverse-proxy/expose-from-cli"
-                  }
-                  target={"_blank"}
-                >
-                  Learn more
+                {t("clientSettings.peerExposeDescription", productValues)}{" "}
+                <br />
+                {t("clientSettings.minimumVersion", {
+                  ...productValues,
+                  version: "v0.66.0",
+                })}{" "}
+                <InlineLink href={config.docsUrl} target={"_blank"}>
+                  {t("common.learnMore")}
                   <ExternalLinkIcon size={12} />
                 </InlineLink>
               </HelpText>
@@ -405,14 +405,13 @@ function ClientSettingsTabContent({ account }: Readonly<Props>) {
             </Label>
 
             <HelpText>
-              Instead of maintaining always-on connections, NetBird activates
-              them on-demand based on activity or signaling. This requires
-              NetBird client v0.50.1 or higher.{" "}
-              <InlineLink
-                href={"https://docs.netbird.io/how-to/lazy-connection"}
-                target={"_blank"}
-              >
-                Learn more
+              {t("clientSettings.lazyConnectionDescription", productValues)}{" "}
+              {t("clientSettings.minimumVersion", {
+                ...productValues,
+                version: "v0.50.1",
+              })}{" "}
+              <InlineLink href={config.docsUrl} target={"_blank"}>
+                {t("common.learnMore")}
                 <ExternalLinkIcon size={12} />
               </InlineLink>
             </HelpText>

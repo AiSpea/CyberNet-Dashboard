@@ -27,6 +27,7 @@ import {
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSWRConfig } from "swr";
 import { useApiCall } from "@/utils/api";
+import loadConfig from "@utils/config";
 import { cn, validator } from "@utils/helpers";
 import { GRPC_API_ORIGIN, isNetBirdCloud } from "@/utils/netbird";
 import { SelectDropdown } from "@components/select/SelectDropdown";
@@ -40,6 +41,9 @@ import {
   ClusterCloudDeploy,
   CloudProvider,
 } from "@/modules/reverse-proxy/clusters/ClusterCloudDeploy";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -83,6 +87,7 @@ const renderHighlightedCommand = (command: string, highlights: string[]) => {
 
 export const ClustersModal = ({ open, onOpenChange }: Props) => {
   const { mutate } = useSWRConfig();
+  const { t } = useLocale();
   const [tab, setTab] = useState("domain");
   const [domain, setDomain] = useState("");
   const [token, setToken] = useState("");
@@ -454,9 +459,10 @@ spec:
 
               {!isNetBirdCloud() && (
                 <Callout variant={"warning"}>
-                  For self-hosted deployments, make sure the proxy service
-                  routes are configured on your NetBird management server before
-                  starting the proxy.&nbsp;
+                  {t("reverseProxy.selfHostedRoutingWarning", {
+                    product: config.productName,
+                  })}
+                  &nbsp;
                   <InlineLink
                     href={REVERSE_PROXY_SELFHOSTED_ROUTING_DOCS_LINK}
                     target={"_blank"}
@@ -539,7 +545,9 @@ spec:
                 </ModalClose>
                 <Button
                   variant={"primary"}
-                  onClick={() => (isCloudDeploy ? goToInstall() : setTab("dns"))}
+                  onClick={() =>
+                    isCloudDeploy ? goToInstall() : setTab("dns")
+                  }
                   disabled={!domain.trim() || !!domainError}
                 >
                   Continue

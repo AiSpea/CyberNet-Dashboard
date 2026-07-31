@@ -3,6 +3,7 @@ import InlineLink from "@components/InlineLink";
 import Paragraph from "@components/Paragraph";
 import { SkeletonIntegration } from "@components/skeletons/SkeletonIntegration";
 import * as Tabs from "@radix-ui/react-tabs";
+import loadConfig from "@utils/config";
 import { isNetBirdCloud } from "@utils/netbird";
 import { ExternalLinkIcon, FingerprintIcon } from "lucide-react";
 import React from "react";
@@ -18,9 +19,13 @@ import { Jumpcloud } from "@/modules/integrations/idp-sync/jumpcloud/Jumpcloud";
 import { Okta } from "@/modules/integrations/idp-sync/okta-scim/Okta";
 import { useIntegrations } from "@/modules/integrations/idp-sync/useIntegrations";
 import { Callout } from "@components/Callout";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const config = loadConfig();
 
 export default function IdentityProviderTab() {
   const account = useAccount();
+  const { t } = useLocale();
 
   useIntegrations();
 
@@ -30,27 +35,23 @@ export default function IdentityProviderTab() {
         <Breadcrumbs>
           <Breadcrumbs.Item
             href={"/integrations"}
-            label={"Integrations"}
+            label={t("integrations.title")}
             icon={<IntegrationIcon size={13} />}
           />
           <Breadcrumbs.Item
             href={"/settings?tab=identity-provider"}
-            label={"Identity Provider Sync"}
+            label={t("integrations.idpTitle")}
             icon={<FingerprintIcon size={14} />}
             active
           />
         </Breadcrumbs>
-        <h1>Identity Provider Sync</h1>
+        <h1>{t("integrations.idpTitle")}</h1>
         <Paragraph>
-          Configure your preferred Identity Provider (IdP) to synchronize your
-          users and groups to NetBird.
+          {t("integrations.idpDescription", { product: config.productName })}
         </Paragraph>
         <Paragraph>
-          <InlineLink
-            href={"https://docs.netbird.io/how-to/idp-sync"}
-            target={"_blank"}
-          >
-            Learn more
+          <InlineLink href={config.docsUrl} target={"_blank"}>
+            {t("common.learnMore")}
             <ExternalLinkIcon size={12} />
           </InlineLink>
         </Paragraph>
@@ -84,17 +85,19 @@ export default function IdentityProviderTab() {
               </>
             )}
           </div>
-            { isNetBirdCloud() && <Callout variant={"warning"} className={"max-w-lg mt-6"}>
-            Looking to enable a custom IdP like Keycloak? <br />
-            Please contact us at{" "}
-            <InlineLink
-              href={"mailto:support@netbird.io"}
-              className={"inline !text-netbird-500 font-medium"}
-            >
-              {" "}
-              support@netbird.io
-            </InlineLink>{" "}
-          </Callout>}
+          {isNetBirdCloud() && (
+            <Callout variant={"warning"} className={"max-w-lg mt-6"}>
+              Looking to enable a custom IdP like Keycloak? <br />
+              Please contact us at{" "}
+              <InlineLink
+                href={"mailto:support@netbird.io"}
+                className={"inline !text-netbird-500 font-medium"}
+              >
+                {" "}
+                support@netbird.io
+              </InlineLink>{" "}
+            </Callout>
+          )}
         </LockedFeatureOverlay>
       </div>
     </Tabs.Content>

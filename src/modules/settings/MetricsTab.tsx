@@ -5,13 +5,12 @@ import { notify } from "@components/Notification";
 import Paragraph from "@components/Paragraph";
 import * as Tabs from "@radix-ui/react-tabs";
 import { useApiCall } from "@utils/api";
-import {
-  ChartNoAxesCombined,
-  ExternalLinkIcon,
-} from "lucide-react";
+import loadConfig from "@utils/config";
+import { ChartNoAxesCombined, ExternalLinkIcon } from "lucide-react";
 import React, { useState } from "react";
 import { useSWRConfig } from "swr";
 import SettingsIcon from "@/assets/icons/SettingsIcon";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { usePermissions } from "@/contexts/PermissionsProvider";
 import { Account } from "@/interfaces/Account";
 
@@ -19,9 +18,12 @@ type Props = {
   account: Account;
 };
 
+const config = loadConfig();
+
 export default function MetricsTab({ account }: Readonly<Props>) {
   const { permission } = usePermissions();
   const { mutate } = useSWRConfig();
+  const { t } = useLocale();
   const saveRequest = useApiCall<Account>("/accounts/" + account.id, true);
 
   const [metricsPushEnabled, setMetricsPushEnabled] = useState(
@@ -30,10 +32,8 @@ export default function MetricsTab({ account }: Readonly<Props>) {
 
   const toggleMetricsPush = async (toggle: boolean) => {
     notify({
-      title: "Metrics",
-      description: `Metrics push successfully ${
-        toggle ? "enabled" : "disabled"
-      }.`,
+      title: t("settings.metrics"),
+      description: t(toggle ? "metrics.enabled" : "metrics.disabled"),
       promise: saveRequest
         .put({
           id: account.id,
@@ -46,7 +46,7 @@ export default function MetricsTab({ account }: Readonly<Props>) {
           setMetricsPushEnabled(toggle);
           mutate("/accounts");
         }),
-      loadingMessage: "Updating metrics setting...",
+      loadingMessage: t("metrics.updating"),
     });
   };
 
@@ -56,34 +56,26 @@ export default function MetricsTab({ account }: Readonly<Props>) {
         <Breadcrumbs>
           <Breadcrumbs.Item
             href={"/settings"}
-            label={"Settings"}
+            label={t("nav.settings")}
             icon={<SettingsIcon size={13} />}
           />
           <Breadcrumbs.Item
             href={"/settings?tab=metrics"}
-            label={"Metrics"}
+            label={t("settings.metrics")}
             icon={<ChartNoAxesCombined size={14} />}
             active
           />
         </Breadcrumbs>
         <div>
-          <h1>Metrics</h1>
+          <h1>{t("settings.metrics")}</h1>
           <Paragraph>
-            Help us improve NetBird by sharing performance metrics
-            such as connection timing, sync duration, and login latency.
+            {t("metrics.description", { product: config.productName })}
           </Paragraph>
           <Paragraph>
-            Learn more about{" "}
-            <InlineLink
-              href={
-                "https://docs.netbird.io/manage/client-metrics"
-              }
-              target={"_blank"}
-            >
-              Client Metrics
+            <InlineLink href={config.docsUrl} target={"_blank"}>
+              {t("metrics.learnMore")}
               <ExternalLinkIcon size={12} />
             </InlineLink>
-            in our documentation.
           </Paragraph>
         </div>
 
@@ -94,12 +86,10 @@ export default function MetricsTab({ account }: Readonly<Props>) {
           label={
             <>
               <ChartNoAxesCombined size={15} />
-              Share performance metrics
+              {t("metrics.share")}
             </>
           }
-          helpText={
-            "When enabled, clients will periodically send performance data to help us identify and fix issues."
-          }
+          helpText={t("metrics.shareHelp")}
           disabled={!permission.settings.update}
         />
       </div>

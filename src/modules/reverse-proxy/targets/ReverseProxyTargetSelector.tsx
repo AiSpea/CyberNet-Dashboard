@@ -3,7 +3,10 @@
 import HelpText from "@components/HelpText";
 import { Label } from "@components/Label";
 import { Modal } from "@components/modal/Modal";
-import { ClusterOption, PeerGroupSelector } from "@components/PeerGroupSelector";
+import {
+  ClusterOption,
+  PeerGroupSelector,
+} from "@components/PeerGroupSelector";
 import React, { useMemo, useState } from "react";
 import { Network } from "@/interfaces/Network";
 import {
@@ -17,6 +20,10 @@ import {
 import { HelpTooltip } from "@components/HelpTooltip";
 import InlineLink, { InlineButtonLink } from "@components/InlineLink";
 import SetupModal from "@/modules/setup-netbird-modal/SetupModal";
+import loadConfig from "@utils/config";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const config = loadConfig();
 
 export type Target = {
   type: ReverseProxyTargetType;
@@ -49,6 +56,7 @@ export default function ReverseProxyTargetSelector({
 }: Readonly<Props>) {
   const { resources, peers, domains } = useReverseProxies();
   const [installModal, setInstallModal] = useState(false);
+  const { t } = useLocale();
 
   // Clusters tab is only available when at least one domain advertises
   // supports_private. Inside a network-resource flow there is no cluster
@@ -57,15 +65,12 @@ export default function ReverseProxyTargetSelector({
     if (initialNetwork) return [];
     const privateCapable = (domains ?? []).filter(
       (d) =>
-        d.supports_private === true &&
-        d.type === ReverseProxyDomainType.FREE,
+        d.supports_private === true && d.type === ReverseProxyDomainType.FREE,
     );
     if (privateCapable.length === 0) return [];
     if (serviceCluster) {
       const match = privateCapable.find((d) => d.domain === serviceCluster);
-      return match
-        ? [{ domain: match.domain }]
-        : [{ domain: serviceCluster }];
+      return match ? [{ domain: match.domain }] : [{ domain: serviceCluster }];
     }
     return privateCapable.map((d) => ({ domain: d.domain }));
   }, [domains, initialNetwork, serviceCluster]);
@@ -91,13 +96,13 @@ export default function ReverseProxyTargetSelector({
               className={"max-w-sm"}
               content={
                 <>
-                  A <span className={"text-white font-medium"}>peer</span> is a
-                  machine (e.g., laptop, server, container) running NetBird.
-                  Select a peer if your service runs directly on it.
+                  {t("reverseProxy.targetPeerDescription", {
+                    product: config.productName,
+                  })}
                   <span className={"mt-1 block"}>
                     If you don&apos;t have a peer yet, you can{" "}
                     <InlineButtonLink onClick={() => setInstallModal(true)}>
-                      Install NetBird
+                      {t("install.button")}
                     </InlineButtonLink>
                     .
                   </span>
@@ -112,10 +117,9 @@ export default function ReverseProxyTargetSelector({
               className={"max-w-sm"}
               content={
                 <>
-                  A <span className={"text-white font-medium"}>resource</span>{" "}
-                  is a destination (IP, subnet, or domain) that can&apos;t run
-                  NetBird directly. Resources are part of a network and are
-                  reached through a routing peer that forwards traffic to them.
+                  {t("reverseProxy.targetResourceDescription", {
+                    product: config.productName,
+                  })}
                   <span className={"mt-1 block"}>
                     If you don&apos;t have resources yet, go to{" "}
                     <InlineLink href={"/networks"}>Networks</InlineLink> to
@@ -129,17 +133,19 @@ export default function ReverseProxyTargetSelector({
             </HelpTooltip>
             {showClusters && (
               <>
-                {" "}or{" "}
+                {" "}
+                or{" "}
                 <HelpTooltip
                   className={"max-w-sm"}
                   content={
                     <>
-                      A <span className={"text-white font-medium"}>
+                      A{" "}
+                      <span className={"text-white font-medium"}>
                         proxy cluster
                       </span>{" "}
                       forwards inbound traffic to an upstream the proxy reaches
-                        without WireGuard. Useful for external APIs and services
-                        co-located with the proxy.
+                      without WireGuard. Useful for external APIs and services
+                      co-located with the proxy.
                     </>
                   }
                   interactive={true}

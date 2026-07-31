@@ -11,12 +11,17 @@ import MinimalPeersTable from "@/modules/peer/MinimalPeersTable";
 import NoResults from "@components/ui/NoResults";
 import PeerIcon from "@/assets/icons/PeerIcon";
 import Paragraph from "@components/Paragraph";
+import loadConfig from "@utils/config";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const config = loadConfig();
 
 type Props = {
   user: User;
 };
 
 export const UserPeersSection = ({ user }: Props) => {
+  const { t } = useLocale();
   const { ref: headingRef, portalTarget } =
     usePortalElement<HTMLHeadingElement>();
 
@@ -36,8 +41,8 @@ export const UserPeersSection = ({ user }: Props) => {
       <div className={"max-w-6xl"}>
         <div className={"flex justify-between items-center mb-5"}>
           <div>
-            <h2 ref={headingRef}>Peers</h2>
-            <Paragraph>View all peers registered by this user.</Paragraph>
+            <h2 ref={headingRef}>{t("users.peersTitle")}</h2>
+            <Paragraph>{t("users.peersDescription")}</Paragraph>
           </div>
         </div>
 
@@ -58,10 +63,10 @@ export const UserPeersSection = ({ user }: Props) => {
             getStartedCard={
               <NoResults
                 className={"py-4"}
-                title={"This user has no registered peers"}
-                description={
-                  "Install NetBird and sign in as this user to register peers."
-                }
+                title={t("users.noPeersTitle")}
+                description={t("users.noPeersDescription", {
+                  product: config.productName,
+                })}
                 icon={<PeerIcon size={20} className={"fill-nb-gray-300"} />}
               />
             }

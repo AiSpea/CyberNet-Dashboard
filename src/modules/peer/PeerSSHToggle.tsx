@@ -32,7 +32,11 @@ import { PeerSSHPolicyModal } from "@/modules/peer/PeerSSHPolicyModal";
 import { Callout } from "@components/Callout";
 import { useDialog } from "@/contexts/DialogProvider";
 import InlineLink from "@components/InlineLink";
+import loadConfig from "@utils/config";
 import { isNetbirdSSHProtocolSupported } from "@utils/version";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const config = loadConfig();
 
 export const PeerSSHToggle = () => {
   const { permission } = usePermissions();
@@ -48,6 +52,8 @@ export const PeerSSHToggle = () => {
   const [sshPolicyModal, setSshPolicyModal] = useState(false);
   const [currentPolicy, setCurrentPolicy] = useState<Policy>();
   const { confirm } = useDialog();
+  const { t } = useLocale();
+  const productValues = { product: config.productName };
 
   const isSSHDashboardEnabled = peer?.ssh_enabled;
   const isSSHClientEnabled = peer?.local_flags?.server_ssh_allowed;
@@ -80,25 +86,22 @@ export const PeerSSHToggle = () => {
 
   const disableDashboardSSH = async () => {
     const choice = await confirm({
-      title: `Disable SSH Access?`,
+      title: t("ssh.disableTitle"),
       description: (
         <div>
-          Starting from NetBird v0.61.0, once SSH access is disabled, you cannot
-          re-enable it again from the dashboard. You&apos;ll need to create an
-          explicit access control policy and update your NetBird client to
-          restore SSH functionality.{" "}
+          {t("ssh.disableDescription", productValues)}{" "}
           <InlineLink
-            href={"https://docs.netbird.io/manage/peers/ssh"}
+            href={config.docsUrl}
             target={"_blank"}
             onClick={(e) => e.stopPropagation()}
           >
-            Learn more
+            {t("common.learnMore")}
             <ExternalLinkIcon size={12} />
           </InlineLink>
         </div>
       ),
-      confirmText: "Disable",
-      cancelText: "Cancel",
+      confirmText: t("ssh.disable"),
+      cancelText: t("common.cancel"),
       type: "warning",
       maxWidthClass: "max-w-xl",
     });
@@ -164,9 +167,7 @@ export const PeerSSHToggle = () => {
             }
             className="my-3"
           >
-            You have SSH access configured but your client runs on an older
-            NetBird version. Please update your NetBird client to v.0.61.0+ in
-            order to allow SSH connections.
+            {t("ssh.oldClientWarning", productValues)}
           </Callout>
         )}
 
@@ -198,9 +199,7 @@ export const PeerSSHToggle = () => {
           }
           className="my-3"
         >
-          Your SSH server is enabled, but starting from NetBird v0.61.0, SSH
-          requires an explicit access control policy. Please create an SSH
-          access control policy in order to allow SSH connections.
+          {t("ssh.policyRequiredWarning", productValues)}
         </Callout>
       )}
 

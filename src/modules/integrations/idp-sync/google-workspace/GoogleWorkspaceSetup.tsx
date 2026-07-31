@@ -11,6 +11,7 @@ import { Mark } from "@components/ui/Mark";
 import { MinimalList } from "@components/ui/MinimalList";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { isEmpty, trim } from "lodash";
 import {
@@ -40,6 +41,8 @@ import { EmbeddedIdentityProviderSelect } from "@/modules/integrations/idp-sync/
 import { GroupPrefixHelpText } from "@/modules/integrations/idp-sync/GroupPrefixHelpText";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
 import { GroupPrefixInput } from "../GroupPrefixInput";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -103,7 +106,7 @@ export function SetupContent({ onSuccess }: ModalProps) {
   const connect = async () => {
     notify({
       title: "Google Workspace Integration",
-      description: `Google Workspace was successfully connected to NetBird.`,
+      description: `Google Workspace was successfully connected to ${config.productName}.`,
       promise: googleRequest
         .post({
           service_account_key: btoa(serviceAccountKey), // Encode client secret to base64
@@ -155,10 +158,8 @@ export function SetupContent({ onSuccess }: ModalProps) {
 
       <IntegrationModalHeader
         image={integrationImage}
-        title={"Connect NetBird with Google Workspace"}
-        description={
-          "Start syncing your users and groups from Google Workspace to NetBird. Follow the steps below to get started."
-        }
+        title={`Connect ${config.productName} with Google Workspace`}
+        description={`Start syncing your users and groups from Google Workspace to ${config.productName}. Follow the steps below to get started.`}
       />
 
       {step === -1 && (
@@ -227,12 +228,13 @@ export function SetupContent({ onSuccess }: ModalProps) {
         <div className={"px-8 py-3 flex flex-col gap-0 mt-4"}>
           <p className={"font-medium flex gap-3 items-center text-base"}>
             <Folder size={20} />
-            Create NetBird project
+            Create {config.productName} project
           </p>
           <Steps>
             <Steps.Step step={1}>
               <p>
-                Create a new <Mark copy>NetBird</Mark> project in the{" "}
+                Create a new <Mark copy>{config.productName}</Mark> project in
+                the{" "}
                 <InlineLink
                   className={"inline"}
                   target={"_blank"}
@@ -254,8 +256,7 @@ export function SetupContent({ onSuccess }: ModalProps) {
                 >
                   Admin SDK API
                 </InlineLink>{" "}
-                for the
-                <Mark>NetBird</Mark> project
+                for the <Mark>{config.productName}</Mark> project
               </p>
             </Steps.Step>
           </Steps>
@@ -299,11 +300,11 @@ export function SetupContent({ onSuccess }: ModalProps) {
             data={[
               {
                 label: "Service account name",
-                value: "NetBird",
+                value: config.productName,
               },
               {
                 label: "Service account ID",
-                value: "netbird",
+                value: "cybernet",
               },
             ]}
           />
@@ -333,8 +334,8 @@ export function SetupContent({ onSuccess }: ModalProps) {
             </Steps.Step>
             <Steps.Step step={1}>
               <p className={"font-normal"}>
-                Click <Mark>NetBird</Mark> to edit the service account. Copy the
-                service account email address.
+                Click <Mark>{config.productName}</Mark> to edit the service
+                account. Copy the service account email address.
               </p>
               <Lightbox image={googleEditServiceAccount} />
             </Steps.Step>
@@ -353,7 +354,7 @@ export function SetupContent({ onSuccess }: ModalProps) {
                   <Mail size={16} className={"text-nb-gray-300"} />
                 </div>
               }
-              placeholder={"netbird@loadtests-347817.iam.gserviceaccount.com"}
+              placeholder={"cybernet@example.iam.gserviceaccount.com"}
               value={serviceAccountMail}
               onChange={(e) => setServiceAccountMail(e.target.value)}
             />

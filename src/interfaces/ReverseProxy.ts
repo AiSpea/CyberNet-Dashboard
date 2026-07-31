@@ -1,3 +1,5 @@
+import loadConfig from "@utils/config";
+
 export enum ServiceMode {
   HTTP = "http",
   TCP = "tcp",
@@ -226,41 +228,18 @@ export function isL4Mode(mode?: ServiceMode): boolean {
   );
 }
 
-export const REVERSE_PROXY_DOCS_LINK =
-  "https://docs.netbird.io/manage/reverse-proxy";
+const reverseProxyDocsUrl = loadConfig().docsUrl;
 
-export const REVERSE_PROXY_SERVICES_DOCS_LINK =
-  "https://docs.netbird.io/manage/reverse-proxy#services";
-
-export const REVERSE_PROXY_TARGETS_DOCS_LINK =
-  "https://docs.netbird.io/manage/reverse-proxy#targets";
-
-export const REVERSE_PROXY_AUTHENTICATION_DOCS_LINK =
-  "https://docs.netbird.io/manage/reverse-proxy/authentication";
-
-export const REVERSE_PROXY_SETTINGS_DOCS_LINK =
-  "https://docs.netbird.io/manage/reverse-proxy#step-4-configure-advanced-settings";
-
-export const REVERSE_PROXY_CLUSTERS_DOCS_LINK =
-  "https://docs.netbird.io/manage/reverse-proxy/bring-your-own-proxy#shared-and-account-clusters";
-
-export const REVERSE_PROXY_SELFHOSTED_ROUTING_DOCS_LINK =
-  "https://docs.netbird.io/selfhosted/migration/enable-reverse-proxy#connecting-through-traefik-instead-of-docker-network";
-
-export const REVERSE_PROXY_ENV_REFERENCE_DOCS_LINK =
-  "https://docs.netbird.io/selfhosted/migration/enable-reverse-proxy#environment-variable-reference";
-
-export const REVERSE_PROXY_CUSTOM_DOMAINS_DOCS_LINK =
-  "https://docs.netbird.io/manage/reverse-proxy/custom-domains";
-
-export const REVERSE_PROXY_DOMAIN_VERIFICATION_LINK =
-  "https://docs.netbird.io/manage/reverse-proxy/custom-domains#verifying-a-custom-domain";
-
-export const REVERSE_PROXY_EVENTS_DOCS_LINK =
-  "https://docs.netbird.io/manage/reverse-proxy/access-logs";
-
-export const REVERSE_PROXY_ACCESS_CONTROL_DOCS_LINK =
-  "https://docs.netbird.io/manage/reverse-proxy#step-3b-configure-access-control";
-
-export const REVERSE_PROXY_TROUBLESHOOTING_DOCS_LINK =
-  "https://docs.netbird.io/manage/reverse-proxy/troubleshooting";
+export const REVERSE_PROXY_DOCS_LINK = reverseProxyDocsUrl;
+export const REVERSE_PROXY_SERVICES_DOCS_LINK = reverseProxyDocsUrl;
+export const REVERSE_PROXY_TARGETS_DOCS_LINK = reverseProxyDocsUrl;
+export const REVERSE_PROXY_AUTHENTICATION_DOCS_LINK = reverseProxyDocsUrl;
+export const REVERSE_PROXY_SETTINGS_DOCS_LINK = reverseProxyDocsUrl;
+export const REVERSE_PROXY_CLUSTERS_DOCS_LINK = reverseProxyDocsUrl;
+export const REVERSE_PROXY_SELFHOSTED_ROUTING_DOCS_LINK = reverseProxyDocsUrl;
+export const REVERSE_PROXY_ENV_REFERENCE_DOCS_LINK = reverseProxyDocsUrl;
+export const REVERSE_PROXY_CUSTOM_DOMAINS_DOCS_LINK = reverseProxyDocsUrl;
+export const REVERSE_PROXY_DOMAIN_VERIFICATION_LINK = reverseProxyDocsUrl;
+export const REVERSE_PROXY_EVENTS_DOCS_LINK = reverseProxyDocsUrl;
+export const REVERSE_PROXY_ACCESS_CONTROL_DOCS_LINK = reverseProxyDocsUrl;
+export const REVERSE_PROXY_TROUBLESHOOTING_DOCS_LINK = reverseProxyDocsUrl;

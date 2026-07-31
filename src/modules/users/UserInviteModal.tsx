@@ -15,6 +15,7 @@ import { PeerGroupSelector } from "@components/PeerGroupSelector";
 import { SegmentedTabs } from "@components/SegmentedTabs";
 import { IconLink, IconMailForward, IconUserPlus } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn, validator } from "@utils/helpers";
 import { AlarmClock, CopyIcon, MailIcon, User2 } from "lucide-react";
 import Image from "next/image";
@@ -30,6 +31,7 @@ import { Role, User, UserInvite } from "@/interfaces/User";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
 import { UserRoleSelector } from "@/modules/users/UserRoleSelector";
 import { isNetBirdCloud } from "@utils/netbird";
+import { useLocale } from "@/contexts/LocaleProvider";
 
 type UserCreationMode = "create" | "invite";
 
@@ -40,6 +42,7 @@ type Props = {
 
 const passwordCopyMessage = "Password was copied to your clipboard!";
 const inviteLinkCopyMessage = "Invite link was copied to your clipboard!";
+const config = loadConfig();
 
 type SuccessData =
   | { type: "password"; user: User }
@@ -201,6 +204,7 @@ export function UserInviteModalContent({
   const userRequest = useApiCall<User>("/users");
   const inviteRequest = useApiCall<UserInvite>("/users/invites");
   const { mutate } = useSWRConfig();
+  const { t } = useLocale();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -287,7 +291,9 @@ export function UserInviteModalContent({
     if (isCloud)
       return "Invite a user to your network and set their permissions.";
     if (mode === "create") {
-      return "Create a NetBird user account with email and password.";
+      return t("userInvite.localAccountDescription", {
+        product: config.productName,
+      });
     }
     return "Generate an invite link that the user can use to set their own password.";
   };
@@ -372,7 +378,7 @@ export function UserInviteModalContent({
                 <MailIcon size={16} className={"text-nb-gray-300"} />
               </div>
             }
-            placeholder={"hello@netbird.io"}
+            placeholder={"hello@example.com"}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />

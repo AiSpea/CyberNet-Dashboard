@@ -1,12 +1,12 @@
 import { useOidcUser } from "@axa-fr/react-oidc";
 import Button from "@components/Button";
-import { ArrowRightIcon, PlayIcon } from "lucide-react";
-import Image, { StaticImageData } from "next/image";
+import loadConfig from "@utils/config";
+import { ArrowRightIcon, BookOpenIcon } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
-import ACLImage from "@/assets/onboarding/acl.png";
-import ActivityImage from "@/assets/onboarding/activity.png";
-import PostureCheckImage from "@/assets/onboarding/posture.png";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const config = loadConfig();
 
 type Props = {
   onFinish?: () => void;
@@ -14,57 +14,53 @@ type Props = {
 
 export const OnboardingEnd = ({ onFinish }: Props) => {
   const { oidcUser: user } = useOidcUser();
+  const { t } = useLocale();
   const name = user?.given_name || user?.name || user?.preferred_username;
 
-  const title = name ? `Congratulations, ${name}!` : "Congratulations!";
+  const title = name
+    ? t("onboarding.congratulations", { name })
+    : t("onboarding.congratulationsGeneric");
 
   return (
     <div className={"relative flex flex-col h-full justify-between"}>
       <div>
         <h1 className={"text-xl text-center max-w-sm mx-auto"}>
           {title} <br />
-          You’ve completed the onboarding.
+          {t("onboarding.complete")}
         </h1>
         <div
           className={
             "text-sm text-nb-gray-300 font-light mt-2 block text-center sm:px-4"
           }
         >
-          What’s next? Check out these guides to get the most out of CyberNet.
-          To learn more, explore the dashboard, visit our documentation, or
-          browse our YouTube channel.
+          {t("onboarding.next", { product: config.productName })}
         </div>
 
         <div className={"mt-8 flex flex-col gap-8"}>
-          <VideoGuide
-            title={"Access Control in Under 5 Minutes"}
-            src={ACLImage}
-            description={
-              "Learn how to manage access for your network resources effectively. Whether you want to restrict access to specific machines or allow certain users to connect."
-            }
-            href={"https://github.com/AiSpea/CyberNet-Dashboard#readme"}
+          <Guide
+            title={t("onboarding.accessTitle")}
+            description={t("onboarding.accessDescription")}
+            href={config.docsUrl}
           />
-          <VideoGuide
-            title={"Provision Users & Groups From Your IdP"}
-            src={PostureCheckImage}
-            description={
-              "Learn how to provision users and groups from your identity provider, such as Okta, Azure AD, or Google Workspace, to manage access control in CyberNet and automate onboarding and offboarding processes."
-            }
-            href={"https://github.com/AiSpea/CyberNet-Dashboard#readme"}
+          <Guide
+            title={t("onboarding.identityTitle")}
+            description={t("onboarding.identityDescription")}
+            href={config.docsUrl}
           />
-          <VideoGuide
-            title={"How CyberNet Works"}
-            description={
-              "Learn more about how CyberNet works, its architecture, and how it can help you build secure networks."
-            }
-            src={ActivityImage}
-            href={"https://github.com/AiSpea/CyberNet-Dashboard#readme"}
+          <Guide
+            title={t("onboarding.architectureTitle", {
+              product: config.productName,
+            })}
+            description={t("onboarding.architectureDescription", {
+              product: config.productName,
+            })}
+            href={config.docsUrl}
           />
         </div>
 
         <div className={"mt-10 flex items-center justify-center"}>
           <Button variant={"secondaryLighter"} onClick={onFinish}>
-            Go to Dashboard
+            {t("onboarding.goDashboard")}
             <ArrowRightIcon size={16} />
           </Button>
         </div>
@@ -73,51 +69,24 @@ export const OnboardingEnd = ({ onFinish }: Props) => {
   );
 };
 
-type VideoGuideProps = {
-  src?: string | StaticImageData;
+type GuideProps = {
   title?: string;
   description?: string;
   href?: string;
 };
 
-const VideoGuide = ({
-  src = ACLImage,
-  title = "Access Control in Under 5 Minutes",
-  description = "Learn how to manage access for your network resources effectively. Whether you want to restrict access to specific machines or allow certain users to connect.",
-  href = "#",
-}: VideoGuideProps) => {
+const Guide = ({ title = "", description = "", href = "#" }: GuideProps) => {
   return (
-    <div
+    <Link
       className={
-        "flex flex-col sm:flex-row gap-3 items-center text-center sm:text-left sm:gap-6"
+        "flex gap-4 items-start rounded-lg border border-nb-gray-900 bg-nb-gray-920 p-4 transition-colors hover:bg-nb-gray-900"
       }
+      target={"_blank"}
+      href={href}
     >
-      <Link
-        className={
-          "border border-nb-gray-900 rounded-lg p-[2px] bg-nb-gray-920 min-w-[160px] max-w-[160px] relative group hover:bg-nb-gray-900 transition-all"
-        }
-        target={"_blank"}
-        href={href}
-      >
-        <span
-          className={
-            "flex items-center justify-center absolute left-0 top-0 h-full w-full"
-          }
-        >
-          <div
-            className={
-              "bg-nb-gray-900/50 group-hover:bg-nb-gray-600/50 backdrop-blur h-8 w-8 flex items-center justify-center rounded-full"
-            }
-          >
-            <PlayIcon size={14} />
-          </div>
-        </span>
-        <Image
-          src={src}
-          alt={title}
-          className={"border border-nb-gray-900 rounded-md"}
-        />
-      </Link>
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-nb-gray-900 text-netbird">
+        <BookOpenIcon size={17} />
+      </span>
       <div>
         <div className={"text-md"}>{title}</div>
         <div
@@ -126,6 +95,6 @@ const VideoGuide = ({
           {description}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };

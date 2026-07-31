@@ -7,17 +7,21 @@ import useFetchApi from "@utils/api";
 import { ExternalLinkIcon } from "lucide-react";
 import * as React from "react";
 import { lazy, Suspense } from "react";
+import loadConfig from "@utils/config";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { useUsers } from "@/contexts/UsersProvider";
 import type { Peer } from "@/interfaces/Peer";
 
 const AccessiblePeersTable = lazy(
   () => import("@/modules/peer/MinimalPeersTable"),
 );
+const config = loadConfig();
 
 type Props = {
   peerID: string;
 };
 export const AccessiblePeersSection = ({ peerID }: Props) => {
+  const { t } = useLocale();
   const { data: peers, isLoading } = useFetchApi<Peer[]>(
     `/peers/${peerID}/accessible-peers`,
   );
@@ -37,13 +41,11 @@ export const AccessiblePeersSection = ({ peerID }: Props) => {
         <div className={"flex justify-between items-center mb-5"}>
           <div>
             <Paragraph>
-              This peer can connect to the following peers within the NetBird
-              network.{" "}
-              <InlineLink
-                href={"https://docs.netbird.io/how-to/manage-network-access"}
-                target={"_blank"}
-              >
-                Learn more
+              {t("peers.accessibleDescription", {
+                product: config.productName,
+              })}{" "}
+              <InlineLink href={config.docsUrl} target={"_blank"}>
+                {t("common.learnMore")}
                 <ExternalLinkIcon size={12} />
               </InlineLink>
             </Paragraph>

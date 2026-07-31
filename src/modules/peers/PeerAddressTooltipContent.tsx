@@ -5,13 +5,22 @@ import * as React from "react";
 import { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useCountries } from "@/contexts/CountryProvider";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { Peer } from "@/interfaces/Peer";
+import loadConfig from "@utils/config";
+
+const config = loadConfig();
 
 type Props = {
   peer: Peer;
 };
 export const PeerAddressTooltipContent = ({ peer }: Props) => {
   const { isLoading, getRegionByPeer } = useCountries();
+  const { t } = useLocale();
+  const productIp = t("peers.productIp", { product: config.productName });
+  const productIpv6 = t("peers.productIpv6", {
+    product: config.productName,
+  });
 
   const countryText = useMemo(() => {
     return getRegionByPeer(peer);
@@ -27,11 +36,11 @@ export const PeerAddressTooltipContent = ({ peer }: Props) => {
     >
       <ListItem
         icon={<MapPin size={14} />}
-        label={"NetBird IP"}
+        label={productIp}
         value={
           <CopyToClipboardText
             iconAlignment={"right"}
-            message={"NetBird IP has been copied to your clipboard"}
+            message={t("peers.ipCopied", { label: productIp })}
             alwaysShowIcon={true}
           >
             {peer.ip}
@@ -41,11 +50,11 @@ export const PeerAddressTooltipContent = ({ peer }: Props) => {
       {peer.ipv6 && (
         <ListItem
           icon={<MapPin size={14} />}
-          label={"NetBird IPv6"}
+          label={productIpv6}
           value={
             <CopyToClipboardText
               iconAlignment={"right"}
-              message={"NetBird IPv6 has been copied to your clipboard"}
+              message={t("peers.ipCopied", { label: productIpv6 })}
               alwaysShowIcon={true}
             >
               {peer.ipv6}
@@ -55,11 +64,11 @@ export const PeerAddressTooltipContent = ({ peer }: Props) => {
       )}
       <ListItem
         icon={<NetworkIcon size={14} />}
-        label={"Public IP"}
+        label={t("peers.publicIp")}
         value={
           <CopyToClipboardText
             iconAlignment={"right"}
-            message={"Public IP has been copied to your clipboard"}
+            message={t("peers.ipCopied", { label: t("peers.publicIp") })}
             alwaysShowIcon={true}
           >
             {peer.connection_ip}
@@ -68,7 +77,7 @@ export const PeerAddressTooltipContent = ({ peer }: Props) => {
       />
       <ListItem
         icon={<GlobeIcon size={14} />}
-        label={"Domain"}
+        label={t("peers.domain")}
         className={
           peer?.extra_dns_labels && peer.extra_dns_labels.length > 0
             ? "items-start"

@@ -8,6 +8,10 @@ import { Group } from "@/interfaces/Group";
 import { useUsers } from "@/contexts/UsersProvider";
 import Badge from "@components/Badge";
 import { CircleUser } from "lucide-react";
+import loadConfig from "@utils/config";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const config = loadConfig();
 
 type Props = {
   open: boolean;
@@ -27,6 +31,7 @@ export default function AuthNetBirdOnlyModal({
   onRemove,
 }: Readonly<Props>) {
   const { users } = useUsers();
+  const { t } = useLocale();
   const [groups, setGroups] = useState<Group[]>(currentGroups);
   const isEditing = isEnabled;
 
@@ -45,8 +50,10 @@ export default function AuthNetBirdOnlyModal({
     <Modal open={open} onOpenChange={onOpenChange}>
       <ModalContent maxWidthClass="max-w-xl">
         <ModalHeader
-          title="NetBird-Only Access"
-          description="Reachable from peers in selected groups only."
+          title={t("reverseProxy.privateTitle")}
+          description={t("reverseProxy.privateDescription", {
+            product: config.productName,
+          })}
         />
 
         <GradientFadedBackground />

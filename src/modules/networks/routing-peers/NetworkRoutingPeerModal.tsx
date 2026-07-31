@@ -21,6 +21,7 @@ import { SegmentedTabs } from "@components/SegmentedTabs";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/Tabs";
 import { getOperatingSystem } from "@hooks/useOperatingSystem";
 import useFetchApi, { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { uniqBy } from "lodash";
 import {
@@ -38,6 +39,7 @@ import {
 import React, { useEffect, useMemo, useState } from "react";
 import { useSWRConfig } from "swr";
 import { useDialog } from "@/contexts/DialogProvider";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { Network, NetworkRouter } from "@/interfaces/Network";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import { Peer } from "@/interfaces/Peer";
@@ -45,6 +47,8 @@ import { SetupKey } from "@/interfaces/SetupKey";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
 import { RoutingPeerMasqueradeSwitch } from "@/modules/networks/routing-peers/RoutingPeerMasqueradeSwitch";
 import SetupModal from "@/modules/setup-netbird-modal/SetupModal";
+
+const config = loadConfig();
 
 type Props = {
   network: Network;
@@ -90,6 +94,7 @@ function RoutingPeerModalContent({
   onUpdated,
 }: ContentProps) {
   const isRoutingPeer = router ? router.peer != "" : true;
+  const { t } = useLocale();
 
   const [tab, setTab] = useState("router");
   const [type, setType] = useState(isRoutingPeer ? "peer" : "group");
@@ -289,8 +294,9 @@ function RoutingPeerModalContent({
               <div>
                 <Label>{"Don't have a routing peer?"}</Label>
                 <HelpText className={""}>
-                  You can install NetBird with a setup key on one or more
-                  machines to act as routing peers.
+                  {t("routingPeer.installDescription", {
+                    product: config.productName,
+                  })}
                 </HelpText>
               </div>
               <InstallNetBirdWithSetupKeyButton
@@ -357,10 +363,7 @@ function RoutingPeerModalContent({
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
-            <InlineLink
-              href={"https://docs.netbird.io/how-to/networks#routing-peers"}
-              target={"_blank"}
-            >
+            <InlineLink href={config.docsUrl} target={"_blank"}>
               Routing Peers
               <ExternalLinkIcon size={12} />
             </InlineLink>
@@ -423,6 +426,7 @@ const InstallNetBirdWithSetupKeyButton = ({
   const setupKeyRequest = useApiCall<SetupKey>("/setup-keys", true);
   const { mutate } = useSWRConfig();
   const { confirm } = useDialog();
+  const { t } = useLocale();
 
   const [installModal, setInstallModal] = useState(false);
   const [setupKey, setSetupKey] = useState<SetupKey>();
@@ -431,10 +435,11 @@ const InstallNetBirdWithSetupKeyButton = ({
   const createSetupKey = async () => {
     const choice = await confirm({
       title: `Create a Setup Key?`,
-      description:
-        "If you continue, a one-off setup key will be automatically created and you will be able to install NetBird.",
-      confirmText: "Continue",
-      cancelText: "Cancel",
+      description: t("routingPeer.installConfirm", {
+        product: config.productName,
+      }),
+      confirmText: t("common.continue"),
+      cancelText: t("common.cancel"),
       type: "default",
     });
     if (!choice) return;
@@ -477,7 +482,7 @@ const InstallNetBirdWithSetupKeyButton = ({
         ) : (
           <DownloadIcon size={14} />
         )}
-        Install NetBird
+        {t("install.button")}
       </Button>
       {setupKey && (
         <Modal

@@ -10,6 +10,7 @@ import { Mark } from "@components/ui/Mark";
 import { MinimalList } from "@components/ui/MinimalList";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { isEmpty, trim } from "lodash";
 import {
@@ -34,6 +35,11 @@ import { EmbeddedIdentityProviderSelect } from "@/modules/integrations/idp-sync/
 import { GroupPrefixHelpText } from "@/modules/integrations/idp-sync/GroupPrefixHelpText";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
 import { GroupPrefixInput } from "../GroupPrefixInput";
+
+const config = loadConfig();
+const silentAuthUrl = `${config.apiOrigin.replace(/\/+$/, "")}${
+  config.silentRedirectURI.startsWith("/") ? "" : "/"
+}${config.silentRedirectURI}`;
 
 type Props = {
   open: boolean;
@@ -92,7 +98,7 @@ export function SetupContent({ onSuccess }: ModalProps) {
   const connect = async () => {
     notify({
       title: "Entra ID Integration",
-      description: `Entra ID was successfully connected to NetBird.`,
+      description: `Entra ID was successfully connected to ${config.productName}.`,
       promise: azureRequest
         .post({
           client_secret: btoa(clientSecret), // Encode client secret to base64
@@ -145,10 +151,8 @@ export function SetupContent({ onSuccess }: ModalProps) {
 
       <IntegrationModalHeader
         image={integrationImage}
-        title={"Connect NetBird with Entra ID (API)"}
-        description={
-          "Start syncing your users and groups from Entra ID to NetBird. Follow the steps below to get started."
-        }
+        title={`Connect ${config.productName} with Entra ID (API)`}
+        description={`Start syncing your users and groups from Entra ID to ${config.productName}. Follow the steps below to get started.`}
       />
 
       {step === -1 && (
@@ -253,7 +257,7 @@ export function SetupContent({ onSuccess }: ModalProps) {
             data={[
               {
                 label: "Name",
-                value: "NetBird",
+                value: config.productName,
               },
               {
                 label: "Account Types",
@@ -266,7 +270,7 @@ export function SetupContent({ onSuccess }: ModalProps) {
               },
               {
                 label: "Redirect URI",
-                value: "https://app.netbird.io/silent-auth",
+                value: silentAuthUrl,
               },
             ]}
           />
@@ -330,8 +334,8 @@ export function SetupContent({ onSuccess }: ModalProps) {
             </Steps.Step>
             <Steps.Step step={3}>
               <p className={"font-normal"}>
-                Add <Mark copy>NetBird</Mark> as the description and click{" "}
-                <Mark>Add</Mark>
+                Add <Mark copy>{config.productName}</Mark> as the description
+                and click <Mark>Add</Mark>
               </p>
             </Steps.Step>
             <Steps.Step step={4} line={false}>
@@ -380,8 +384,8 @@ export function SetupContent({ onSuccess }: ModalProps) {
             </Steps.Step>
             <Steps.Step step={2} line={false}>
               <p className={"font-normal"}>
-                Select <Mark>NetBird</Mark> application in overview page and
-                enter your <Mark>Application (client) ID</Mark> and{" "}
+                Select <Mark>{config.productName}</Mark> application in overview
+                page and enter your <Mark>Application (client) ID</Mark> and{" "}
                 <Mark>Directory (tenant) ID</Mark>
               </p>
             </Steps.Step>

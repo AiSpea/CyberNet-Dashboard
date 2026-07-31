@@ -92,11 +92,15 @@ export default function ErrorPage() {
       </Paragraph>
 
       {error && (
-        <div className="bg-nb-gray-930 border border-nb-gray-800 rounded-md p-4 mt-4 max-w-md font-mono mb-2">
-          <div className="text-center text-sm text-netbird">
-            <div>response_message: {error.message}</div>
+        <details className="mt-4 mb-2 max-w-md rounded-md border border-nb-gray-800 bg-nb-gray-930 px-4 py-3 text-sm text-nb-gray-300">
+          <summary className="cursor-pointer select-none text-center">
+            {t("auth.technicalDetails")}
+          </summary>
+          <div className="mt-2 space-y-1 font-mono text-xs">
+            <div>{t("auth.errorCode", { code: error.code })}</div>
+            <code className="block break-words">{error.message}</code>
           </div>
-        </div>
+        </details>
       )}
 
       <Paragraph className="text-center mt-2 text-sm">

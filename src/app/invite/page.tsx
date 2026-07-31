@@ -62,7 +62,7 @@ function InviteAcceptContent() {
           setError(t("invite.rateLimited"));
           setIsRateLimited(true);
         } else {
-          setError(err.message || t("invite.invalidError"));
+          setError(t("invite.invalidError"));
           setIsRateLimited(false);
         }
         setLoading(false);
@@ -90,7 +90,17 @@ function InviteAcceptContent() {
       await acceptInvite(token, password);
       setSuccess(true);
     } catch (err: any) {
-      setError(err.message || t("invite.acceptFailed"));
+      if (err?.code === 429) {
+        setError(t("invite.rateLimited"));
+      } else if (err?.code === 409) {
+        setError(t("invite.acceptUsed"));
+      } else if (err?.code === 400 || err?.code === 422) {
+        setError(t("invite.acceptInvalid"));
+      } else if (err?.code === 404 || err?.code === 410) {
+        setError(t("invite.invalidError"));
+      } else {
+        setError(t("invite.acceptFailed"));
+      }
     } finally {
       setSubmitting(false);
     }
