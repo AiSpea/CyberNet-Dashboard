@@ -14,7 +14,7 @@ export const RadioGroup = ({ value, onChange, children }: Props) => {
       value={value}
       onValueChange={onChange}
       className={
-        "flex bg-nb-gray-900 rounded-md  border border-nb-gray-700 text-sm items-center justify-center p-1"
+        "flex bg-nb-surface-muted rounded-md border border-nb-border text-sm items-center justify-center p-1"
       }
     >
       {children}
@@ -26,7 +26,7 @@ export const RadioGroupItems = ({
 }: {
   children: React.ReactNode;
 }) => {
-  return <div className={"flex w-full  bg-nb-gray-900"}>{children}</div>;
+  return <div className={"flex w-full bg-nb-surface-muted"}>{children}</div>;
 };
 
 export const RadioGroupItem = ({
@@ -44,11 +44,11 @@ export const RadioGroupItem = ({
         key={value}
         className={cn(
           variant === "default" &&
-            "text-nb-gray-500 hover:text-nb-gray-400 data-[state=checked]:bg-nb-gray-600 data-[state=checked]:text-nb-gray-100",
+            "text-nb-content-secondary hover:text-nb-content-primary data-[state=checked]:bg-netbird data-[state=checked]:text-white",
           variant === "red" &&
-            "text-nb-gray-500 hover:text-nb-gray-400 data-[state=checked]:bg-red-800 data-[state=checked]:text-red-200",
+            "text-nb-content-secondary hover:text-nb-content-primary data-[state=checked]:bg-red-800 data-[state=checked]:text-red-100",
           variant === "green" &&
-            "text-nb-gray-500 hover:text-nb-gray-400 data-[state=checked]:bg-green-800 data-[state=checked]:text-green-200",
+            "text-nb-content-secondary hover:text-nb-content-primary data-[state=checked]:bg-green-800 data-[state=checked]:text-green-100",
           "cursor-pointer relative transition-all w-full py-1.5 px-5 rounded-md h-full flex items-center text-sm gap-1 text-center justify-center",
         )}
       >

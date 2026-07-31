@@ -24,19 +24,19 @@ export const RadioCard = ({
       value={value}
       disabled={disabled}
       className={cn(
-        "peer relative block cursor-pointer rounded-lg border border-nb-gray-900 bg-nb-gray-930/60 px-5 py-3 transition-all focus:outline-none",
-        "data-[state=checked]:border-nb-gray-400 data-[state=checked]:bg-nb-gray-920",
-        "outline-none focus:ring-0 focus:bg-nb-gray-930 focus:border-nb-gray-920",
-        "hover:bg-nb-gray-930",
-        "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-nb-gray-930/60",
+        "peer relative block cursor-pointer rounded-lg border border-nb-border-subtle bg-nb-surface-raised px-5 py-3 transition-all focus:outline-none",
+        "data-[state=checked]:border-netbird data-[state=checked]:bg-netbird-50 dark:data-[state=checked]:bg-netbird-950/40",
+        "outline-none focus:ring-0 focus:bg-nb-surface-muted focus:border-nb-border-strong",
+        "hover:bg-nb-surface-subtle",
+        "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-nb-surface-raised",
         className,
       )}
     >
-      <div className="text-nb-gray-100 font-normal text-sm text-left gap-2 flex items-center">
+      <div className="text-nb-content-primary font-normal text-sm text-left gap-2 flex items-center">
         {icon}
         {title}
       </div>
-      <div className="text-nb-gray-300 text-[0.8rem] text-left">
+      <div className="text-nb-content-secondary text-[0.8rem] text-left">
         {description}
       </div>
     </RadioGroup.Item>

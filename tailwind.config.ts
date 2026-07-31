@@ -126,6 +126,28 @@ const config: Config = {
           "950": "#181a1d",
           "960": "#16181b",
         },
+        // Semantic CyberNet neutrals. CSS variables let one utility follow the
+        // active theme, while `<alpha-value>` preserves Tailwind modifiers such
+        // as `bg-nb-surface-muted/30`.
+        "nb-surface": {
+          canvas: "rgb(var(--nb-surface-canvas) / <alpha-value>)",
+          raised: "rgb(var(--nb-surface-raised) / <alpha-value>)",
+          muted: "rgb(var(--nb-surface-muted) / <alpha-value>)",
+          subtle: "rgb(var(--nb-surface-subtle) / <alpha-value>)",
+          hover: "rgb(var(--nb-surface-hover) / <alpha-value>)",
+          inverse: "rgb(var(--nb-surface-inverse) / <alpha-value>)",
+        },
+        "nb-content": {
+          primary: "rgb(var(--nb-content-primary) / <alpha-value>)",
+          secondary: "rgb(var(--nb-content-secondary) / <alpha-value>)",
+          muted: "rgb(var(--nb-content-muted) / <alpha-value>)",
+          inverse: "rgb(var(--nb-content-inverse) / <alpha-value>)",
+        },
+        "nb-border": {
+          DEFAULT: "rgb(var(--nb-border-default) / <alpha-value>)",
+          subtle: "rgb(var(--nb-border-subtle) / <alpha-value>)",
+          strong: "rgb(var(--nb-border-strong) / <alpha-value>)",
+        },
 
         netbird: {
           DEFAULT: "#076EFA",

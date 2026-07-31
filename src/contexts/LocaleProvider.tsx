@@ -468,6 +468,29 @@ const en = {
   "install.docker": "Install with Docker",
   "install.downloadInstaller": "Download the CyberNet installer",
   "install.downloadCyberNet": "Download CyberNet",
+  "install.checkingDownload": "Checking for an available build...",
+  "install.downloadUnavailable":
+    "This build is coming soon. Contact your administrator if you need access now.",
+  "install.desktopOpenAfterInstall": "Install the package, then open CyberNet.",
+  "install.mobileOpenAfterInstall": "Install and open the CyberNet app.",
+  "install.signInAndConnect":
+    "Sign in with your CyberNet account. No server address, setup key, or command line is required.",
+  "install.androidDownloadDescription":
+    "Download the Android APK published by your administrator.",
+  "install.downloadAndroid": "Download Android APK",
+  "install.androidMigrationWarning":
+    "If you installed the earlier 0.1.0 test APK, uninstall it once before installing 0.1.1. Future releases will upgrade normally.",
+  "install.windowsUnsignedWarning":
+    "This Windows x64 Beta is not yet code-signed. Windows may show a SmartScreen or unknown publisher warning during installation.",
+  "install.iosDownloadDescription":
+    "Install the iPhone and iPad app from your administrator's TestFlight invitation.",
+  "install.openTestFlight": "Open TestFlight",
+  "install.linuxScriptDescription":
+    "Run the official installation script in a terminal:",
+  "install.linuxRunAndSignIn":
+    "Start CyberNet with this command, then finish account sign-in in your browser.",
+  "install.linuxRunServer":
+    "Start the unattended CyberNet client with the setup key:",
   "install.openTerminal": "Open a terminal and run CyberNet",
   "install.openCommandLine": "Open Command Prompt and run CyberNet",
   "install.connectTray":
@@ -502,7 +525,10 @@ const en = {
   "install.button": "Install CyberNet",
   "downloads.title": "Download CyberNet",
   "downloads.description":
-    "Choose your platform. Download links are published and managed by your CyberNet administrator.",
+    "Choose your platform, install CyberNet, and sign in with your account.",
+  "downloads.accountReadyTitle": "Your account is all you need",
+  "downloads.accountReadyDescription":
+    "On macOS, Windows, Android, and iPhone/iPad, open CyberNet after installation and sign in. You do not need to enter a server address or setup key.",
   "downloads.loading": "Loading available downloads...",
   "downloads.unavailable": "Not published yet",
   "downloads.unavailableDescription":
@@ -514,10 +540,32 @@ const en = {
   "downloads.openDownload": "Get CyberNet",
   "downloads.releaseNotes": "Release notes",
   "downloads.platform.macos": "macOS",
+  "downloads.platform.macosDescription":
+    "Download the signed installer, install CyberNet, then open the app and sign in.",
   "downloads.platform.windows": "Windows",
+  "downloads.platform.windowsDescription":
+    "Download the Windows x64 Beta installer, complete setup, then open CyberNet and sign in.",
   "downloads.platform.linux": "Linux",
+  "downloads.platform.linuxDescription":
+    "Use the installation script for now. After installation, start CyberNet and complete sign-in in your browser.",
   "downloads.platform.ios": "iPhone / iPad",
+  "downloads.platform.iosDescription":
+    "Join the TestFlight build, install CyberNet, then open the app and sign in.",
   "downloads.platform.android": "Android",
+  "downloads.platform.androidDescription":
+    "Download the Android APK, allow installation when prompted, then open CyberNet and sign in.",
+  "downloads.action.macos": "Download for macOS",
+  "downloads.action.windows": "Download for Windows",
+  "downloads.action.ios": "Open TestFlight",
+  "downloads.action.android": "Download Android APK",
+  "downloads.action.androidUniversal":
+    "Other Android devices: universal APK (larger file)",
+  "downloads.notice.windowsUnsigned":
+    "Unsigned Beta: Windows may show a SmartScreen or unknown publisher warning.",
+  "downloads.notice.androidMigration":
+    "Installed the earlier 0.1.0 test APK? Uninstall it once before installing 0.1.1. Future versions can upgrade normally.",
+  "downloads.linuxScriptTitle": "Install and sign in with one command",
+  "downloads.scriptCopied": "The installation command was copied.",
   "peers.title": "Peers",
   "peers.description":
     "User devices and servers connected to your private network.",
@@ -1156,6 +1204,26 @@ const zhCN: Record<TranslationKey, string> = {
   "install.docker": "使用 Docker 安装",
   "install.downloadInstaller": "下载 CyberNet 安装程序",
   "install.downloadCyberNet": "下载 CyberNet",
+  "install.checkingDownload": "正在检查可用安装包…",
+  "install.downloadUnavailable":
+    "该平台安装包即将提供；如需立即使用，请联系管理员。",
+  "install.desktopOpenAfterInstall": "完成安装后，打开 CyberNet 客户端。",
+  "install.mobileOpenAfterInstall": "完成安装后，打开 CyberNet App。",
+  "install.signInAndConnect":
+    "使用 CyberNet 账号登录即可连接，无需填写服务器地址、设置密钥，也无需使用命令行。",
+  "install.androidDownloadDescription": "下载管理员发布的 Android APK 安装包。",
+  "install.downloadAndroid": "下载 Android APK",
+  "install.androidMigrationWarning":
+    "如果安装过早期 0.1.0 测试 APK，请先卸载一次再安装 0.1.1；后续版本即可正常覆盖升级。",
+  "install.windowsUnsignedWarning":
+    "当前 Windows x64 Beta 暂未进行代码签名，安装时 Windows 可能显示 SmartScreen 或“未知发布者”提醒。",
+  "install.iosDownloadDescription":
+    "通过管理员提供的 TestFlight 邀请安装 iPhone 和 iPad 客户端。",
+  "install.openTestFlight": "打开 TestFlight",
+  "install.linuxScriptDescription": "在终端中运行官方安装脚本：",
+  "install.linuxRunAndSignIn":
+    "运行以下命令启动 CyberNet，然后在浏览器中完成账号登录。",
+  "install.linuxRunServer": "使用设置密钥启动无人值守的 CyberNet 客户端：",
   "install.openTerminal": "打开终端并运行 CyberNet",
   "install.openCommandLine": "打开命令提示符并运行 CyberNet",
   "install.connectTray": "从系统托盘打开 CyberNet，然后选择“连接”。",
@@ -1185,7 +1253,10 @@ const zhCN: Record<TranslationKey, string> = {
   "install.button": "安装 CyberNet",
   "downloads.title": "下载 CyberNet",
   "downloads.description":
-    "选择你的设备平台。下载地址由 CyberNet 管理员统一发布和维护。",
+    "选择设备平台，安装 CyberNet，然后使用你的账号登录。",
+  "downloads.accountReadyTitle": "只需 CyberNet 账号即可使用",
+  "downloads.accountReadyDescription":
+    "macOS、Windows、Android 和 iPhone/iPad 安装后直接打开 CyberNet 并登录，无需填写服务器地址或设置密钥。",
   "downloads.loading": "正在获取可用安装包…",
   "downloads.unavailable": "暂未发布",
   "downloads.unavailableDescription":
@@ -1197,10 +1268,31 @@ const zhCN: Record<TranslationKey, string> = {
   "downloads.openDownload": "获取 CyberNet",
   "downloads.releaseNotes": "查看更新说明",
   "downloads.platform.macos": "macOS",
+  "downloads.platform.macosDescription":
+    "下载已签名的安装程序，完成安装后打开 CyberNet 并登录。",
   "downloads.platform.windows": "Windows",
+  "downloads.platform.windowsDescription":
+    "下载 Windows x64 Beta 安装程序，完成安装后打开 CyberNet 并登录。",
   "downloads.platform.linux": "Linux",
+  "downloads.platform.linuxDescription":
+    "目前使用安装脚本完成安装，然后启动 CyberNet 并在浏览器中完成登录。",
   "downloads.platform.ios": "iPhone / iPad",
+  "downloads.platform.iosDescription":
+    "通过 TestFlight 安装 CyberNet，打开 App 后使用账号登录。",
   "downloads.platform.android": "Android",
+  "downloads.platform.androidDescription":
+    "下载 Android APK，按系统提示允许安装，然后打开 CyberNet 并登录。",
+  "downloads.action.macos": "下载 macOS 版",
+  "downloads.action.windows": "下载 Windows 版",
+  "downloads.action.ios": "打开 TestFlight",
+  "downloads.action.android": "下载 Android APK",
+  "downloads.action.androidUniversal": "其他安卓设备：通用 APK（文件较大）",
+  "downloads.notice.windowsUnsigned":
+    "未签名 Beta：安装时 Windows 可能显示 SmartScreen 或“未知发布者”提醒。",
+  "downloads.notice.androidMigration":
+    "安装过早期 0.1.0 测试 APK？请先卸载一次再安装 0.1.1；后续版本可正常覆盖升级。",
+  "downloads.linuxScriptTitle": "一条命令完成安装并登录",
+  "downloads.scriptCopied": "安装命令已复制。",
   "peers.title": "对等节点",
   "peers.description": "已连接到专属网络的用户设备与服务器。",
   "peers.serial": "序列号",

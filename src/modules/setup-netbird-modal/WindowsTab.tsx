@@ -1,44 +1,27 @@
-import Button from "@components/Button";
-import Code from "@components/Code";
-import { SelectDropdown } from "@components/select/SelectDropdown";
+import { Callout } from "@components/Callout";
 import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
-import { GRPC_API_ORIGIN, pkgsDownloadUrl } from "@utils/netbird";
-import { DownloadIcon, PackageOpenIcon } from "lucide-react";
-import Link from "next/link";
-import React, { useState } from "react";
-import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import {
-  NetBirdUpCommand,
-  RoutingPeerSetupKeyInfo,
-} from "@/modules/setup-netbird-modal/SetupModal";
+  AlertTriangleIcon,
+  LogInIcon,
+  PackageOpenIcon,
+  PlayCircleIcon,
+} from "lucide-react";
+import React from "react";
+import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import { useLocale } from "@/contexts/LocaleProvider";
+import ClientDownloadAction from "@/modules/setup-netbird-modal/ClientDownloadAction";
 
 type Props = {
-  setupKey?: string;
-  setupKeyContent?: React.ReactNode;
-  setupKeyPlaceholder?: string;
-  showSetupKeyInfo?: boolean;
-  hostname?: string;
+  downloadUrl?: string;
+  downloadLoading?: boolean;
 };
 
 export default function WindowsTab({
-  setupKey,
-  setupKeyContent,
-  setupKeyPlaceholder,
-  showSetupKeyInfo,
-  hostname,
+  downloadUrl,
+  downloadLoading,
 }: Readonly<Props>) {
   const { t } = useLocale();
-  const [windowsUrl, setWindowsUrl] = useState(pkgsDownloadUrl("windows/x64"));
-  // The CLI-run branch is required for the server flow (setupKeyContent
-  // present) even before a key is generated — the placeholder keeps the
-  // command shape consistent. Otherwise we fall back to the existing
-  // setupKey-driven branching.
-  const useCliRun = !!setupKey || !!setupKeyContent;
-  const baseMgmtStep = 2;
-  const keyStep = GRPC_API_ORIGIN ? 3 : 2;
-  const runStep = keyStep + (setupKeyContent ? 1 : 0);
   return (
     <TabsContent value={String(OperatingSystem.WINDOWS)}>
       <TabsContentPadding>
@@ -49,85 +32,37 @@ export default function WindowsTab({
         <Steps>
           <Steps.Step step={1}>
             <p>{t("install.downloadInstaller")}</p>
-            <div className={"flex gap-4 mt-1"}>
-              <SelectDropdown
-                value={windowsUrl}
-                className={"w-[170px]"}
-                onChange={setWindowsUrl}
-                placeholder={t("install.selectArchitecture")}
-                options={[
-                  {
-                    label: "64-Bit",
-                    value: pkgsDownloadUrl("windows/x64"),
-                  },
-                  {
-                    label: "ARM64",
-                    value: pkgsDownloadUrl("windows/arm64"),
-                  },
-                  {
-                    label: "64-Bit (MSI)",
-                    value: pkgsDownloadUrl("windows/msi/x64"),
-                  },
-                  {
-                    label: "ARM64 (MSI)",
-                    value: pkgsDownloadUrl("windows/msi/arm64"),
-                  },
-                ]}
+            <div className={"flex gap-4 mt-1 flex-wrap"}>
+              <ClientDownloadAction
+                url={downloadUrl}
+                loading={downloadLoading}
               />
-              <Link
-                href={windowsUrl}
-                passHref
-                target={"_blank"}
-                rel="noopener noreferrer"
-              >
-                <Button variant={"primary"}>
-                  <DownloadIcon size={14} />
-                  {t("install.downloadCyberNet")}
-                </Button>
-              </Link>
             </div>
+            {downloadUrl?.includes("unsigned-beta") && (
+              <Callout
+                variant="warning"
+                icon={
+                  <AlertTriangleIcon size={15} className="mt-0.5 shrink-0" />
+                }
+                className="mt-3 max-w-xl"
+              >
+                {t("install.windowsUnsignedWarning")}
+              </Callout>
+            )}
           </Steps.Step>
 
-          {GRPC_API_ORIGIN && (
-            <Steps.Step step={baseMgmtStep}>
-              <p>{t("install.managementUrl")}</p>
-              <Code>
-                <Code.Line>{GRPC_API_ORIGIN}</Code.Line>
-              </Code>
-            </Steps.Step>
-          )}
-
-          {setupKeyContent && (
-            <Steps.Step step={keyStep}>{setupKeyContent}</Steps.Step>
-          )}
-
-          {useCliRun ? (
-            <Steps.Step step={runStep} line={false}>
-              <p>
-                {t("install.openCommandLine")}{" "}
-                {showSetupKeyInfo && <RoutingPeerSetupKeyInfo />}
-              </p>
-
-              <NetBirdUpCommand
-                setupKey={setupKey}
-                setupKeyPlaceholder={setupKeyPlaceholder}
-                hostname={hostname}
-                continuation={"^"}
-              />
-            </Steps.Step>
-          ) : (
-            <>
-              <Steps.Step step={runStep}>
-                <p>
-                  {/* eslint-disable-next-line react/no-unescaped-entities */}
-                  {t("install.connectTray")}
-                </p>
-              </Steps.Step>
-              <Steps.Step step={runStep + 1} line={false}>
-                <p>{t("auth.signInAccount")}</p>
-              </Steps.Step>
-            </>
-          )}
+          <Steps.Step step={2}>
+            <p className="flex items-center gap-2">
+              <PlayCircleIcon size={16} className="text-netbird" />
+              {t("install.desktopOpenAfterInstall")}
+            </p>
+          </Steps.Step>
+          <Steps.Step step={3} line={false}>
+            <p className="flex items-center gap-2">
+              <LogInIcon size={16} className="text-netbird" />
+              {t("install.signInAndConnect")}
+            </p>
+          </Steps.Step>
         </Steps>
       </TabsContentPadding>
     </TabsContent>

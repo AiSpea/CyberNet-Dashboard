@@ -44,10 +44,10 @@ function SettingCardItem({
       }}
       data-testid={dataTestId}
       className={cn(
-        "flex justify-between gap-10 px-6 border-t border-nb-gray-920 first:border-t-0 py-5 transition-colors w-full",
+        "flex justify-between gap-10 px-6 border-t border-nb-border-subtle first:border-t-0 py-5 transition-colors w-full",
         disabled
           ? "opacity-50 cursor-not-allowed"
-          : "hover:bg-nb-gray-935 cursor-pointer",
+          : "hover:bg-nb-surface-subtle cursor-pointer",
       )}
     >
       <div className={"max-w-sm"}>
@@ -102,7 +102,7 @@ function SettingCard({ children, className }: Readonly<SettingCardProps>) {
   return (
     <div
       className={cn(
-        "border-nb-gray-920 bg-nb-gray-800/10 border rounded-md",
+        "border-nb-border-subtle bg-nb-surface-raised border rounded-md",
         className,
       )}
     >

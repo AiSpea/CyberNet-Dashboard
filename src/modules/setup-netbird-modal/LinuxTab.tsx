@@ -1,10 +1,7 @@
-import Button from "@components/Button";
 import Code from "@components/Code";
 import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
-import { GRPC_API_ORIGIN, pkgsDownloadUrl } from "@utils/netbird";
-import { DownloadIcon, TerminalSquareIcon } from "lucide-react";
-import Link from "next/link";
+import { TerminalSquareIcon } from "lucide-react";
 import React from "react";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import {
@@ -29,9 +26,9 @@ export default function LinuxTab({
   hostname,
 }: Readonly<Props>) {
   const { t } = useLocale();
-  const managementStep = GRPC_API_ORIGIN ? 2 : 1;
-  const keyStep = GRPC_API_ORIGIN ? 3 : 2;
+  const keyStep = 2;
   const runStep = keyStep + (setupKeyContent ? 1 : 0);
+  const installCommand = "curl -fsSL https://pkgs.netbird.io/install.sh | sh";
 
   return (
     <TabsContent value={String(OperatingSystem.LINUX)}>
@@ -42,29 +39,11 @@ export default function LinuxTab({
         </p>
         <Steps>
           <Steps.Step step={1}>
-            <p>{t("install.downloadInstaller")}</p>
-            <div className="mt-1 flex gap-4">
-              <Link
-                href={pkgsDownloadUrl("linux")}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button variant="primary">
-                  <DownloadIcon size={14} />
-                  {t("install.downloadCyberNet")}
-                </Button>
-              </Link>
-            </div>
+            <p>{t("install.linuxScriptDescription")}</p>
+            <Code codeToCopy={installCommand}>
+              <Code.Line>{installCommand}</Code.Line>
+            </Code>
           </Steps.Step>
-
-          {GRPC_API_ORIGIN && (
-            <Steps.Step step={managementStep}>
-              <p>{t("install.managementUrl")}</p>
-              <Code>
-                <Code.Line>{GRPC_API_ORIGIN}</Code.Line>
-              </Code>
-            </Steps.Step>
-          )}
 
           {setupKeyContent && (
             <Steps.Step step={keyStep}>{setupKeyContent}</Steps.Step>
@@ -72,7 +51,9 @@ export default function LinuxTab({
 
           <Steps.Step step={runStep} line={false}>
             <p>
-              {t("install.openTerminal")}
+              {setupKey || setupKeyContent
+                ? t("install.linuxRunServer")
+                : t("install.linuxRunAndSignIn")}
               {showSetupKeyInfo && <RoutingPeerSetupKeyInfo />}
             </p>
             <NetBirdUpCommand

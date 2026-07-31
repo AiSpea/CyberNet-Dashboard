@@ -95,10 +95,10 @@ const NavigationVersionInfoContent = () => {
     <div
       className={cn(
         "w-full rounded-md text-xs flex flex-col gap-2 whitespace-normal border text-left",
-        "bg-nb-gray-900/20 py-3 px-3 border-nb-gray-800/30",
+        "bg-nb-surface-muted py-3 px-3 border-nb-border",
       )}
     >
-      <div className="flex flex-col gap-1 text-nb-gray-400">
+      <div className="flex flex-col gap-1 text-nb-content-secondary">
         <FullTooltip
           content={
             <span className="text-xs">
@@ -114,7 +114,7 @@ const NavigationVersionInfoContent = () => {
         >
           <div className="flex items-center justify-between w-full cursor-default">
             <span>{t("updates.management")}</span>
-            <span className="text-nb-gray-300 font-medium">
+            <span className="text-nb-content-primary font-medium">
               {formatVersion(versionInfo.management_current_version)}
             </span>
           </div>
@@ -132,7 +132,7 @@ const NavigationVersionInfoContent = () => {
         >
           <div className="flex items-center justify-between w-full cursor-default">
             <span>{t("updates.dashboard")}</span>
-            <span className="text-nb-gray-300 font-medium">
+            <span className="text-nb-content-primary font-medium">
               {formatVersion(dashboardVersion)}
             </span>
           </div>
@@ -158,7 +158,7 @@ const NavigationVersionInfoContent = () => {
                 href={clientReleaseNotesUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-1.5 text-nb-gray-300 hover:text-white transition-colors rounded-md py-1 px-2"
+                className="flex items-center justify-center gap-1.5 text-nb-content-secondary hover:text-nb-content-primary transition-colors rounded-md py-1 px-2"
               >
                 <span>{t("updates.releaseNotes")}</span>
               </a>

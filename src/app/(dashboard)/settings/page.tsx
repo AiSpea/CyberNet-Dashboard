@@ -136,7 +136,7 @@ export default function NetBirdSettings() {
           page={"Settings"}
           hasAccess={permission?.billing?.read || permission?.settings?.read}
         >
-          <div className={"border-l border-nb-gray-930 w-full"}>
+          <div className={"border-l border-nb-border-subtle w-full"}>
             {account && <AuthenticationTab account={account} />}
             {permission.setup_keys.read && <SetupKeysTab />}
             {account?.settings?.embedded_idp_enabled &&

@@ -16,12 +16,14 @@ export const calloutVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-nb-gray-900/60 border-nb-gray-800/80 text-nb-gray-300",
+        default:
+          "bg-nb-surface-muted border-nb-border text-nb-content-secondary",
         warning:
           "bg-yellow-400/10 border-yellow-400/30 text-yellow-700 dark:text-yellow-200",
-        info: "bg-sky-400/10 border-sky-400/20 text-sky-100",
-        success: "bg-green-400/15 border-green-400/20 text-green-100",
-        error: "bg-red-500/10 border-red-400/20 text-red-100",
+        info: "bg-sky-400/10 border-sky-400/20 text-sky-800 dark:text-sky-100",
+        success:
+          "bg-green-400/15 border-green-400/20 text-green-700 dark:text-green-100",
+        error: "bg-red-500/10 border-red-400/20 text-red-700 dark:text-red-100",
       },
     },
   },

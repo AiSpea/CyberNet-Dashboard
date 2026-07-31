@@ -34,12 +34,14 @@ export const Item = ({
     >
       <ChevronRightIcon
         size={16}
-        className={"text-nb-gray-400 group-first:hidden"}
+        className={"text-nb-content-muted group-first:hidden"}
       />
       <div
         className={cn(
-          "flex items-center gap-2.5 text-nb-gray-400  transition-all cursor-pointer",
-          active ? "text-nb-gray-300" : "hover:text-nb-gray-300",
+          "flex items-center gap-2.5 text-nb-content-muted transition-all cursor-pointer",
+          active
+            ? "text-nb-content-secondary"
+            : "hover:text-nb-content-primary",
         )}
       >
         {icon && icon}

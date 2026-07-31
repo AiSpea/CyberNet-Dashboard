@@ -77,7 +77,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
-          className={"hover:text-white transition-all"}
+          className={
+            "text-nb-content-muted hover:text-nb-content-primary transition-all"
+          }
           aria-label={"Toggle password visibility"}
         >
           {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
