@@ -1,7 +1,9 @@
 import { notify } from "@components/Notification";
 import { useRef, useState } from "react";
+import { useLocale } from "@/contexts/LocaleProvider";
 
 export default function useCopyToClipboard(textToCopy?: string) {
+  const { t } = useLocale();
   const wrapper = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
   const copyToClipboard = async (
@@ -14,7 +16,7 @@ export default function useCopyToClipboard(textToCopy?: string) {
       setCopied(true);
 
       notify({
-        title: "Copied to clipboard",
+        title: t("common.copiedToClipboard"),
         description: description,
       });
 
