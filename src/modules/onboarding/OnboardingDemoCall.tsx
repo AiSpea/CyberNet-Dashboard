@@ -32,7 +32,7 @@ export const OnboardingDemoCall = ({ open, onOpenChange }: Props) => {
   const [variant, variantKey] = useExperiment("onboarding-call", {
     v1: {
       title: "Book a Technical Overview (Not a Sales Call)",
-      desc: "You’ll meet with a solutions engineer who will walk through how NetBird works, answer your implementation questions - no slides, no hard sell.",
+      desc: "You’ll meet with a solutions engineer who will walk through how CyberNet works and answer your implementation questions.",
       features: [
         "Live walkthrough of setup and architecture",
         "Implementation of use case, for your stack",
@@ -71,7 +71,7 @@ export const OnboardingDemoCall = ({ open, onOpenChange }: Props) => {
     },
     v4: {
       title: "Book a Technical Overview",
-      desc: "You’ll meet with a solutions engineer who will walk through how NetBird works, answer your implementation questions - no slides, no hard sell.",
+      desc: "You’ll meet with a solutions engineer who will walk through how CyberNet works and answer your implementation questions.",
       features: [
         "Live walkthrough of setup and architecture",
         "Implementation of use case, for your stack",

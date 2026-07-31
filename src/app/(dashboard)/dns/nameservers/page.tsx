@@ -13,12 +13,17 @@ import DNSIcon from "@/assets/icons/DNSIcon";
 import { usePermissions } from "@/contexts/PermissionsProvider";
 import { NameserverGroup } from "@/interfaces/Nameserver";
 import PageContainer from "@/layouts/PageContainer";
+import { useLocale } from "@/contexts/LocaleProvider";
+import loadConfig from "@/utils/config";
+
+const config = loadConfig();
 
 const NameserverGroupTable = lazy(
   () => import("@/modules/dns/nameservers/table/NameserverGroupTable"),
 );
 
 export default function NameServers() {
+  const { t } = useLocale();
   const { permission } = usePermissions();
 
   const { data: nameserverGroups, isLoading } =
@@ -38,19 +43,16 @@ export default function NameServers() {
           />
           <Breadcrumbs.Item
             href={"/dns/nameservers"}
-            label={"Nameservers"}
+            label={t("nav.nameservers")}
             active
             icon={<DNSIcon size={13} />}
           />
         </Breadcrumbs>
-        <h1 ref={headingRef}>Nameservers</h1>
+        <h1 ref={headingRef}>{t("nav.nameservers")}</h1>
         <Paragraph>
-          Add nameservers for domain name resolution in your NetBird network.{" "}
-          <InlineLink
-            href={"https://docs.netbird.io/how-to/manage-dns-in-your-network"}
-            target={"_blank"}
-          >
-            Learn more
+          {t("page.nameservers.description")}{" "}
+          <InlineLink href={config.docsUrl} target={"_blank"}>
+            {t("common.learnMore")}
             <ExternalLinkIcon size={12} />
           </InlineLink>
         </Paragraph>

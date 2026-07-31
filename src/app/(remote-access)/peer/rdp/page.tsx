@@ -104,7 +104,7 @@ function RDPSession({ peer }: Props) {
         status = NetBirdStatus.DISCONNECTED;
       } catch (error) {
         sendErrorNotification(
-          "NetBird Connection Error",
+          "CyberNet connection error",
           (error as Error).message,
         );
         return;
@@ -121,7 +121,7 @@ function RDPSession({ peer }: Props) {
         setIsNetBirdConnecting(false);
       } catch (error) {
         sendErrorNotification(
-          "NetBird Connection Error",
+          "CyberNet connection error",
           (error as Error).message,
         );
         setIsNetBirdConnecting(false);
@@ -140,8 +140,7 @@ function RDPSession({ peer }: Props) {
         domain: credentials.domain,
         width: window.innerWidth,
         height: window.innerHeight,
-        dynamicResize:
-          getOperatingSystem(peer?.os) === OperatingSystem.WINDOWS,
+        dynamicResize: getOperatingSystem(peer?.os) === OperatingSystem.WINDOWS,
       });
       if (result === RDPStatus.CONNECTED) {
         connected.current = true;
@@ -184,7 +183,7 @@ function RDPSession({ peer }: Props) {
       sendErrorNotification("RDP Error", rdp.error);
     }
     if (client.error) {
-      sendErrorNotification("NetBird Client Error", client.error);
+      sendErrorNotification("CyberNet client error", client.error);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rdp.error, client.error]);

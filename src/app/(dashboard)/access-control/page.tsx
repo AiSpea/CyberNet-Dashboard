@@ -15,11 +15,16 @@ import { usePermissions } from "@/contexts/PermissionsProvider";
 import PoliciesProvider from "@/contexts/PoliciesProvider";
 import { Policy } from "@/interfaces/Policy";
 import PageContainer from "@/layouts/PageContainer";
+import { useLocale } from "@/contexts/LocaleProvider";
+import loadConfig from "@/utils/config";
+
+const config = loadConfig();
 
 const AccessControlTable = lazy(
   () => import("@/modules/access-control/table/AccessControlTable"),
 );
 export default function AccessControlPage() {
+  const { t } = useLocale();
   const { permission } = usePermissions();
 
   const { data: policies, isLoading } = useFetchApi<Policy[]>("/policies");
@@ -34,19 +39,15 @@ export default function AccessControlPage() {
           <Breadcrumbs>
             <Breadcrumbs.Item
               href={"/access-control"}
-              label={"Access Control"}
+              label={t("nav.accessControl")}
               icon={<AccessControlIcon size={14} />}
             />
           </Breadcrumbs>
-          <h1 ref={headingRef}>Access Control Policies</h1>
+          <h1 ref={headingRef}>{t("page.accessControl.title")}</h1>
           <Paragraph>
-            Policies connect users and agents to your network resources,
-            controlling what each identity can reach.{" "}
-            <InlineLink
-              href={"https://docs.netbird.io/how-to/manage-network-access"}
-              target={"_blank"}
-            >
-              Learn more
+            {t("page.accessControl.description")}{" "}
+            <InlineLink href={config.docsUrl} target={"_blank"}>
+              {t("common.learnMore")}
               <ExternalLinkIcon size={12} />
             </InlineLink>
           </Paragraph>

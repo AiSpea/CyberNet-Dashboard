@@ -11,6 +11,7 @@ import {
   LockIcon,
   MonitorSmartphoneIcon,
   NetworkIcon,
+  RefreshCw,
   ShieldIcon,
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -29,6 +30,8 @@ import PermissionsTab from "@/modules/settings/PermissionsTab";
 import SetupKeysTab from "@/modules/settings/SetupKeysTab";
 import GroupsSettings from "@/modules/settings/GroupsSettings";
 import MetricsTab from "@/modules/settings/MetricsTab";
+import ClientUpdateSettingsTab from "@/modules/settings/ClientUpdateSettingsTab";
+import { useLocale } from "@/contexts/LocaleProvider";
 import {
   CloudSettingsTabContent,
   CloudSettingsTabTrigger,
@@ -38,6 +41,8 @@ export default function NetBirdSettings() {
   const queryParams = useSearchParams();
   const queryTab = queryParams.get("tab");
   const { permission } = usePermissions();
+  const { isOwner } = useLoggedInUser();
+  const { t } = useLocale();
 
   const initialTab = useMemo(() => {
     if (permission?.settings?.read) return "authentication";
@@ -61,43 +66,67 @@ export default function NetBirdSettings() {
         <VerticalTabs.List>
           {permission.settings.read && (
             <>
-              <VerticalTabs.Trigger value="authentication" data-testid="settings-tab-authentication">
+              <VerticalTabs.Trigger
+                value="authentication"
+                data-testid="settings-tab-authentication"
+              >
                 <ShieldIcon size={14} />
-                Authentication
+                {t("settings.authentication")}
               </VerticalTabs.Trigger>
               {permission.setup_keys.read && (
                 <VerticalTabs.Trigger value="setup-keys">
                   <KeyRound size={14} />
-                  Setup Keys
+                  {t("settings.setupKeys")}
                 </VerticalTabs.Trigger>
               )}
               {account?.settings?.embedded_idp_enabled &&
                 permission?.identity_providers?.read && (
                   <VerticalTabs.Trigger value="identity-providers">
                     <FingerprintIcon size={14} />
-                    Identity Providers
+                    {t("settings.identityProviders")}
                   </VerticalTabs.Trigger>
                 )}
-              <VerticalTabs.Trigger value="groups" data-testid="settings-tab-groups">
+              <VerticalTabs.Trigger
+                value="groups"
+                data-testid="settings-tab-groups"
+              >
                 <FolderGit2Icon size={14} />
-                Groups
+                {t("nav.groups")}
               </VerticalTabs.Trigger>
-              <VerticalTabs.Trigger value="permissions" data-testid="settings-tab-permissions">
+              <VerticalTabs.Trigger
+                value="permissions"
+                data-testid="settings-tab-permissions"
+              >
                 <LockIcon size={14} />
-                Permissions
+                {t("settings.permissions")}
               </VerticalTabs.Trigger>
-              <VerticalTabs.Trigger value="networks" data-testid="settings-tab-networks">
+              <VerticalTabs.Trigger
+                value="networks"
+                data-testid="settings-tab-networks"
+              >
                 <NetworkIcon size={14} />
-                Networks
+                {t("nav.networks")}
               </VerticalTabs.Trigger>
-              <VerticalTabs.Trigger value="clients" data-testid="settings-tab-clients">
+              <VerticalTabs.Trigger
+                value="clients"
+                data-testid="settings-tab-clients"
+              >
                 <MonitorSmartphoneIcon size={14} />
-                Clients
+                {t("settings.clients")}
               </VerticalTabs.Trigger>
               <VerticalTabs.Trigger value="metrics">
                 <ChartNoAxesCombined size={14} />
-                Metrics
+                {t("settings.metrics")}
               </VerticalTabs.Trigger>
+              {isOwner && (
+                <VerticalTabs.Trigger
+                  value="client-updates"
+                  data-testid="settings-tab-client-updates"
+                >
+                  <RefreshCw size={14} />
+                  {t("updates.tab")}
+                </VerticalTabs.Trigger>
+              )}
             </>
           )}
           <CloudSettingsTabTrigger />
@@ -117,6 +146,7 @@ export default function NetBirdSettings() {
             {account && <NetworkSettingsTab account={account} />}
             {account && <ClientSettingsTab account={account} />}
             {account && <MetricsTab account={account} />}
+            {isOwner && <ClientUpdateSettingsTab />}
             {account && <DangerZoneTab account={account} />}
             <CloudSettingsTabContent />
           </div>
@@ -128,6 +158,7 @@ export default function NetBirdSettings() {
 
 const DangerZoneTabTrigger = () => {
   const { isOwner } = useLoggedInUser();
+  const { t } = useLocale();
 
   const { isAccountWithMSPParent } = useMSP();
   if (isAccountWithMSPParent) return;
@@ -136,7 +167,7 @@ const DangerZoneTabTrigger = () => {
     isOwner && (
       <VerticalTabs.Trigger value="danger-zone" disabled={!isOwner}>
         <AlertOctagonIcon size={14} />
-        Danger zone
+        {t("settings.dangerZone")}
       </VerticalTabs.Trigger>
     )
   );

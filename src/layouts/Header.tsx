@@ -15,6 +15,7 @@ import { useAnnouncement } from "@/contexts/AnnouncementProvider";
 import { useApplicationContext } from "@/contexts/ApplicationProvider";
 import { usePermissions } from "@/contexts/PermissionsProvider";
 import HelpAndSupportButton from "@components/ui/HelpAndSupportButton";
+import LanguageSwitcher from "@components/ui/LanguageSwitcher";
 
 export const headerHeight = 65;
 
@@ -70,6 +71,10 @@ export default function NavbarWithDropdown() {
             <MSPTransferAccountModal />
             <DistributorTransferAccountModal />
             <MSPTenantsSwitcher />
+            <LanguageSwitcher
+              compact
+              className="!rounded-full h-[38px] !px-3"
+            />
             <HelpAndSupportButton />
             <UserDropdown />
           </div>

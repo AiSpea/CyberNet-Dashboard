@@ -8,10 +8,13 @@ import { ArrowRightIcon, RefreshCw } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import NetBirdIcon from "@/assets/icons/NetBirdIcon";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
+import { useLocale } from "@/contexts/LocaleProvider";
 
 const config = loadConfig();
 
 export default function ErrorPage() {
+  const { t } = useLocale();
   const { logout, isAuthenticated } = useOidc();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -58,23 +61,26 @@ export default function ErrorPage() {
     error?.message?.toLowerCase().includes("pending approval");
 
   const getTitle = () => {
-    if (isBlockedUser) return "User Account Blocked";
-    if (isPendingApproval) return "User Approval Pending";
-    return "Access Error";
+    if (isBlockedUser) return t("auth.blockedTitle");
+    if (isPendingApproval) return t("auth.pendingTitle");
+    return t("auth.accessErrorTitle");
   };
 
   const getDescription = () => {
     if (isBlockedUser) {
-      return "Your access has been blocked by the NetBird account administrator, possibly due to new user approval requirements or security policies. Please contact your administrator to regain access.";
+      return t("auth.blockedDescription");
     }
     if (isPendingApproval) {
-      return "Your account is pending approval from an administrator. Please wait for approval before accessing the dashboard.";
+      return t("auth.pendingDescription");
     }
-    return "An error occurred while trying to access the dashboard. Please try again or contact your administrator.";
+    return t("auth.accessErrorDescription");
   };
 
   return (
     <div className="flex items-center justify-center flex-col h-screen max-w-xl mx-auto">
+      <div className="absolute right-5 top-5">
+        <LanguageSwitcher />
+      </div>
       <div className="bg-nb-gray-930 mb-3 border border-nb-gray-900 h-12 w-12 rounded-md flex items-center justify-center">
         <NetBirdIcon size={23} />
       </div>
@@ -94,19 +100,19 @@ export default function ErrorPage() {
       )}
 
       <Paragraph className="text-center mt-2 text-sm">
-        If you believe this is an error, please contact your administrator.
+        {t("auth.contactAdmin")}
       </Paragraph>
 
       <div className="mt-5 space-y-3">
         {!isBlockedUser && !isPendingApproval && (
           <Button variant="default-outline" size="sm" onClick={handleRetry}>
             <RefreshCw size={16} className="mr-2" />
-            Try Again
+            {t("common.retry")}
           </Button>
         )}
 
         <Button variant="primary" size="sm" onClick={handleLogout}>
-          {isBlockedUser || isPendingApproval ? "Sign Out" : "Logout"}
+          {t("common.logout")}
           <ArrowRightIcon size={16} />
         </Button>
       </div>

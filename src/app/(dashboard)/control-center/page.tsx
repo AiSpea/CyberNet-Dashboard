@@ -70,6 +70,9 @@ import {
   DEFAULT_MIN_ZOOM,
 } from "@/modules/control-center/utils/layouts";
 import { NODE_TYPES } from "@/modules/control-center/utils/nodes";
+import loadConfig from "@/utils/config";
+
+const config = loadConfig();
 
 export default function ControlCenter() {
   return (
@@ -1945,10 +1948,7 @@ function ControlCenterView() {
                 learnMore={
                   <>
                     Learn more about
-                    <InlineLink
-                      href={"https://docs.netbird.io/how-to/networks"}
-                      target={"_blank"}
-                    >
+                    <InlineLink href={config.docsUrl} target={"_blank"}>
                       Networks
                       <ExternalLinkIcon size={12} />
                     </InlineLink>

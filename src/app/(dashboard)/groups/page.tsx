@@ -10,10 +10,15 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import InlineLink from "@/components/InlineLink";
 import { usePermissions } from "@/contexts/PermissionsProvider";
 import PageContainer from "@/layouts/PageContainer";
+import { useLocale } from "@/contexts/LocaleProvider";
+import loadConfig from "@/utils/config";
+
+const config = loadConfig();
 
 const GroupsTable = lazy(() => import("@/modules/groups/table/GroupsTable"));
 
 export default function GroupsPage() {
+  const { t } = useLocale();
   const { permission } = usePermissions();
   const { ref: headingRef, portalTarget } =
     usePortalElement<HTMLHeadingElement>();
@@ -24,19 +29,16 @@ export default function GroupsPage() {
         <Breadcrumbs>
           <Breadcrumbs.Item
             href={"/groups"}
-            label={"Groups"}
+            label={t("nav.groups")}
             icon={<FolderGit2Icon size={14} />}
             active
           />
         </Breadcrumbs>
-        <h1 ref={headingRef}>Groups</h1>
+        <h1 ref={headingRef}>{t("nav.groups")}</h1>
         <Paragraph>
-          Organize peers, users and resources into groups to manage access.{" "}
-          <InlineLink
-            href={"https://docs.netbird.io/how-to/manage-network-access"}
-            target={"_blank"}
-          >
-            Learn more
+          {t("page.groups.description")}{" "}
+          <InlineLink href={config.docsUrl} target={"_blank"}>
+            {t("common.learnMore")}
             <ExternalLinkIcon size={12} />
           </InlineLink>
         </Paragraph>

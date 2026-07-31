@@ -37,6 +37,7 @@ function InstallContent() {
       <Modal onOpenChange={() => null} open={open}>
         <SetupModal
           showClose={false}
+          showLanguageSwitcher
           style={{ marginTop: isMd ? 0 : bannerHeight + 13 }}
         />
       </Modal>

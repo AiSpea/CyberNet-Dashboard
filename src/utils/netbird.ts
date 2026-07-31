@@ -103,11 +103,14 @@ export const isAgentNetworkOnly = () => {
   return config.agentNetworkOnly;
 };
 
-// pkgsDownloadUrl builds a NetBird client installer download link on
-// pkgs.netbird.io. `path` is the platform path without a
-// leading slash, e.g. "windows/x64" or "macos/universal".
+// Keep the historical helper name because it is an internal API used by the
+// upstream setup tabs. The URL itself is CyberNet-owned and runtime
+// configurable; no client installer link falls back to an upstream package.
 export const pkgsDownloadUrl = (path: string) =>
-  `https://pkgs.netbird.io/${path}`;
+  config.clientDownloadUrlTemplate.replace(
+    "{target}",
+    encodeURIComponent(path.replace(/^\/+/, "")),
+  );
 
 // isAgentNetworkEnabled returns true when the Agent Network product surface
 // (Providers, Policies, Usage & Logs) is available — in either the dedicated

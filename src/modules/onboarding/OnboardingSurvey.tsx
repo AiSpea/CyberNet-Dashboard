@@ -82,7 +82,7 @@ export const referralSourceOptions = [
     value: "Other",
   },
   {
-    label: "NetBird YouTube Channel",
+    label: "CyberNet video channel",
     value: "NetBird YouTube Channel",
   },
   {
@@ -90,7 +90,7 @@ export const referralSourceOptions = [
     value: "Other YouTube Channel",
   },
   {
-    label: "NetBird SubReddit",
+    label: "CyberNet community",
     value: "NetBird SubReddit",
   },
   {
@@ -315,7 +315,7 @@ export const OnboardingSurvey = ({ domainCategory, onSubmit }: Props) => {
             <div className={"flex w-full flex-col gap-2"}>
               <div>
                 <Label>
-                  How many people in your company will use NetBird?
+                  How many people in your company will use CyberNet?
                   <RequiredAsterisk />
                 </Label>
               </div>
@@ -340,7 +340,7 @@ export const OnboardingSurvey = ({ domainCategory, onSubmit }: Props) => {
 
           <div className={"flex w-full flex-col gap-2"}>
             <Label>
-              How did you hear about NetBird?
+              How did you hear about CyberNet?
               <RequiredAsterisk />
             </Label>
             <SelectDropdown
@@ -356,7 +356,7 @@ export const OnboardingSurvey = ({ domainCategory, onSubmit }: Props) => {
           <div className={"flex w-full flex-col gap-2"}>
             <div>
               <Label>
-                How do you plan to use NetBird?
+                How do you plan to use CyberNet?
                 <RequiredAsterisk />
               </Label>
               <HelpText className={"mt-1.5"}>

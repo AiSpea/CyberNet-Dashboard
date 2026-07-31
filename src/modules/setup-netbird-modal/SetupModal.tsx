@@ -37,6 +37,11 @@ import IOSTab from "@/modules/setup-netbird-modal/IOSTab";
 import LinuxTab from "@/modules/setup-netbird-modal/LinuxTab";
 import MacOSTab from "@/modules/setup-netbird-modal/MacOSTab";
 import WindowsTab from "@/modules/setup-netbird-modal/WindowsTab";
+import { useLocale } from "@/contexts/LocaleProvider";
+import loadConfig from "@/utils/config";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
+
+const config = loadConfig();
 
 type OidcUserInfo = {
   given_name?: string;
@@ -55,6 +60,7 @@ type Props = {
   //   undefined – legacy: keep historical heuristic (mobile shown unless
   //               a setupKey is already provided; Docker shown).
   isUserDevice?: boolean;
+  showLanguageSwitcher?: boolean;
 };
 
 export default function SetupModal({
@@ -65,6 +71,7 @@ export default function SetupModal({
   className,
   style,
   isUserDevice,
+  showLanguageSwitcher = false,
 }: Readonly<Props>) {
   return (
     <ModalContent
@@ -76,6 +83,11 @@ export default function SetupModal({
       style={style}
       data-testid={"setup-netbird-modal"}
     >
+      {showLanguageSwitcher && (
+        <div className="relative z-20 -mb-2 flex justify-end px-5">
+          <LanguageSwitcher />
+        </div>
+      )}
       <SetupModalContent
         user={user}
         setupKey={setupKey}
@@ -109,6 +121,7 @@ export function SetupModalContent({
   hostname,
   isUserDevice,
 }: Readonly<SetupModalContentProps>) {
+  const { locale, t } = useLocale();
   const os = useOperatingSystem();
   const [isFirstRun] = useLocalStorage<boolean>("netbird-first-run", true);
   const pathname = usePathname();
@@ -140,24 +153,10 @@ export function SetupModalContent({
   const setupKeyContent = showKeyGenerator ? (
     <>
       <div className={"flex items-center gap-1.5 flex-wrap"}>
-        Generate a setup key
-        <HelpTooltip
-          content={
-            <>
-              A setup key is a one-time, pre-authentication token used to
-              enroll an unattended machine with NetBird. Pass it to{" "}
-              <code>netbird up</code> via <code>--setup-key</code> and the
-              peer registers without an interactive login.
-            </>
-          }
-        />
-        <InlineLink
-          href={
-            "https://docs.netbird.io/how-to/register-machines-using-setup-keys"
-          }
-          target={"_blank"}
-        >
-          Learn more
+        {t("install.generateSetupKey")}
+        <HelpTooltip content={<>{t("install.setupKeyHelp")}</>} />
+        <InlineLink href={config.docsUrl} target={"_blank"}>
+          {t("common.learnMore")}
           <ExternalLinkIcon size={12} />
         </InlineLink>
       </div>
@@ -172,22 +171,18 @@ export function SetupModalContent({
     if (title) return title;
 
     if (isFirstRun && !isInstallPage) {
-      let name = user?.given_name || "there";
-      return (
-        <>
-          Hello {name}! 👋 <br /> It&apos;s time to add your first device.
-        </>
-      );
+      const name = user?.given_name || (locale === "zh-CN" ? "朋友" : "there");
+      return t("install.welcome", { name });
     }
 
-    return effectiveSetupKey
-      ? "Install NetBird with Setup Key"
-      : "Install NetBird";
+    return effectiveSetupKey ? t("install.withSetupKey") : t("install.title");
   }, [
     isFirstRun,
     isInstallPage,
     effectiveSetupKey,
     title,
+    t,
+    locale,
     user?.given_name,
   ]);
 
@@ -210,8 +205,8 @@ export function SetupModalContent({
             )}
           >
             {isUserDevice === false || effectiveSetupKey
-              ? "To get started, install and run NetBird with the setup key as a parameter."
-              : "To get started, install NetBird and log in with your email account."}
+              ? t("install.serverDescription")
+              : t("install.userDescription")}
           </Paragraph>
         </div>
       )}
@@ -324,16 +319,9 @@ export function SetupModalContent({
         <ModalFooter variant={"setup"}>
           <div>
             <SmallParagraph>
-              After that you should be connected. Add more devices to your
-              network or manage your existing devices in the admin panel. If you
-              have further questions check out our{" "}
-              <InlineLink
-                href={
-                  "https://docs.netbird.io/how-to/getting-started#installation"
-                }
-                target={"_blank"}
-              >
-                Installation Guide
+              {t("install.afterConnected")}{" "}
+              <InlineLink href={config.docsUrl} target={"_blank"}>
+                {t("install.installationGuide")}
                 <ExternalLinkIcon size={12} />
               </InlineLink>
             </SmallParagraph>
@@ -450,15 +438,14 @@ export const HostnameParameter = ({ hostname }: { hostname?: string }) => {
 };
 
 export const RoutingPeerSetupKeyInfo = () => {
+  const { t } = useLocale();
   return (
     <div
       className={
         "flex gap-2 mt-1 items-center text-xs text-nb-gray-300 font-normal mb-1"
       }
     >
-      This setup key can be used only once within the next 24 hours.
-      <br />
-      When expired, the same key can not be used again.
+      {t("install.setupKeyOnce")}
     </div>
   );
 };
@@ -476,6 +463,7 @@ function SetupKeyGenerator({
   generatedKey,
   onGenerated,
 }: SetupKeyGeneratorProps) {
+  const { t } = useLocale();
   const setupKeyRequest = useApiCall<SetupKey>("/setup-keys", true);
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -502,9 +490,9 @@ function SetupKeyGenerator({
       .finally(() => setIsGenerating(false));
 
     notify({
-      title: "Setup Key Created",
-      description: "A one-off setup key was generated for this install.",
-      loadingMessage: "Generating setup key...",
+      title: t("install.setupKeyCreated"),
+      description: t("install.setupKeyCreatedDescription"),
+      loadingMessage: t("install.setupKeyGenerating"),
       promise: request,
     });
   };
@@ -514,8 +502,8 @@ function SetupKeyGenerator({
     try {
       await navigator.clipboard.writeText(generatedKey.key);
       notify({
-        title: "Setup Key Copied",
-        description: "Successfully copied to clipboard.",
+        title: t("install.setupKeyCopied"),
+        description: t("install.copied"),
       });
     } catch {}
   };
@@ -523,17 +511,13 @@ function SetupKeyGenerator({
   if (!generatedKey) {
     return (
       <div className={"mt-2"}>
-        <Button
-          variant={"primary"}
-          onClick={generate}
-          disabled={isGenerating}
-        >
+        <Button variant={"primary"} onClick={generate} disabled={isGenerating}>
           {isGenerating ? (
             <Loader2 size={14} className={"animate-spin"} />
           ) : (
             <KeyRoundIcon size={14} />
           )}
-          Generate Key
+          {t("install.generateKey")}
         </Button>
       </div>
     );
@@ -552,7 +536,7 @@ function SetupKeyGenerator({
           }
         >
           <KeyRoundIcon size={12} />
-          Setup Key
+          {t("install.setupKey")}
         </div>
         <div
           className={"text-nb-gray-300 text-[0.8rem] text-left mt-0.5 truncate"}
@@ -560,12 +544,9 @@ function SetupKeyGenerator({
           {generatedKey.key}
         </div>
         <div
-          className={
-            "text-nb-gray-400 text-[0.72rem] flex items-center gap-1"
-          }
+          className={"text-nb-gray-400 text-[0.72rem] flex items-center gap-1"}
         >
-
-          This setup key can be used only once and expires in 24 hours.
+          {t("install.setupKeyOnce")}
         </div>
       </div>
       <Button variant={"secondary"} onClick={copy}>

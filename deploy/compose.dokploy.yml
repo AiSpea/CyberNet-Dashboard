@@ -68,6 +68,14 @@ services:
       NETBIRD_AGENT_NETWORK_ONLY: ${NETBIRD_AGENT_NETWORK_ONLY:-false}
       NETBIRD_AGENT_NETWORK_ENABLED: ${NETBIRD_AGENT_NETWORK_ENABLED:-false}
       NETBIRD_CSP: ${NETBIRD_CSP:-}
+      CYBERNET_PRODUCT_NAME: ${CYBERNET_PRODUCT_NAME:-CyberNet}
+      CYBERNET_DEFAULT_LOCALE: ${CYBERNET_DEFAULT_LOCALE:-zh-CN}
+      CYBERNET_DOCS_URL: ${CYBERNET_DOCS_URL:-https://github.com/AiSpea/CyberNet-Dashboard#readme}
+      CYBERNET_SUPPORT_URL: ${CYBERNET_SUPPORT_URL:-https://github.com/AiSpea/CyberNet-Dashboard/issues}
+      CYBERNET_SOURCE_URL: ${CYBERNET_SOURCE_URL:-https://github.com/AiSpea/CyberNet-Dashboard}
+      CYBERNET_CLIENT_DOWNLOAD_URL_TEMPLATE: ${CYBERNET_CLIENT_DOWNLOAD_URL_TEMPLATE:-https://cybernet.aisp24.com/downloads?target={target}}
+      CYBERNET_ANDROID_DOWNLOAD_URL: ${CYBERNET_ANDROID_DOWNLOAD_URL:-https://cybernet.aisp24.com/downloads?target=android}
+      CYBERNET_IOS_DOWNLOAD_URL: ${CYBERNET_IOS_DOWNLOAD_URL:-https://cybernet.aisp24.com/downloads?target=ios}
     networks:
       - dokploy-network
     labels:

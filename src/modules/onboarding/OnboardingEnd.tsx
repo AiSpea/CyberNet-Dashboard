@@ -30,9 +30,9 @@ export const OnboardingEnd = ({ onFinish }: Props) => {
             "text-sm text-nb-gray-300 font-light mt-2 block text-center sm:px-4"
           }
         >
-          What’s next? Check out these guides to get the most out of NetBird. To
-          learn more, explore the dashboard, visit our documentation, or browse
-          our YouTube channel.
+          What’s next? Check out these guides to get the most out of CyberNet.
+          To learn more, explore the dashboard, visit our documentation, or
+          browse our YouTube channel.
         </div>
 
         <div className={"mt-8 flex flex-col gap-8"}>
@@ -42,23 +42,23 @@ export const OnboardingEnd = ({ onFinish }: Props) => {
             description={
               "Learn how to manage access for your network resources effectively. Whether you want to restrict access to specific machines or allow certain users to connect."
             }
-            href={"https://www.youtube.com/watch?v=WtZD_q-g_Jc"}
+            href={"https://github.com/AiSpea/CyberNet-Dashboard#readme"}
           />
           <VideoGuide
             title={"Provision Users & Groups From Your IdP"}
             src={PostureCheckImage}
             description={
-              "Learn how to provision users and groups from your identity provider, such as Okta, Azure AD, or Google Workspace, to manage access control in NetBird and automate onboarding and offboarding processes."
+              "Learn how to provision users and groups from your identity provider, such as Okta, Azure AD, or Google Workspace, to manage access control in CyberNet and automate onboarding and offboarding processes."
             }
-            href={"https://www.youtube.com/watch?v=RxYWTpf7cgY"}
+            href={"https://github.com/AiSpea/CyberNet-Dashboard#readme"}
           />
           <VideoGuide
-            title={"How NetBird Works"}
+            title={"How CyberNet Works"}
             description={
-              "Learn more about how NetBird works, its architecture, and how it can help you build secure networks."
+              "Learn more about how CyberNet works, its architecture, and how it can help you build secure networks."
             }
             src={ActivityImage}
-            href={"https://www.youtube.com/watch?v=CFa7SY4Up9k&t=261s"}
+            href={"https://github.com/AiSpea/CyberNet-Dashboard#readme"}
           />
         </div>
 

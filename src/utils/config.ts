@@ -31,6 +31,14 @@ interface Config {
   hubspotOnboardingFormId?: string;
   hubspotSurveyFormId?: string;
   analyticsExcludedEmails: string[];
+  productName: string;
+  defaultLocale: string;
+  docsUrl: string;
+  supportUrl: string;
+  sourceUrl: string;
+  clientDownloadUrlTemplate: string;
+  androidDownloadUrl: string;
+  iosDownloadUrl: string;
 }
 
 /**
@@ -95,6 +103,25 @@ const loadConfig = (): Config => {
       .split(",")
       .map((email: string) => email.trim())
       .filter(Boolean),
+    productName: configJson?.productName || "CyberNet",
+    defaultLocale: configJson?.defaultLocale || "zh-CN",
+    docsUrl:
+      configJson?.docsUrl ||
+      "https://github.com/AiSpea/CyberNet-Dashboard#readme",
+    supportUrl:
+      configJson?.supportUrl ||
+      "https://github.com/AiSpea/CyberNet-Dashboard/issues",
+    sourceUrl:
+      configJson?.sourceUrl || "https://github.com/AiSpea/CyberNet-Dashboard",
+    clientDownloadUrlTemplate:
+      configJson?.clientDownloadUrlTemplate ||
+      "https://cybernet.aisp24.com/downloads?target={target}",
+    androidDownloadUrl:
+      configJson?.androidDownloadUrl ||
+      "https://cybernet.aisp24.com/downloads?target=android",
+    iosDownloadUrl:
+      configJson?.iosDownloadUrl ||
+      "https://cybernet.aisp24.com/downloads?target=ios",
   } as Config;
 };
 

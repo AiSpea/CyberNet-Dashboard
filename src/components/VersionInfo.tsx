@@ -8,6 +8,7 @@ import Skeleton from "react-loading-skeleton";
 import useFetchApi from "@utils/api";
 import { isNetBirdCloud } from "@utils/netbird";
 import { useApplicationContext } from "@/contexts/ApplicationProvider";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { VersionInfo as VersionInfoType } from "@/interfaces/Instance";
 
 function formatVersion(version: string): string {
@@ -63,6 +64,8 @@ export const NavigationVersionInfo = () => {
 };
 
 const NavigationVersionInfoContent = () => {
+  const { t } = useLocale();
+  const { clientDownloadUrl, clientReleaseNotesUrl } = useApplicationContext();
   const { data: versionInfo, isLoading } = useFetchApi<VersionInfoType>(
     "/instance/version",
     true, // ignore errors
@@ -99,14 +102,18 @@ const NavigationVersionInfoContent = () => {
         <FullTooltip
           content={
             <span className="text-xs">
-              Latest: {formatVersion(versionInfo.management_available_version)}
+              {t("updates.latest", {
+                version: formatVersion(
+                  versionInfo.management_available_version,
+                ),
+              })}
             </span>
           }
           side="top"
           className="w-full"
         >
           <div className="flex items-center justify-between w-full cursor-default">
-            <span>Management</span>
+            <span>{t("updates.management")}</span>
             <span className="text-nb-gray-300 font-medium">
               {formatVersion(versionInfo.management_current_version)}
             </span>
@@ -115,14 +122,16 @@ const NavigationVersionInfoContent = () => {
         <FullTooltip
           content={
             <span className="text-xs">
-              Latest: {formatVersion(versionInfo.dashboard_available_version)}
+              {t("updates.latest", {
+                version: formatVersion(versionInfo.dashboard_available_version),
+              })}
             </span>
           }
           side="top"
           className="w-full"
         >
           <div className="flex items-center justify-between w-full cursor-default">
-            <span>Dashboard</span>
+            <span>{t("updates.dashboard")}</span>
             <span className="text-nb-gray-300 font-medium">
               {formatVersion(dashboardVersion)}
             </span>
@@ -130,16 +139,31 @@ const NavigationVersionInfoContent = () => {
         </FullTooltip>
       </div>
 
-      {hasUpdate && (
-        <a
-          href="https://docs.netbird.io/selfhosted/maintenance/upgrade"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-1.5 text-white font-medium bg-netbird hover:bg-netbird-500 transition-colors rounded-md py-1.5 px-2 mt-1"
-        >
-          <ArrowUpCircle size={12} />
-          <span>Update available</span>
-        </a>
+      {hasUpdate && (clientDownloadUrl || clientReleaseNotesUrl) && (
+        <div className="flex flex-col gap-1 mt-1">
+          {clientDownloadUrl && (
+            <a
+              href={clientDownloadUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-1.5 text-white font-medium bg-netbird hover:bg-netbird-500 transition-colors rounded-md py-1.5 px-2"
+            >
+              <ArrowUpCircle size={12} />
+              <span>{t("updates.downloadClient")}</span>
+            </a>
+          )}
+          {clientReleaseNotesUrl &&
+            clientReleaseNotesUrl !== clientDownloadUrl && (
+              <a
+                href={clientReleaseNotesUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-1.5 text-nb-gray-300 hover:text-white transition-colors rounded-md py-1 px-2"
+              >
+                <span>{t("updates.releaseNotes")}</span>
+              </a>
+            )}
+        </div>
       )}
     </div>
   );

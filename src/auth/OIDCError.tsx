@@ -7,10 +7,13 @@ import { useSearchParams } from "next/navigation";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import NetBirdIcon from "@/assets/icons/NetBirdIcon";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
+import { useLocale } from "@/contexts/LocaleProvider";
 
 const config = loadConfig();
 
 export const OIDCError = () => {
+  const { t } = useLocale();
   const { oidcUserLoadingState } = useOidcUser();
   const params = useSearchParams();
   const errorParam = params.get("error");
@@ -18,19 +21,17 @@ export const OIDCError = () => {
   const invalidRequest = errorParam === "invalid_request";
   const [title, setTitle] = useState(params.get("error_description"));
   const errorDescription = params.get("error_description");
-  const { logout, login } = useOidc();
+  const { logout } = useOidc();
 
   useEffect(() => {
     if (accessDenied) {
       if (title === "account linked successfully") {
-        setTitle(
-          "Your account has been linked successfully. Please log in again to complete the setup.",
-        );
+        setTitle(t("auth.linkedTitle"));
       }
     } else {
-      setTitle("Oops, something went wrong");
+      setTitle(t("auth.problemTitle"));
     }
-  }, [accessDenied, title]);
+  }, [accessDenied, t, title]);
 
   return (
     <div
@@ -38,6 +39,9 @@ export const OIDCError = () => {
         "flex items-center justify-center flex-col h-screen max-w-lg mx-auto"
       }
     >
+      <div className="absolute right-5 top-5">
+        <LanguageSwitcher />
+      </div>
       <div
         className={
           "bg-nb-gray-930 mb-3 border border-nb-gray-900 h-12 w-12 rounded-md flex items-center justify-center "
@@ -50,7 +54,7 @@ export const OIDCError = () => {
       {accessDenied ? (
         <>
           <Paragraph className={"text-center mt-2"}>
-            Already verified your email address?
+            {t("auth.verifiedQuestion")}
           </Paragraph>
 
           <Button
@@ -59,7 +63,7 @@ export const OIDCError = () => {
             className={"mt-5"}
             onClick={() => logout("/", { client_id: config.clientId })}
           >
-            Continue
+            {t("common.continue")}
             <ArrowRightIcon size={16} />
           </Button>
 
@@ -69,14 +73,13 @@ export const OIDCError = () => {
             className={"mt-5"}
             onClick={() => logout("/", { client_id: config.clientId })}
           >
-            Trouble logging in? Try again.
+            {t("auth.tryAgain")}
           </Button>
         </>
       ) : (
         <>
           <Paragraph className={"text-center mt-2 block"}>
-            There was an error logging you in. <br />
-            Error:{" "}
+            {t("auth.errorPrefix")}{" "}
             <span className={"inline capitalize"}>
               {invalidRequest && errorDescription
                 ? errorDescription
@@ -89,7 +92,7 @@ export const OIDCError = () => {
             className={"mt-5"}
             onClick={() => logout("/", { client_id: config.clientId })}
           >
-            Logout
+            {t("common.logout")}
           </Button>
         </>
       )}

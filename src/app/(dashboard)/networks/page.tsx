@@ -14,8 +14,13 @@ import { usePermissions } from "@/contexts/PermissionsProvider";
 import { Network } from "@/interfaces/Network";
 import PageContainer from "@/layouts/PageContainer";
 import NetworksTable from "@/modules/networks/table/NetworksTable";
+import { useLocale } from "@/contexts/LocaleProvider";
+import loadConfig from "@/utils/config";
+
+const config = loadConfig();
 
 export default function Networks() {
+  const { t } = useLocale();
   const { data: networks, isLoading } = useFetchApi<Network[]>("/networks");
   const { permission } = usePermissions();
   const { ref: headingRef, portalTarget } =
@@ -26,20 +31,16 @@ export default function Networks() {
       <div className={"p-default py-6"}>
         <Breadcrumbs>
           <Breadcrumbs.Item
-            label={"Network Routing"}
+            label={t("nav.networkRouting")}
             icon={<NetworkRoutesIcon size={13} />}
           />
-          <Breadcrumbs.Item href={"/networks"} label={"Networks"} />
+          <Breadcrumbs.Item href={"/networks"} label={t("nav.networks")} />
         </Breadcrumbs>
-        <h1 ref={headingRef}>Networks</h1>
+        <h1 ref={headingRef}>{t("nav.networks")}</h1>
         <Paragraph>
-          Access internal resources in LANs and VPCs without installing NetBird
-          on every machine.{" "}
-          <InlineLink
-            href={"https://docs.netbird.io/how-to/networks"}
-            target={"_blank"}
-          >
-            Learn more
+          {t("page.networks.description")}{" "}
+          <InlineLink href={config.docsUrl} target={"_blank"}>
+            {t("common.learnMore")}
             <ExternalLinkIcon size={12} />
           </InlineLink>
         </Paragraph>

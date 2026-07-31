@@ -19,6 +19,9 @@ import AIProvidersProvider, {
 } from "@/modules/agent-network/AIProvidersProvider";
 import AgentProvidersTable from "@/modules/agent-network/table/AgentProvidersTable";
 import InlineLink from "@components/InlineLink";
+import loadConfig from "@/utils/config";
+
+const config = loadConfig();
 
 function EndpointBadge({ endpoint }: { endpoint: string }) {
   const [, copy] = useCopyToClipboard(`https://${endpoint}`);
@@ -44,7 +47,7 @@ function EndpointBadge({ endpoint }: { endpoint: string }) {
                 LLM SDK clients (e.g. OpenAI&apos;s
                 <code className={"font-mono"}> base_url</code>, Anthropic&apos;s{" "}
                 <code className={"font-mono"}>baseURL</code>, or any HTTP
-                client). Calls hit NetBird first, get authorised by your
+                client). Calls hit CyberNet first, get authorised by your
                 policies, and only then reach the upstream provider.
               </>
             }
@@ -125,7 +128,7 @@ function EndpointHeader() {
                     <code className={"font-mono"}> base_url</code>,
                     Anthropic&apos;s{" "}
                     <code className={"font-mono"}>baseURL</code>, or any HTTP
-                    client). Calls hit NetBird first, get authorised by your
+                    client). Calls hit CyberNet first, get authorised by your
                     policies, and only then reach the upstream provider.
                   </>
                 }
@@ -191,11 +194,8 @@ export default function AgentNetworkProvidersPage() {
             <Paragraph>
               Connect AI providers and gateways like LiteLLM, OpenAI, and
               Anthropic through one keyless endpoint, accessible only via
-              NetBird’s tunnel.
-              <InlineLink
-                href={"https://docs.netbird.io/agent-network/providers"}
-                target={"_blank"}
-              >
+              CyberNet’s tunnel.
+              <InlineLink href={config.docsUrl} target={"_blank"}>
                 Learn more
                 <ExternalLinkIcon size={12} />
               </InlineLink>

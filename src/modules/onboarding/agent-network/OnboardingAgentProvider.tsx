@@ -29,8 +29,8 @@ export const OnboardingAgentProvider = ({ onBack, onNext }: Props) => {
             "text-sm text-nb-gray-300 font-light mt-2 block text-center sm:px-4"
           }
         >
-          {`A provider is an upstream LLM service NetBird routes to, such as
-          OpenAI, Anthropic, or an AI gateway. NetBird
+          {`A provider is an upstream LLM service CyberNet routes to, such as
+          OpenAI, Anthropic, or an AI gateway. CyberNet
           stores the API key securely and returns a tunnel-only endpoint.`}
         </div>
       </div>
@@ -74,9 +74,7 @@ const EndpointPanel = ({
       <div className={"flex items-center justify-center gap-2 text-sm"}>
         <CheckCircle2Icon size={16} className={"text-green-500"} />
         <span>
-          {count > 1
-            ? `${count} providers connected.`
-            : "Provider connected."}{" "}
+          {count > 1 ? `${count} providers connected.` : "Provider connected."}{" "}
           Your agent network endpoint is ready.
         </span>
       </div>

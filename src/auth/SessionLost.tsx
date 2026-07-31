@@ -7,10 +7,13 @@ import { useRouter } from "next/navigation";
 import * as React from "react";
 import { useEffect } from "react";
 import NetBirdIcon from "@/assets/icons/NetBirdIcon";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
+import { useLocale } from "@/contexts/LocaleProvider";
 
 const config = loadConfig();
 
 export const SessionLost = () => {
+  const { t } = useLocale();
   const router = useRouter();
   const { logout } = useOidc();
 
@@ -24,6 +27,9 @@ export const SessionLost = () => {
         "flex items-center justify-center flex-col h-screen max-w-md mx-auto"
       }
     >
+      <div className="absolute right-5 top-5">
+        <LanguageSwitcher />
+      </div>
       <div
         className={
           "bg-nb-gray-930 mb-3 border border-nb-gray-900 h-10 w-10 rounded-md flex items-center justify-center "
@@ -31,10 +37,9 @@ export const SessionLost = () => {
       >
         <NetBirdIcon size={20} />
       </div>
-      <h1>Session Expired</h1>
+      <h1>{t("auth.sessionExpired")}</h1>
       <Paragraph className={"text-center"}>
-        It looks like your login session is no longer active or has expired.
-        Please login again to continue using the app.
+        {t("auth.sessionExpiredDescription")}
       </Paragraph>
       <Button
         variant={"primary"}
@@ -42,7 +47,7 @@ export const SessionLost = () => {
         className={"mt-5"}
         onClick={() => logout("", { client_id: config.clientId })}
       >
-        Login
+        {t("auth.login")}
         <LogIn size={16} />
       </Button>
     </div>
