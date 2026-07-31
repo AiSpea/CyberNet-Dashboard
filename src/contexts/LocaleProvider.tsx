@@ -560,11 +560,15 @@ const en = {
   "downloads.action.android": "Download Android APK",
   "downloads.action.androidUniversal":
     "Other Android devices: universal APK (larger file)",
+  "downloads.action.linuxCopy": "Copy Linux install command",
+  "downloads.action.linuxCopied": "Command copied",
   "downloads.notice.windowsUnsigned":
     "Unsigned Beta: Windows may show a SmartScreen or unknown publisher warning.",
   "downloads.notice.androidMigration":
     "Installed the earlier 0.1.0 test APK? Uninstall it once before installing 0.1.1. Future versions can upgrade normally.",
   "downloads.linuxScriptTitle": "Install and sign in with one command",
+  "downloads.linuxPasteHint":
+    "Paste it into a Linux terminal. CyberNet opens browser sign-in after installation.",
   "downloads.scriptCopied": "The installation command was copied.",
   "peers.title": "Peers",
   "peers.description":
@@ -1287,11 +1291,15 @@ const zhCN: Record<TranslationKey, string> = {
   "downloads.action.ios": "打开 TestFlight",
   "downloads.action.android": "下载 Android APK",
   "downloads.action.androidUniversal": "其他安卓设备：通用 APK（文件较大）",
+  "downloads.action.linuxCopy": "复制 Linux 安装命令",
+  "downloads.action.linuxCopied": "命令已复制",
   "downloads.notice.windowsUnsigned":
     "未签名 Beta：安装时 Windows 可能显示 SmartScreen 或“未知发布者”提醒。",
   "downloads.notice.androidMigration":
     "安装过早期 0.1.0 测试 APK？请先卸载一次再安装 0.1.1；后续版本可正常覆盖升级。",
   "downloads.linuxScriptTitle": "一条命令完成安装并登录",
+  "downloads.linuxPasteHint":
+    "粘贴到 Linux 终端运行；安装完成后会打开浏览器登录 CyberNet。",
   "downloads.scriptCopied": "安装命令已复制。",
   "peers.title": "对等节点",
   "peers.description": "已连接到专属网络的用户设备与服务器。",
