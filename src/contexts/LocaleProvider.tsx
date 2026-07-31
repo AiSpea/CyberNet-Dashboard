@@ -571,6 +571,165 @@ const en = {
   "downloads.linuxPasteHint":
     "Paste it into a Linux terminal. CyberNet opens browser sign-in after installation.",
   "downloads.scriptCopied": "The installation command was copied.",
+  "publicNav.label": "Public information",
+  "publicNav.downloads": "Downloads",
+  "publicNav.documentation": "Documentation",
+  "publicNav.privacy": "Privacy",
+  "publicNav.terms": "Terms",
+  "publicFooter.beta": "CyberNet Beta · Product and policy information",
+  "legal.effectiveDate": "Effective date",
+  "legal.effectiveDateValue": "July 31, 2026",
+  "privacy.eyebrow": "CyberNet Beta",
+  "privacy.title": "Privacy Policy",
+  "privacy.introduction":
+    "This policy explains how the current CyberNet Beta service handles information when you use its apps and management service. It is a practical description of the beta service and may be updated as the product changes.",
+  "privacy.data.title": "Information we process",
+  "privacy.data.account":
+    "Account identifiers needed to recognize and authenticate you, such as the identifier returned by the configured sign-in service.",
+  "privacy.data.device":
+    "Device, operating-system and client information needed to register and operate a peer.",
+  "privacy.data.connection":
+    "Network configuration and connection state, including CyberNet addresses, routing information, timestamps and online status.",
+  "privacy.data.diagnostics":
+    "Diagnostics that you choose to submit, such as logs, screenshots or details included in a support request.",
+  "privacy.local.title": "Information kept on your device",
+  "privacy.local.description":
+    "When you configure automatic VPN rules, CyberNet may store selected Wi-Fi network names on your device. They are used locally to apply those rules and are not sent to the CyberNet management service unless you deliberately include them in diagnostics shared with support. Optional notifications are used for local sign-in reminders.",
+  "privacy.use.title": "How we use information",
+  "privacy.use.description":
+    "We use this information to provide, test, secure and support CyberNet, including:",
+  "privacy.use.authentication": "Authenticating accounts and sessions.",
+  "privacy.use.network":
+    "Registering devices and coordinating private-network connections.",
+  "privacy.use.support":
+    "Troubleshooting failures, responding to support requests and improving reliability.",
+  "privacy.use.security":
+    "Protecting accounts, detecting misuse and investigating security incidents.",
+  "privacy.storage.title": "Storage and beta service providers",
+  "privacy.storage.cybernet":
+    "Information is stored in the CyberNet service environment used to provide your account and network.",
+  "privacy.storage.processors":
+    "During beta distribution and diagnostics, Apple TestFlight and, when crash reporting is enabled, Firebase Crashlytics may process relevant distribution, device, diagnostic or crash information under their own terms and privacy policies.",
+  "privacy.storage.retention":
+    "Retention depends on the type of information and the needs of beta operation, troubleshooting and security. You can contact us for details about information associated with your account.",
+  "privacy.sale.title": "No sale of personal information",
+  "privacy.sale.description":
+    "CyberNet does not sell personal information. Service providers may process limited information only as needed to host, distribute, operate, diagnose or support the beta service.",
+  "privacy.rights.title": "Your choices",
+  "privacy.rights.description":
+    "You may ask what identifiable information is associated with your account, request a correction, or request deletion. We may need to verify the request, and some information may need to be retained where necessary to protect the service or meet applicable requirements.",
+  "privacy.contact.title": "Contact",
+  "privacy.contact.description":
+    "For privacy questions or an access or deletion request, email:",
+  "privacy.changes":
+    "If this policy changes, the effective date on this page will be updated. Where practical, material beta changes will also be communicated through the service.",
+  "terms.eyebrow": "CyberNet Beta",
+  "terms.title": "Beta Terms of Use",
+  "terms.introduction":
+    "These terms describe the rules for using CyberNet Beta. By using the beta service, you confirm that you understand and accept these rules. If you use it for an organization, follow that organization's authorization and policies.",
+  "terms.betaNotice":
+    "CyberNet is a beta service intended for evaluation and testing",
+  "terms.authorization.title": "Authorized access only",
+  "terms.authorization.description":
+    "Use CyberNet only with accounts, devices, networks and resources that you own or are explicitly authorized to access. An organization administrator may define additional access rules.",
+  "terms.account.title": "Account security",
+  "terms.account.description":
+    "Keep your credentials and devices secure, do not share access in a way that bypasses administrator controls, and promptly report suspected unauthorized use. You are responsible for activity performed through your account or enrolled devices to the extent under your control.",
+  "terms.prohibited.title": "Prohibited use",
+  "terms.prohibited.description": "You must not use CyberNet to:",
+  "terms.prohibited.access":
+    "Access accounts, systems, data or networks without permission.",
+  "terms.prohibited.disrupt":
+    "Disrupt, overload, probe or interfere with the service or another user's network.",
+  "terms.prohibited.malware":
+    "Distribute malware, harmful code or content intended to compromise a device.",
+  "terms.prohibited.bypass":
+    "Evade security controls, usage limits or administrator policies.",
+  "terms.prohibited.illegal":
+    "Carry out unlawful, fraudulent or abusive activity.",
+  "terms.changes.title": "Beta changes and availability",
+  "terms.changes.description":
+    "Features, limits, compatibility and availability may change during the beta. The service may be updated, suspended or discontinued. Where practical, material planned changes will be communicated through the service.",
+  "terms.termination.title": "Ending access",
+  "terms.termination.description":
+    "You may stop using CyberNet at any time by signing out and removing enrolled clients. The service operator or your administrator may suspend or end access when authorization ends, misuse is suspected, or action is needed to protect the service and its users.",
+  "terms.asIs.title": "Beta provided as available",
+  "terms.asIs.description":
+    "CyberNet Beta is provided for evaluation and testing in its current state. Bugs, interruptions, compatibility problems or data loss may occur, and uninterrupted or error-free operation is not promised. Avoid relying on the beta as the only path to a critical system.",
+  "terms.contact.title": "Questions",
+  "terms.contact.description":
+    "For questions about these terms or the beta service, email:",
+  "docs.eyebrow": "CyberNet help",
+  "docs.title": "Getting started",
+  "docs.introduction":
+    "Install CyberNet, sign in with your account, and use the management platform to control devices and network access.",
+  "docs.signIn.title": "Sign in with your account",
+  "docs.signIn.description":
+    "After installing CyberNet on macOS, Windows, iPhone/iPad or Android, open the app and sign in with your CyberNet account.",
+  "docs.signIn.noAddress":
+    "No management address, setup key or command line is required on these platforms.",
+  "docs.downloads.title": "Download the client",
+  "docs.downloads.description":
+    "The download center shows the currently published CyberNet builds and platform-specific beta notices.",
+  "docs.downloads.action": "Open download center",
+  "docs.linux.title": "Install on Linux",
+  "docs.linux.description":
+    "For now, install the Linux client with the official package script and then start the sign-in flow:",
+  "docs.linux.copy": "Copy",
+  "docs.linux.copyDone": "Copied",
+  "docs.linux.copied": "The Linux installation command was copied.",
+  "docs.linux.afterInstall":
+    "Paste the command into a Linux terminal. After installation, CyberNet opens browser sign-in; use your account to finish connecting.",
+  "docs.admin.title": "Use the management platform",
+  "docs.admin.description":
+    "Administrators can review the network and control who can reach each resource. Available features depend on the account configuration.",
+  "docs.admin.devices.title": "Devices and status",
+  "docs.admin.devices.description":
+    "Review registered peers, CyberNet addresses, owners, versions and recent online state.",
+  "docs.admin.access.title": "Groups and access",
+  "docs.admin.access.description":
+    "Organize users and devices, then apply access policies to approved connections.",
+  "docs.admin.routing.title": "Routes and network exit",
+  "docs.admin.routing.description":
+    "Publish private-network routes or, when enabled, choose an approved peer as an internet exit node.",
+  "docs.admin.operations.title": "DNS and client settings",
+  "docs.admin.operations.description":
+    "Manage DNS behavior, local-service access options and client update information available to users.",
+  "docs.support":
+    "If your organization provides different instructions or permissions, follow its administrator's guidance. For CyberNet support, contact tech@aispea.com.",
+  "docs.backToOverview": "Back to documentation overview",
+  "docs.peers.eyebrow": "CyberNet documentation",
+  "docs.peers.title": "Peers and devices",
+  "docs.peers.introduction":
+    "A peer is a device running CyberNet and registered to your account or organization.",
+  "docs.peers.what.title": "What a peer contains",
+  "docs.peers.what.description":
+    "The management platform can show a peer's name, CyberNet address, owner, client and operating-system information, and recent connection state. Visibility depends on your role.",
+  "docs.peers.status.title": "Understanding online status",
+  "docs.peers.status.description":
+    "Online status reflects the most recently reported management connection. Different clients and screens can refresh at slightly different times. Wait briefly and refresh; if the difference persists, check VPN permission, background operation and diagnostics on the device.",
+  "docs.peers.connectivity.title": "Checking connectivity",
+  "docs.peers.connectivity.description":
+    "An online indicator does not by itself grant reachability. Access policies, routes, the destination service and the device firewall must also allow the connection.",
+  "docs.peers.access.title": "SSH and local services",
+  "docs.peers.access.description":
+    "SSH or other local-service access must be enabled on the device and permitted by an access policy. Enable only the services required by authorized users and groups.",
+  "docs.networks.eyebrow": "CyberNet documentation",
+  "docs.networks.title": "Networks and routing",
+  "docs.networks.introduction":
+    "Routes connect authorized CyberNet peers to private networks or, when configured, an internet exit node.",
+  "docs.networks.resources.title": "Private-network resources",
+  "docs.networks.resources.description":
+    "An administrator can describe an IP range or approved resource and select one or more routing peers that can reach it. Other users receive access only through the applicable policy.",
+  "docs.networks.routes.title": "Routing peers",
+  "docs.networks.routes.description":
+    "A routing peer forwards traffic to a private LAN or VPC. Keep it online, confirm that forwarding and local firewalls allow the traffic, and provide redundancy where needed.",
+  "docs.networks.exit.title": "Internet exit node",
+  "docs.networks.exit.description":
+    "When an administrator publishes and permits a default route, a user can choose that peer as an exit node so supported device traffic uses its internet connection.",
+  "docs.networks.access.title": "Access remains explicit",
+  "docs.networks.access.description":
+    "Publishing a route does not automatically grant every user access. Use groups and access policies to limit each network, route and service to the intended users and devices.",
   "peers.title": "Peers",
   "peers.description":
     "User devices and servers connected to your private network.",
@@ -1303,6 +1462,154 @@ const zhCN: Record<TranslationKey, string> = {
   "downloads.linuxPasteHint":
     "粘贴到 Linux 终端运行；安装完成后会打开浏览器登录 CyberNet。",
   "downloads.scriptCopied": "安装命令已复制。",
+  "publicNav.label": "公开信息",
+  "publicNav.downloads": "下载",
+  "publicNav.documentation": "使用文档",
+  "publicNav.privacy": "隐私",
+  "publicNav.terms": "条款",
+  "publicFooter.beta": "CyberNet 测试版 · 产品与政策信息",
+  "legal.effectiveDate": "生效日期",
+  "legal.effectiveDateValue": "2026 年 7 月 31 日",
+  "privacy.eyebrow": "CyberNet 测试版",
+  "privacy.title": "隐私政策",
+  "privacy.introduction":
+    "本政策说明当前 CyberNet 测试版 App 与管理服务在用户使用过程中如何处理信息。内容以谨慎、实用地描述现阶段测试服务为目的，并可能随产品变化而更新。",
+  "privacy.data.title": "我们处理的信息",
+  "privacy.data.account":
+    "用于识别和认证用户的账号标识，例如由当前登录服务返回的用户标识。",
+  "privacy.data.device": "注册和运行节点所需的设备、操作系统与客户端信息。",
+  "privacy.data.connection":
+    "网络配置与连接状态，包括 CyberNet 地址、路由信息、时间记录和在线状态。",
+  "privacy.data.diagnostics":
+    "用户主动提交的诊断资料，例如日志、截图或支持请求中提供的故障信息。",
+  "privacy.local.title": "仅保存在设备上的信息",
+  "privacy.local.description":
+    "当你配置 VPN 自动连接规则时，CyberNet 可能在设备上保存所选 Wi-Fi 网络名称，仅用于在本机匹配并执行这些规则；除非你主动将其包含在提交给技术支持的诊断资料中，否则不会发送到 CyberNet 管理服务。可选通知仅用于本地的重新登录提醒。",
+  "privacy.use.title": "信息用途",
+  "privacy.use.description":
+    "我们使用这些信息来提供、测试、保护和支持 CyberNet，包括：",
+  "privacy.use.authentication": "认证账号与登录会话。",
+  "privacy.use.network": "注册设备并协调专属网络连接。",
+  "privacy.use.support": "排查故障、响应支持请求并改进可靠性。",
+  "privacy.use.security": "保护账号、识别滥用并调查安全事件。",
+  "privacy.storage.title": "存储与测试服务提供方",
+  "privacy.storage.cybernet":
+    "信息存储在为你的账号和网络提供服务的 CyberNet 服务环境中。",
+  "privacy.storage.processors":
+    "在测试分发和诊断期间，Apple TestFlight 以及在启用崩溃报告时的 Firebase Crashlytics，可能按照各自的条款与隐私政策处理相关的分发、设备、诊断或崩溃信息。",
+  "privacy.storage.retention":
+    "保存时间取决于信息类型以及测试运营、故障排查与安全工作的需要。你可以联系我们，查询与账号相关信息的具体情况。",
+  "privacy.sale.title": "不出售个人信息",
+  "privacy.sale.description":
+    "CyberNet 不出售个人信息。服务提供方仅可在托管、分发、运行、诊断或支持测试服务所必要的范围内处理有限信息。",
+  "privacy.rights.title": "你的选择",
+  "privacy.rights.description":
+    "你可以查询账号关联的可识别信息、请求更正或请求删除。我们可能需要验证请求；为保护服务或满足适用要求，部分信息可能仍需保留。",
+  "privacy.contact.title": "联系我们",
+  "privacy.contact.description":
+    "如需咨询隐私问题，或提出查询、删除请求，请发送邮件至：",
+  "privacy.changes":
+    "本政策更新时，页面上的生效日期会同步调整。在可行情况下，测试期间的重要变更也会通过服务进行说明。",
+  "terms.eyebrow": "CyberNet 测试版",
+  "terms.title": "测试版使用条款",
+  "terms.introduction":
+    "本条款说明使用 CyberNet 测试版时需要遵守的规则。使用测试服务即表示你理解并接受这些规则；代表组织使用时，还应遵守该组织的授权和管理要求。",
+  "terms.betaNotice": "CyberNet 是用于评估和测试的 Beta 服务",
+  "terms.authorization.title": "仅限获得授权的访问",
+  "terms.authorization.description":
+    "仅可使用你拥有或已获明确授权的账号、设备、网络和资源。组织管理员可能设置额外的访问规则。",
+  "terms.account.title": "账号安全",
+  "terms.account.description":
+    "请妥善保护登录凭据与设备，不要通过共享访问绕过管理员控制，并及时报告疑似未授权使用。对于你能够控制的账号或已注册设备活动，应承担相应管理责任。",
+  "terms.prohibited.title": "禁止行为",
+  "terms.prohibited.description": "不得使用 CyberNet 从事以下行为：",
+  "terms.prohibited.access": "未经许可访问账号、系统、数据或网络。",
+  "terms.prohibited.disrupt": "干扰、过载、探测服务或影响其他用户的网络。",
+  "terms.prohibited.malware": "传播恶意软件、有害代码或用于入侵设备的内容。",
+  "terms.prohibited.bypass": "规避安全控制、使用限制或管理员策略。",
+  "terms.prohibited.illegal": "从事违法、欺诈或滥用活动。",
+  "terms.changes.title": "测试期间的变化与可用性",
+  "terms.changes.description":
+    "测试期间，功能、限制、兼容性与可用性可能发生变化；服务也可能更新、暂停或停止。在可行情况下，计划中的重要变化会通过服务进行说明。",
+  "terms.termination.title": "终止访问",
+  "terms.termination.description":
+    "你可以随时退出账号并移除已注册客户端以停止使用。授权结束、疑似存在滥用，或需要保护服务与用户时，服务运营方或组织管理员可以暂停或终止访问。",
+  "terms.asIs.title": "按当前可用状态提供",
+  "terms.asIs.description":
+    "CyberNet 测试版按当前状态用于评估与测试，可能出现缺陷、中断、兼容性问题或数据丢失，也不承诺始终连续、无错误运行。请勿将测试版作为访问关键系统的唯一通道。",
+  "terms.contact.title": "问题咨询",
+  "terms.contact.description": "如对本条款或测试服务有疑问，请发送邮件至：",
+  "docs.eyebrow": "CyberNet 帮助",
+  "docs.title": "快速开始",
+  "docs.introduction":
+    "安装 CyberNet，使用账号登录，然后通过管理平台维护设备和网络访问关系。",
+  "docs.signIn.title": "使用账号登录",
+  "docs.signIn.description":
+    "在 macOS、Windows、iPhone/iPad 或 Android 安装 CyberNet 后，打开 App 并使用 CyberNet 账号登录。",
+  "docs.signIn.noAddress":
+    "这些平台无需填写管理地址、设置密钥，也不需要运行命令行。",
+  "docs.downloads.title": "下载客户端",
+  "docs.downloads.description":
+    "下载中心会展示当前已发布的 CyberNet 安装包，以及各平台需要注意的测试版说明。",
+  "docs.downloads.action": "打开下载中心",
+  "docs.linux.title": "在 Linux 上安装",
+  "docs.linux.description":
+    "Linux 目前先通过官方软件包脚本完成安装，然后启动登录流程：",
+  "docs.linux.copy": "复制",
+  "docs.linux.copyDone": "已复制",
+  "docs.linux.copied": "Linux 安装命令已复制。",
+  "docs.linux.afterInstall":
+    "将命令粘贴到 Linux 终端运行；安装完成后，CyberNet 会打开浏览器，请使用账号完成登录和连接。",
+  "docs.admin.title": "使用管理平台",
+  "docs.admin.description":
+    "管理员可以查看专属网络状态，并控制不同用户可以访问的资源。具体功能取决于账号配置。",
+  "docs.admin.devices.title": "设备与状态",
+  "docs.admin.devices.description":
+    "查看已注册节点、CyberNet 地址、所属用户、客户端版本与最近在线状态。",
+  "docs.admin.access.title": "群组与访问控制",
+  "docs.admin.access.description":
+    "组织用户和设备，并通过访问策略仅允许经过批准的连接。",
+  "docs.admin.routing.title": "路由与网络出口",
+  "docs.admin.routing.description":
+    "发布私有网络路由；功能开启后，还可选择已批准的节点作为互联网出口。",
+  "docs.admin.operations.title": "DNS 与客户端设置",
+  "docs.admin.operations.description":
+    "管理 DNS、本地服务访问选项，以及面向用户的客户端更新信息。",
+  "docs.support":
+    "如果组织提供了不同的操作说明或权限要求，请以管理员的指引为准。CyberNet 技术支持：tech@aispea.com。",
+  "docs.backToOverview": "返回文档首页",
+  "docs.peers.eyebrow": "CyberNet 使用文档",
+  "docs.peers.title": "对等节点与设备",
+  "docs.peers.introduction":
+    "对等节点是安装 CyberNet 并注册到你的账号或组织中的设备。",
+  "docs.peers.what.title": "节点信息",
+  "docs.peers.what.description":
+    "管理平台可展示节点名称、CyberNet 地址、所属用户、客户端与操作系统信息，以及最近连接状态；实际可见内容取决于你的权限。",
+  "docs.peers.status.title": "理解在线状态",
+  "docs.peers.status.description":
+    "在线状态反映最近一次上报的管理连接。不同客户端与页面的刷新时间可能略有差异，可稍等片刻后刷新；如果差异持续存在，请检查设备上的 VPN 权限、后台运行状态和诊断信息。",
+  "docs.peers.connectivity.title": "检查连通性",
+  "docs.peers.connectivity.description":
+    "显示在线并不代表一定允许互访；还需要访问策略、路由、目标服务和设备防火墙同时允许连接。",
+  "docs.peers.access.title": "SSH 与本地服务",
+  "docs.peers.access.description":
+    "SSH 或其他本地服务需要在设备端明确开启，并由访问策略放行。请仅向获得授权的用户和群组开放实际需要的服务。",
+  "docs.networks.eyebrow": "CyberNet 使用文档",
+  "docs.networks.title": "网络与路由",
+  "docs.networks.introduction":
+    "通过路由，获得授权的 CyberNet 节点可以访问私有网络，或在配置后使用指定的互联网出口节点。",
+  "docs.networks.resources.title": "私有网络资源",
+  "docs.networks.resources.description":
+    "管理员可以定义 IP 网段或获准访问的资源，并选择能够连接这些资源的一个或多个路由节点；其他用户仅通过相应策略获得访问权限。",
+  "docs.networks.routes.title": "路由节点",
+  "docs.networks.routes.description":
+    "路由节点负责将流量转发到局域网或 VPC。请保持节点在线，确认转发与本机防火墙允许流量，并在需要时配置冗余。",
+  "docs.networks.exit.title": "互联网出口节点",
+  "docs.networks.exit.description":
+    "管理员发布并授权默认路由后，用户可以选择该节点作为网络出口，让受支持设备的流量使用该节点的互联网连接。",
+  "docs.networks.access.title": "权限始终需要明确配置",
+  "docs.networks.access.description":
+    "发布路由不会自动向所有用户开放访问。请通过群组和访问策略，将每个网络、路由与服务限定给预期的用户和设备。",
   "peers.title": "对等节点",
   "peers.description": "已连接到专属网络的用户设备与服务器。",
   "peers.serial": "序列号",

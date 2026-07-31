@@ -80,6 +80,10 @@ export default function OIDCProvider({ children }: Props) {
   if (
     path === "/install" ||
     path === "/downloads" ||
+    path === "/privacy" ||
+    path === "/terms" ||
+    path === "/docs" ||
+    path?.startsWith("/docs/") ||
     path === "/setup" ||
     path?.startsWith("/invite")
   )
