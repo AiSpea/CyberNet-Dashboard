@@ -4,8 +4,7 @@ import AppLayout from "@/layouts/AppLayout";
 
 export const metadata: Metadata = {
   title: `${globalMetaTitle}`,
-  description:
-    "CyberNet private network and access management dashboard, powered by NetBird.",
+  description: "CyberNet 专属网络与访问管理平台",
   applicationName: "CyberNet",
   icons: {
     icon: "/cybernet-app-icon.png",

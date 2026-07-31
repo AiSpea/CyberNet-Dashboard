@@ -1,6 +1,11 @@
 import Button from "@components/Button";
 import { Modal, ModalContent } from "@components/modal/Modal";
-import { ArrowRightIcon, CheckCircle2Icon, DownloadIcon, Loader2Icon } from "lucide-react";
+import {
+  ArrowRightIcon,
+  CheckCircle2Icon,
+  DownloadIcon,
+  Loader2Icon,
+} from "lucide-react";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { SetupModalContent } from "@/modules/setup-netbird-modal/SetupModal";
@@ -41,7 +46,7 @@ export const OnboardingAgentDevice = ({
           }
         >
           {`Agent Network endpoints are private and reachable only over the
-          NetBird overlay. Install the client and sign in to join the network
+          CyberNet overlay. Install the client and sign in to join the network
           with keyless, encrypted access.`}
         </div>
       </div>
@@ -58,7 +63,10 @@ export const OnboardingAgentDevice = ({
           </>
         ) : (
           <>
-            <Loader2Icon size={16} className={"animate-spin text-nb-gray-300"} />
+            <Loader2Icon
+              size={16}
+              className={"animate-spin text-nb-gray-300"}
+            />
             <span className={"text-nb-gray-300"}>
               Waiting for your device to connect…
             </span>
@@ -78,14 +86,14 @@ export const OnboardingAgentDevice = ({
         ) : (
           <Button variant={"primary"} onClick={() => setOpen(true)}>
             <DownloadIcon size={16} />
-            Install NetBird
+            Install CyberNet
           </Button>
         )}
       </div>
 
       <Modal open={open} onOpenChange={setOpen}>
         <ModalContent className={"!z-[70]"}>
-          <SetupModalContent title={"Install NetBird"} isUserDevice={true} />
+          <SetupModalContent title={"Install CyberNet"} isUserDevice={true} />
         </ModalContent>
       </Modal>
     </div>

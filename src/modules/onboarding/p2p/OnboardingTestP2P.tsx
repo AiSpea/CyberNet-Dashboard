@@ -43,8 +43,8 @@ export const OnboardingTestP2P = ({
           <p className={"!text-nb-gray-300"}>
             Run this command from{" "}
             <span className={"text-white"}>{firstDevice?.name}</span> to ping{" "}
-            <span className={"text-white"}>{secondDevice?.name}</span>.
-            You should receive a response if the connection is working.
+            <span className={"text-white"}>{secondDevice?.name}</span>. You
+            should receive a response if the connection is working.
           </p>
           <Code message={"Command has been copied successfully"}>
             ping {secondDevice?.ip}
@@ -56,7 +56,7 @@ export const OnboardingTestP2P = ({
             If something isn’t right, please check our{" "}
             <InlineLink
               onClick={onTroubleshootingClick}
-              href={"https://docs.netbird.io/how-to/troubleshooting-client"}
+              href={"https://github.com/AiSpea/CyberNet-Dashboard#readme"}
               target={"_blank"}
             >
               troubleshooting guide

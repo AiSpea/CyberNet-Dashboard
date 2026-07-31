@@ -14,8 +14,13 @@ import { ActivityEvent } from "@/interfaces/ActivityEvent";
 import PageContainer from "@/layouts/PageContainer";
 import ActivityTable from "@/modules/activity/ActivityTable";
 import { EventStreamingCard } from "@/modules/integrations/event-streaming/EventStreamingCard";
+import { useLocale } from "@/contexts/LocaleProvider";
+import loadConfig from "@/utils/config";
+
+const config = loadConfig();
 
 export default function Activity() {
+  const { t } = useLocale();
   const { permission } = usePermissions();
 
   const { data: events, isLoading } =
@@ -29,25 +34,21 @@ export default function Activity() {
       <div className={"p-default py-6"}>
         <Breadcrumbs>
           <Breadcrumbs.Item
-            label={"Activity"}
+            label={t("nav.activity")}
             disabled={true}
             icon={<ActivityIcon size={13} />}
           />
           <Breadcrumbs.Item
             href={"/events/audit"}
-            label={"Audit Events"}
+            label={t("nav.auditEvents")}
             icon={<LogsIcon size={18} />}
           />
         </Breadcrumbs>
-        <h1 ref={headingRef}>Audit Events</h1>
+        <h1 ref={headingRef}>{t("nav.auditEvents")}</h1>
         <Paragraph>
-          Audit configuration changes, access policy updates, and peer
-          registration and login events across your network.{" "}
-          <InlineLink
-            href={"https://docs.netbird.io/how-to/audit-events-logging"}
-            target={"_blank"}
-          >
-            Learn more
+          {t("page.audit.description")}{" "}
+          <InlineLink href={config.docsUrl} target={"_blank"}>
+            {t("common.learnMore")}
             <ExternalLinkIcon size={12} />
           </InlineLink>
         </Paragraph>

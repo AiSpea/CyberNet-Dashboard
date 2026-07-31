@@ -14,19 +14,20 @@ import {
   BookText,
   CircleQuestionMark,
   Github,
-  MailIcon,
   MessageSquareShare,
-  MessagesSquareIcon,
   TriangleAlert,
 } from "lucide-react";
 import { useState } from "react";
 import Button from "@components/Button";
 import { cn } from "@utils/helpers";
-import SlackIcon from "@/assets/icons/SlackIcon";
-import { isNetBirdCloud } from "@utils/netbird";
+import loadConfig from "@utils/config";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const config = loadConfig();
 
 export default function HelpAndSupportButton() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { t } = useLocale();
 
   return (
     <DropdownMenu
@@ -50,74 +51,34 @@ export default function HelpAndSupportButton() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1 px-1">
             <div className="text-sm font-normal leading-none text-nb-gray-200 py-1">
-              Help and Support
+              {t("help.title")}
             </div>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          href="https://docs.netbird.io/"
+          href={config.docsUrl}
           target="_blank"
           rel="noopener noreferrer"
           asChild
         >
           <div className={"flex gap-3 items-center"}>
             <BookText size={14} />
-            Documentation
+            {t("common.documentation")}
           </div>
           <DropdownMenuShortcut>
             <ArrowUpRightIcon size={16} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuItem
-          href="https://docs.netbird.io/help/troubleshooting-client"
+          href={config.supportUrl}
           target="_blank"
           rel="noopener noreferrer"
           asChild
         >
           <div className={"flex gap-3 items-center"}>
             <TriangleAlert size={14} />
-            Troubleshooting
-          </div>
-          <DropdownMenuShortcut>
-            <ArrowUpRightIcon size={16} />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
-
-        {isNetBirdCloud() && (
-          <DropdownMenuItem href="mailto:support@netbird.io?subject=Support Request">
-            <div className={"flex gap-3 items-center"}>
-              <MailIcon size={14} />
-              support@netbird.io
-            </div>
-          </DropdownMenuItem>
-        )}
-
-        <DropdownMenuSeparator />
-
-        <DropdownMenuItem
-          href="https://forum.netbird.io/"
-          target="_blank"
-          rel="noopener noreferrer"
-          asChild
-        >
-          <div className={"flex gap-3 items-center"}>
-            <MessagesSquareIcon size={14} />
-            NetBird Forum
-          </div>
-          <DropdownMenuShortcut>
-            <ArrowUpRightIcon size={16} />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          href="https://docs.netbird.io/slack-url"
-          target="_blank"
-          rel="noopener noreferrer"
-          asChild
-        >
-          <div className={"flex gap-3 items-center"}>
-            <SlackIcon size={14} />
-            NetBird Slack
+            {t("common.troubleshooting")}
           </div>
           <DropdownMenuShortcut>
             <ArrowUpRightIcon size={16} />
@@ -127,14 +88,14 @@ export default function HelpAndSupportButton() {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          href="https://github.com/AiSpea/CyberNet-Dashboard"
+          href={config.sourceUrl}
           target="_blank"
           rel="noopener noreferrer"
           asChild
         >
           <div className={"flex gap-3 items-center"}>
             <Github size={14} />
-            CyberNet Source Code
+            {t("common.sourceCode")}
           </div>
           <DropdownMenuShortcut>
             <ArrowUpRightIcon size={16} />
@@ -142,14 +103,14 @@ export default function HelpAndSupportButton() {
         </DropdownMenuItem>
 
         <DropdownMenuItem
-          href={"https://forms.gle/TeLw2zrXEdw6RcQ36"}
+          href={config.supportUrl}
           target={"_blank"}
           rel="noopener noreferrer"
           asChild
         >
           <div className={"flex gap-3 items-center"}>
             <MessageSquareShare size={14} />
-            Feedback
+            {t("common.feedback")}
           </div>
           <DropdownMenuShortcut>
             <ArrowUpRightIcon size={16} />

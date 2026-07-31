@@ -2,44 +2,40 @@ import Code from "@components/Code";
 import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
 import { GRPC_API_ORIGIN } from "@utils/netbird";
-import { ShoppingBagIcon } from "lucide-react";
-import Image from "next/image";
+import { DownloadIcon, ShoppingBagIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import GooglePlayButton from "@/assets/google-play-badge.png";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
+import Button from "@components/Button";
+import loadConfig from "@/utils/config";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const config = loadConfig();
 
 export default function AndroidTab() {
+  const { t } = useLocale();
   return (
     <TabsContent value={String(OperatingSystem.ANDROID)}>
       <TabsContentPadding>
         <p className={"font-medium flex gap-3 items-center text-base"}>
           <ShoppingBagIcon size={16} />
-          Install on Android
+          {t("install.android")}
         </p>
         <Steps>
           <Steps.Step step={1}>
-            <p>Download and install the application from Google Play Store:</p>
+            <p>{t("install.mobileBuild")}</p>
             <div className={"flex gap-4 mt-1"}>
-              <Link
-                href={
-                  "https://play.google.com/store/apps/details?id=io.netbird.client"
-                }
-                target={"_blank"}
-              >
-                <Image
-                  src={GooglePlayButton}
-                  alt={"Download NetBird from Google Play"}
-                  height={50}
-                />
+              <Link href={config.androidDownloadUrl} target={"_blank"}>
+                <Button variant="primary">
+                  <DownloadIcon size={14} />
+                  {t("install.downloadCyberNet")}
+                </Button>
               </Link>
             </div>
           </Steps.Step>
           {GRPC_API_ORIGIN && (
             <Steps.Step step={2}>
-              <p>
-                {`Click on "Change Server" and enter the following "Server"`}
-              </p>
+              <p>{t("install.changeServer")}</p>
               <Code>
                 <Code.Line>{GRPC_API_ORIGIN}</Code.Line>
               </Code>
@@ -49,11 +45,11 @@ export default function AndroidTab() {
           <Steps.Step step={GRPC_API_ORIGIN ? 3 : 2}>
             <p>
               {/* eslint-disable-next-line react/no-unescaped-entities */}
-              Click on the "Connect" button in the middle of the screen
+              {t("install.connectButton")}
             </p>
           </Steps.Step>
           <Steps.Step step={GRPC_API_ORIGIN ? 4 : 3} line={false}>
-            <p>Sign up using your email address</p>
+            <p>{t("auth.signInAccount")}</p>
           </Steps.Step>
         </Steps>
       </TabsContentPadding>

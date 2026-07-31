@@ -18,8 +18,11 @@ import { useUsers } from "@/contexts/UsersProvider";
 import PageContainer from "@/layouts/PageContainer";
 import type { PeersTableKind } from "@/modules/peers/PeersTable";
 import { SetupModalContent } from "@/modules/setup-netbird-modal/SetupModal";
+import { useLocale } from "@/contexts/LocaleProvider";
+import loadConfig from "@/utils/config";
 
 const PeersTable = lazy(() => import("@/modules/peers/PeersTable"));
+const config = loadConfig();
 
 export default function PeersPage() {
   const { isRestricted } = usePermissions();
@@ -44,6 +47,7 @@ export default function PeersPage() {
 }
 
 function PeersView() {
+  const { t } = useLocale();
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -56,8 +60,8 @@ function PeersView() {
     kindParam === "servers"
       ? "servers"
       : kindParam === "users"
-        ? "users"
-        : undefined;
+      ? "users"
+      : undefined;
 
   const onKindChange = (next: PeersTableKind | undefined) => {
     const params = new URLSearchParams(searchParams?.toString() ?? "");
@@ -93,19 +97,16 @@ function PeersView() {
         <Breadcrumbs>
           <Breadcrumbs.Item
             href={"/peers"}
-            label={"Peers"}
+            label={t("peers.title")}
             icon={<PeerIcon size={13} />}
             active
           />
         </Breadcrumbs>
-        <h1 ref={headingRef}>Peers</h1>
+        <h1 ref={headingRef}>{t("peers.title")}</h1>
         <Paragraph>
-            User devices and headless machines, such as servers and autonomous agents, connected to your network.{" "}
-          <InlineLink
-            href={"https://docs.netbird.io/how-to/add-machines-to-your-network"}
-            target={"_blank"}
-          >
-            Learn more
+          {t("peers.description")}{" "}
+          <InlineLink href={config.docsUrl} target={"_blank"}>
+            {t("common.learnMore")}
             <ExternalLinkIcon size={12} />
           </InlineLink>
         </Paragraph>
@@ -124,19 +125,15 @@ function PeersView() {
 }
 
 function PeersBlockedView() {
+  const { t } = useLocale();
   return (
     <div className={"flex items-center justify-center flex-col"}>
       <div className={"p-default py-6 max-w-3xl text-center"}>
-        <h1>Add new device to your network</h1>
+        <h1>{t("install.addDeviceTitle")}</h1>
         <Paragraph className={"inline"}>
-          To get started, install NetBird and log in using your email account.
-          After that you should be connected. If you have further questions
-          check out our{" "}
-          <InlineLink
-            href={"https://docs.netbird.io/how-to/getting-started#installation"}
-            target={"_blank"}
-          >
-            Installation Guide
+          {t("install.addDeviceDescription")}{" "}
+          <InlineLink href={config.docsUrl} target={"_blank"}>
+            {t("install.installationGuide")}
             <ExternalLinkIcon size={12} />
           </InlineLink>
         </Paragraph>

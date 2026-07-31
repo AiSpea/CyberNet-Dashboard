@@ -15,7 +15,6 @@ import Image from "next/image";
 import * as React from "react";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
-import netBirdLogo from "@/assets/netbird.svg";
 import { useMSP } from "@/cloud/msp/contexts/MSPProvider";
 import { TenantDNSResponse, TenantStatus } from "@/cloud/msp/interfaces/Tenant";
 import { useDialog } from "@/contexts/DialogProvider";
@@ -127,8 +126,10 @@ export const MSPTransferAccountModal = () => {
               }
             >
               <Image
-                src={netBirdLogo}
-                alt={"NetBird"}
+                src="/cybernet-app-icon.png"
+                alt={"CyberNet"}
+                width={32}
+                height={32}
                 className={"rounded-[4px]"}
               />
             </div>

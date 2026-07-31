@@ -18,8 +18,8 @@ export function GlobalThemeProvider({
   return (
     <NextThemesProvider
       attribute="class"
-      defaultTheme="dark"
-      storageKey="netbird-theme"
+      defaultTheme="light"
+      storageKey="cybernet-theme"
       enableSystem={false}
       disableTransitionOnChange
       {...props}

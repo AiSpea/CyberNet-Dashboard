@@ -2,7 +2,7 @@ import { useOidcUser } from "@axa-fr/react-oidc";
 import FullScreenLoading from "@components/ui/FullScreenLoading";
 import { Params, useApiCall } from "@utils/api";
 import { useIsMd } from "@utils/responsive";
-import { getLatestNetbirdRelease } from "@utils/version";
+import { getLatestClientRelease } from "@utils/version";
 import React, {
   useCallback,
   useContext,
@@ -13,7 +13,7 @@ import React, {
 } from "react";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { User } from "@/interfaces/User";
-import type { NetbirdRelease } from "@/interfaces/Version";
+import type { ClientRelease } from "@/interfaces/Version";
 
 type Props = {
   children: React.ReactNode;
@@ -22,7 +22,9 @@ type Props = {
 const ApplicationContext = React.createContext(
   {} as {
     latestVersion: string | undefined;
-    latestUrl: string | undefined;
+    clientProductName: string;
+    clientDownloadUrl: string | undefined;
+    clientReleaseNotesUrl: string | undefined;
     toggleMobileNav: () => void;
     mobileNavOpen: boolean;
     user: any;
@@ -35,8 +37,9 @@ const ApplicationContext = React.createContext(
 
 export default function ApplicationProvider({ children }: Props) {
   const [latestRelease, setLatestRelease] = useLocalStorage<
-    NetbirdRelease | undefined
-  >("netbird-latest-release", undefined);
+    ClientRelease | undefined
+  >("cybernet-client-release", undefined);
+  const latestReleaseRef = useRef(latestRelease);
   const { oidcUser: user } = useOidcUser();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const isMd = useIsMd();
@@ -89,9 +92,20 @@ export default function ApplicationProvider({ children }: Props) {
   }, [isMd]);
 
   useEffect(() => {
+    // The previous key cached releases from the upstream NetBird GitHub
+    // repository. Never migrate that data into CyberNet's configured feed.
+    window.localStorage.removeItem("netbird-latest-release");
+
     async function fetchLatestRelease() {
-      const release = await getLatestNetbirdRelease(latestRelease);
-      setLatestRelease(release);
+      try {
+        const release = await getLatestClientRelease(latestReleaseRef.current);
+        latestReleaseRef.current = release;
+        setLatestRelease(release);
+      } catch (error) {
+        // Keep the last known CyberNet-owned metadata when the instance
+        // endpoint is temporarily unavailable.
+        console.warn("CyberNet client update check failed:", error);
+      }
     }
     fetchLatestRelease().then();
     const interval = setInterval(
@@ -99,14 +113,24 @@ export default function ApplicationProvider({ children }: Props) {
       1000 * 60 * 30, // Run every 30 minutes
     );
     return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setLatestRelease]);
 
   const latestVersion = useMemo(
     () => latestRelease?.latest_version,
     [latestRelease],
   );
-  const latestUrl = useMemo(() => latestRelease?.url, [latestRelease]);
+  const clientProductName = useMemo(
+    () => latestRelease?.product_name || "CyberNet",
+    [latestRelease],
+  );
+  const clientDownloadUrl = useMemo(
+    () => latestRelease?.download_url || undefined,
+    [latestRelease],
+  );
+  const clientReleaseNotesUrl = useMemo(
+    () => latestRelease?.release_notes_url || undefined,
+    [latestRelease],
+  );
 
   const toggleMobileNav = () => {
     setMobileNavOpen(!mobileNavOpen);
@@ -117,7 +141,9 @@ export default function ApplicationProvider({ children }: Props) {
       value={{
         latestVersion,
         toggleMobileNav,
-        latestUrl,
+        clientProductName,
+        clientDownloadUrl,
+        clientReleaseNotesUrl,
         mobileNavOpen,
         user,
         globalApiParams,

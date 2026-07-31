@@ -10,6 +10,10 @@ import Link from "next/link";
 import React from "react";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import { RoutingPeerSetupKeyInfo } from "@/modules/setup-netbird-modal/SetupModal";
+import { useLocale } from "@/contexts/LocaleProvider";
+import loadConfig from "@/utils/config";
+
+const config = loadConfig();
 
 type Props = {
   setupKey?: string;
@@ -26,17 +30,18 @@ export default function DockerTab({
   showSetupKeyInfo = false,
   hostname,
 }: Readonly<Props>) {
+  const { t } = useLocale();
   const offset = setupKeyContent ? 1 : 0;
   return (
     <TabsContent value={String(OperatingSystem.DOCKER)}>
       <TabsContentPadding>
         <p className={"font-medium flex gap-3 items-center text-base"}>
           <IconBrandUbuntu size={16} />
-          Install on Ubuntu
+          {t("install.docker")}
         </p>
         <Steps>
           <Steps.Step step={1}>
-            <p>Install Docker</p>
+            <p>{t("common.install")} Docker</p>
             <div className={"flex gap-4 mt-1"}>
               <Link
                 href={"https://docs.docker.com/engine/install/"}
@@ -45,7 +50,7 @@ export default function DockerTab({
               >
                 <Button variant={"primary"}>
                   <ExternalLinkIcon size={14} />
-                  Official Docker Installation Guide
+                  {t("install.dockerGuide")}
                 </Button>
               </Link>
             </div>
@@ -55,7 +60,7 @@ export default function DockerTab({
           )}
           <Steps.Step step={2 + offset}>
             <p>
-              Run NetBird container
+              {t("install.runContainer")}
               {showSetupKeyInfo && <RoutingPeerSetupKeyInfo />}
             </p>
             <Code>
@@ -90,13 +95,9 @@ export default function DockerTab({
             </Code>
           </Steps.Step>
           <Steps.Step step={3 + offset} line={false}>
-            <p>Read our documentation</p>
-            <InlineLink
-              href={"https://docs.netbird.io/how-to/installation/docker"}
-              passHref={true}
-              target={"_blank"}
-            >
-              Running NetBird in Docker
+            <p>{t("install.readDocs")}</p>
+            <InlineLink href={config.docsUrl} passHref={true} target={"_blank"}>
+              {t("install.docker")}
             </InlineLink>
           </Steps.Step>
         </Steps>

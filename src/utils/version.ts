@@ -1,14 +1,14 @@
 import { getOperatingSystem } from "@hooks/useOperatingSystem";
 import dayjs from "dayjs";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
-import { NetbirdRelease } from "@/interfaces/Version";
+import { ClientRelease } from "@/interfaces/Version";
+import { fetchInstanceStatus } from "@/utils/unauthenticatedApi";
 
-const GITHUB_API_ENDPOINT = "https://api.github.com";
 const LATEST_RELEASE_CHECK_INTERVAL_IN_MINUTES = 10;
 
-export const getLatestNetbirdRelease = async (
-  release?: NetbirdRelease,
-): Promise<NetbirdRelease | undefined> => {
+export const getLatestClientRelease = async (
+  release?: ClientRelease,
+): Promise<ClientRelease | undefined> => {
   const runFetch =
     release === undefined ||
     release.last_checked === undefined ||
@@ -17,23 +17,20 @@ export const getLatestNetbirdRelease = async (
     );
 
   if (runFetch) {
-    const data = (await fetch(
-      `${GITHUB_API_ENDPOINT}/repos/netbirdio/netbird/releases/latest`,
-    ).then((response) => response.json())) as any;
+    const status = await fetchInstanceStatus();
+    const clientUpdate = status.client_update;
+    if (!clientUpdate) return undefined;
 
-    try {
-      return {
-        latest_version: data.name,
-        last_checked: new Date(),
-        url: data.html_url as string,
-      } as NetbirdRelease;
-    } catch (e) {
-      console.warn(e);
-      return undefined;
-    }
-  } else {
-    return release;
+    return {
+      latest_version: clientUpdate.update.latest_version.trim(),
+      last_checked: new Date().toISOString(),
+      product_name: clientUpdate.brand.product_name.trim() || "CyberNet",
+      release_notes_url: clientUpdate.update.release_notes_url.trim(),
+      download_url: clientUpdate.update.download_url.trim(),
+    };
   }
+
+  return release;
 };
 
 /**

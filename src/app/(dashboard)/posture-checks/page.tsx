@@ -15,11 +15,16 @@ import { usePermissions } from "@/contexts/PermissionsProvider";
 import PoliciesProvider from "@/contexts/PoliciesProvider";
 import { PostureCheck } from "@/interfaces/PostureCheck";
 import PageContainer from "@/layouts/PageContainer";
+import { useLocale } from "@/contexts/LocaleProvider";
+import loadConfig from "@/utils/config";
+
+const config = loadConfig();
 
 const PostureCheckTable = lazy(
   () => import("@/modules/posture-checks/table/PostureCheckTable"),
 );
 export default function PostureChecksPage() {
+  const { t } = useLocale();
   const { permission } = usePermissions();
   const { data: postureChecks, isLoading } =
     useFetchApi<PostureCheck[]>("/posture-checks");
@@ -34,24 +39,21 @@ export default function PostureChecksPage() {
           <Breadcrumbs>
             <Breadcrumbs.Item
               href={"/access-control"}
-              label={"Access Control"}
+              label={t("nav.accessControl")}
               icon={<AccessControlIcon size={14} />}
             />
             <Breadcrumbs.Item
               href={"/posture-checks"}
-              label={"Posture Checks"}
+              label={t("nav.postureChecks")}
               active
               icon={<ShieldCheck size={15} />}
             />
           </Breadcrumbs>
-          <h1 ref={headingRef}>Posture Checks</h1>
+          <h1 ref={headingRef}>{t("nav.postureChecks")}</h1>
           <Paragraph>
-            Use posture checks to further restrict access in your network.{" "}
-            <InlineLink
-              href={"https://docs.netbird.io/how-to/manage-posture-checks"}
-              target={"_blank"}
-            >
-              Learn more
+            {t("page.postureChecks.description")}{" "}
+            <InlineLink href={config.docsUrl} target={"_blank"}>
+              {t("common.learnMore")}
               <ExternalLinkIcon size={12} />
             </InlineLink>
           </Paragraph>

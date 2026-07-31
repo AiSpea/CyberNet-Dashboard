@@ -15,6 +15,7 @@ import { useApplicationContext } from "@/contexts/ApplicationProvider";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import { PeerOperatingSystemIcon } from "@/modules/peers/PeerOperatingSystemIcon";
 import FullTooltip from "@components/FullTooltip";
+import { useLocale } from "@/contexts/LocaleProvider";
 
 type Props = {
   version: string;
@@ -28,7 +29,13 @@ export default function PeerVersionCell({
   serial,
   ephemeral,
 }: Props) {
-  const { latestVersion, latestUrl } = useApplicationContext();
+  const {
+    latestVersion,
+    clientProductName,
+    clientDownloadUrl,
+    clientReleaseNotesUrl,
+  } = useApplicationContext();
+  const { t } = useLocale();
 
   const updateAvailable = useMemo(() => {
     if (ephemeral) return false;
@@ -73,24 +80,41 @@ export default function PeerVersionCell({
                 <ArrowRightIcon size={16} className={"text-netbird"} />
                 <span className={"text-netbird"}>{latestVersion}</span>
               </div>
-              <p className={"font-medium"}>Update available </p>
+              <p className={"font-medium"}>{t("updates.available")}</p>
 
               <div
                 className={
-                  "text-neutral-300 flex flex-col gap-1 max-w-[300px] text-xs mt-1"
+                  "text-neutral-600 dark:text-neutral-300 flex flex-col gap-1 max-w-[300px] text-xs mt-1"
                 }
               >
-                A new version of Netbird is available. Please update your client
-                to get the latest features and bug fixes.
+                {t("updates.clientAvailableDescription", {
+                  product: clientProductName,
+                  version: latestVersion ?? "",
+                })}
               </div>
-              <InlineLink
-                onClick={(e) => e.stopPropagation()}
-                href={latestUrl as string}
-                target={"_blank"}
-                className={"mt-2 mb-2 text-xs"}
-              >
-                Download & Changelog
-              </InlineLink>
+              <div className={"flex flex-wrap gap-x-3 gap-y-1 mt-2 mb-2"}>
+                {clientDownloadUrl && (
+                  <InlineLink
+                    onClick={(e) => e.stopPropagation()}
+                    href={clientDownloadUrl}
+                    target={"_blank"}
+                    className={"text-xs"}
+                  >
+                    {t("updates.downloadClient")}
+                  </InlineLink>
+                )}
+                {clientReleaseNotesUrl &&
+                  clientReleaseNotesUrl !== clientDownloadUrl && (
+                    <InlineLink
+                      onClick={(e) => e.stopPropagation()}
+                      href={clientReleaseNotesUrl}
+                      target={"_blank"}
+                      className={"text-xs"}
+                    >
+                      {t("updates.releaseNotes")}
+                    </InlineLink>
+                  )}
+              </div>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -107,7 +131,9 @@ export default function PeerVersionCell({
           disabled={!serial || serial === ""}
           content={
             <div className={"text-xs"}>
-              <span className={"text-nb-gray-100 font-medium"}>Serial: </span>
+              <span className={"text-nb-gray-100 font-medium"}>
+                {t("peers.serial")}：
+              </span>
               {serial}
             </div>
           }

@@ -11,7 +11,13 @@ import {
 } from "@components/DropdownMenu";
 import TextWithTooltip from "@components/ui/TextWithTooltip";
 import { UserAvatar } from "@components/ui/UserAvatar";
-import { CreditCardIcon, KeyRound, LogOutIcon, User2 } from "lucide-react";
+import {
+  CreditCardIcon,
+  KeyRound,
+  Languages,
+  LogOutIcon,
+  User2,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -23,6 +29,7 @@ import useOSDetection from "@/hooks/useOperatingSystem";
 import { ChangePasswordModalContent } from "@/modules/users/ChangePasswordModal";
 import { isNetBirdCloud } from "@utils/netbird";
 import { Modal } from "@components/modal/Modal";
+import { useLocale } from "@/contexts/LocaleProvider";
 
 export default function UserDropdown() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -32,6 +39,7 @@ export default function UserDropdown() {
   const { isRestricted, permission } = usePermissions();
   const isMac = useOSDetection();
   const router = useRouter();
+  const { locale, t, toggleLocale } = useLocale();
 
   useHotkeys("shift+mod+l", () => logout(), []);
 
@@ -106,15 +114,23 @@ export default function UserDropdown() {
             >
               <div className={"flex gap-3 items-center"}>
                 <KeyRound size={14} />
-                Change Password
+                {t("user.changePassword")}
               </div>
             </DropdownMenuItem>
           )}
 
+          <DropdownMenuItem onClick={toggleLocale}>
+            <div className={"flex gap-3 items-center"}>
+              <Languages size={14} />
+              {t("language.label")}：
+              {locale === "zh-CN" ? "简体中文" : "English"}
+            </div>
+          </DropdownMenuItem>
+
           <DropdownMenuItem onClick={logout}>
             <div className={"flex gap-3 items-center"}>
               <LogOutIcon size={14} />
-              Log out
+              {t("common.logout")}
             </div>
             <DropdownMenuShortcut>
               {isMac ? "⇧⌘L" : "⇧ ⊞ L"}
@@ -129,6 +145,7 @@ export default function UserDropdown() {
 const ProfileSettingsDropdownItem = ({ onClick }: { onClick: () => void }) => {
   const { isMSPInTenantContext } = useMSP();
   const { permission } = usePermissions();
+  const { t } = useLocale();
 
   if (isMSPInTenantContext) return;
   if (!permission?.users.read) return;
@@ -137,7 +154,7 @@ const ProfileSettingsDropdownItem = ({ onClick }: { onClick: () => void }) => {
     <DropdownMenuItem onClick={onClick}>
       <div className={"flex gap-3 items-center"}>
         <User2 size={14} />
-        Profile Settings
+        {t("user.profileSettings")}
       </div>
     </DropdownMenuItem>
   );
@@ -147,6 +164,7 @@ const PlansAndBillingDropdownItem = ({ onClick }: { onClick: () => void }) => {
   const { permission } = usePermissions();
 
   const { isAccountWithMSPParent } = useMSP();
+  const { t } = useLocale();
   if (isAccountWithMSPParent) return;
 
   return (
@@ -154,7 +172,7 @@ const PlansAndBillingDropdownItem = ({ onClick }: { onClick: () => void }) => {
       <DropdownMenuItem onClick={onClick}>
         <div className={"flex gap-3 items-center"}>
           <CreditCardIcon size={14} />
-          Plans & Billing
+          {t("user.plansBilling")}
         </div>
       </DropdownMenuItem>
     )

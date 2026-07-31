@@ -24,5 +24,13 @@
   "hubspotSignupFormId": "$NETBIRD_HUBSPOT_SIGNUP_FORM_ID",
   "hubspotOnboardingFormId": "$NETBIRD_HUBSPOT_ONBOARDING_FORM_ID",
   "hubspotSurveyFormId": "$NETBIRD_HUBSPOT_SURVEY_FORM_ID",
-  "analyticsExcludedEmails": "$NETBIRD_ANALYTICS_EXCLUDED_EMAILS"
+  "analyticsExcludedEmails": "$NETBIRD_ANALYTICS_EXCLUDED_EMAILS",
+  "productName": "$CYBERNET_PRODUCT_NAME",
+  "defaultLocale": "$CYBERNET_DEFAULT_LOCALE",
+  "docsUrl": "$CYBERNET_DOCS_URL",
+  "supportUrl": "$CYBERNET_SUPPORT_URL",
+  "sourceUrl": "$CYBERNET_SOURCE_URL",
+  "clientDownloadUrlTemplate": "$CYBERNET_CLIENT_DOWNLOAD_URL_TEMPLATE",
+  "androidDownloadUrl": "$CYBERNET_ANDROID_DOWNLOAD_URL",
+  "iosDownloadUrl": "$CYBERNET_IOS_DOWNLOAD_URL"
 }
