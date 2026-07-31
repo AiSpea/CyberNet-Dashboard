@@ -44,8 +44,11 @@ services:
     logging: *default-logging
 
   dashboard:
-    image: ${CYBERNET_DASHBOARD_IMAGE:-ghcr.io/aispea/cybernet-dashboard:main}
-    pull_policy: always
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        DASHBOARD_VERSION: ${CYBERNET_DASHBOARD_VERSION:-main}
     restart: unless-stopped
     environment:
       NETBIRD_MGMT_API_ENDPOINT: https://${CYBERNET_DOMAIN:?set CYBERNET_DOMAIN}

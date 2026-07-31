@@ -1,11 +1,12 @@
 # Dokploy production deployment
 
 This repository is the single Git source for the CyberNet control plane on
-Dokploy. GitHub Actions builds the customized Dashboard image, and the Compose
-project pulls that image and starts the combined NetBird server. The combined
-server contains Management, Signal, Relay, embedded identity, and STUN;
-Dokploy's existing Traefik installation continues to terminate TLS and route
-the public hostname.
+Dokploy. GitHub Actions validates the source, then asks Dokploy to pull the
+approved `main` commit and build the customized Dashboard directly from this
+repository. The same Compose project starts the combined NetBird server, which
+contains Management, Signal, Relay, embedded identity, and STUN. Dokploy's
+existing Traefik installation continues to terminate TLS and route the public
+hostname.
 
 The long-running application containers are:
 
@@ -26,22 +27,21 @@ authorized for the `AiSpea-Base` organization:
 - Branch: `main`
 - Compose path: `deploy/compose.dokploy.yml`
 - Dokploy repository auto deploy: disabled (GitHub Actions triggers deployment
-  only after the matching GHCR image is published)
+  only after source validation succeeds)
 - Environment: copy `deploy/.env.example` into Dokploy and verify every value
 
-GitHub Actions publishes `ghcr.io/aispea/cybernet-dashboard:main`, then calls
-Dokploy's Compose deployment API. This ordering prevents Dokploy from
-redeploying before the matching image exists. Configure these repository
-settings:
+GitHub Actions calls Dokploy's Compose deployment API after validation.
+Dokploy then fetches the repository and performs the Docker build on the
+deployment server. Configure these repository settings:
 
-- Secret `DOKPLOY_API_TOKEN`
+- Production-environment secret `DOKPLOY_API_TOKEN`
 - Variable `DOKPLOY_COMPOSE_ID`
 - Variable `DOKPLOY_AUTODEPLOY_ENABLED`
+- Variable `CYBERNET_PUBLIC_URL`
 
 Keep `DOKPLOY_AUTODEPLOY_ENABLED=false` until the first manual production
 cutover and verification are complete. Set it to `true` afterward to enable
-automatic deployment after successful pushes to `main`. The GHCR package must
-be public, or Dokploy must have read credentials for `ghcr.io`.
+automatic Dokploy builds and deployments after successful pushes to `main`.
 
 The weekly upstream-sync workflow always prepares and pushes the
 `automation/upstream-sync` review branch. The AiSpea organization currently
@@ -95,12 +95,13 @@ unchanged.
 
 ## Updating and rolling back
 
-Changes merged to `main` run type-checking, a static build, and a multi-platform
-container publish. When the repository deployment variable is enabled, the
-workflow asks Dokploy to pull the newly published `main` image and redeploy.
+Changes merged to `main` run type-checking and a static validation build. When
+the repository deployment variable is enabled, the workflow asks Dokploy to
+pull `main`, build the Dashboard image locally, and redeploy the unified
+Compose project.
 
-For a Dashboard-only rollback, select an earlier Git commit or an immutable
-`sha-*` GHCR image. The compatible upstream fallback is:
+For a Dashboard-only rollback, select and redeploy an earlier Git commit. The
+compatible upstream fallback image for an incident-only Compose override is:
 
 ```text
 netbirdio/dashboard:v2.90.8@sha256:6b3df5d07cbcf8fb81a6a18bb99fadb220e66a554c0e0fe71cd17a93c15769b1
