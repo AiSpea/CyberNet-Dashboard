@@ -21,6 +21,7 @@ import {
 import GetStartedTest from "@components/ui/GetStartedTest";
 import { ColumnDef, SortingState } from "@tanstack/react-table";
 import { cn } from "@utils/helpers";
+import loadConfig from "@utils/config";
 import {
   ExternalLinkIcon,
   GlobeIcon,
@@ -33,6 +34,7 @@ import { usePathname } from "next/navigation";
 import React, { useMemo, useState } from "react";
 import { useSWRConfig } from "swr";
 import { usePermissions } from "@/contexts/PermissionsProvider";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { useReverseProxies } from "@/contexts/ReverseProxiesProvider";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import {
@@ -43,6 +45,8 @@ import {
 import CustomDomainClusterCell from "@/modules/reverse-proxy/domain/CustomDomainClusterCell";
 import { CustomDomainModal } from "./CustomDomainModal";
 import { CustomDomainVerificationModal } from "./CustomDomainVerificationModal";
+
+const config = loadConfig();
 
 const CustomDomainsColumns: ColumnDef<ReverseProxyDomain>[] = [
   {
@@ -89,6 +93,7 @@ export default function CustomDomainsTable({ headingTarget }: Readonly<Props>) {
   const { permission } = usePermissions();
   const { domains, isLoadingDomains, createDomain, validateDomain } =
     useReverseProxies();
+  const { t } = useLocale();
 
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [verificationModalOpen, setVerificationModalOpen] = useState(false);
@@ -195,9 +200,9 @@ export default function CustomDomainsTable({ headingTarget }: Readonly<Props>) {
               />
             }
             title={"Add Custom Domains"}
-            description={
-              "Use your own domains with NetBird's reverse proxy. To get started, add a CNAME record that points to a cluster and verify domain ownership."
-            }
+            description={t("reverseProxy.customDomainsDescription", {
+              product: config.productName,
+            })}
             button={
               <Button
                 variant={"primary"}
@@ -284,6 +289,8 @@ function CustomDomainNameCell({ domain }: Readonly<CellProps>) {
 }
 
 function CustomDomainStatusCell({ domain }: Readonly<CellProps>) {
+  const { t } = useLocale();
+
   const { permission } = usePermissions();
   const { validateDomain } = useReverseProxies();
   const [verificationModalOpen, setVerificationModalOpen] = useState(false);
@@ -307,9 +314,9 @@ function CustomDomainStatusCell({ domain }: Readonly<CellProps>) {
         <FullTooltip
           content={
             <div className={"text-xs max-w-xs"}>
-              DNS changes may take some time to propagate. If NetBird does not
-              find the record immediately, please wait up to 24 hours and try
-              again.
+              {t("reverseProxy.dnsPropagation", {
+                product: config.productName,
+              })}
             </div>
           }
           interactive={false}

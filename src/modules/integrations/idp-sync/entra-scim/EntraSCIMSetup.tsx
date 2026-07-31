@@ -9,6 +9,7 @@ import { Mark } from "@components/ui/Mark";
 import { MinimalList } from "@components/ui/MinimalList";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { isAuth0 } from "@utils/netbird";
 import { isEmpty, trim } from "lodash";
@@ -39,6 +40,9 @@ import entraAssignUsers from "@/modules/integrations/idp-sync/entra-scim/images/
 import entraEditExternalId from "@/modules/integrations/idp-sync/entra-scim/images/entra-edit-externalid.png";
 import entraGroupMapping from "@/modules/integrations/idp-sync/entra-scim/images/entra-group-attribute-mapping.png";
 import { Lightbox } from "@components/ui/Lightbox";
+
+const config = loadConfig();
+const scimBaseUrl = `${config.apiOrigin.replace(/\/+$/, "")}/api/scim/v2`;
 
 interface Props extends GenericSCIMProps {
   open: boolean;
@@ -222,8 +226,8 @@ export function SetupContent({
 
       <IntegrationModalHeader
         image={image || integrationImage}
-        title={`Connect NetBird with ${name}`}
-        description={`Start syncing your users and groups from ${name} to NetBird. Follow the steps below to get started.`}
+        title={`Connect ${config.productName} with ${name}`}
+        description={`Start syncing your users and groups from ${name} to ${config.productName}. Follow the steps below to get started.`}
       />
 
       {step === -1 && (
@@ -334,8 +338,8 @@ export function SetupContent({
             </Steps.Step>
             <Steps.Step step={4}>
               <p className={"font-normal"}>
-                Enter <Mark copy={true}>NetBird SCIM</Mark> as the name and
-                select
+                Enter <Mark copy={true}>{config.productName} SCIM</Mark> as the
+                name and select
                 <Mark>
                   Integrate any other application you don&apos;t find in the
                   gallery (Non-gallery)
@@ -381,8 +385,7 @@ export function SetupContent({
                   },
                   {
                     label: "Tenant URL",
-                    value:
-                      "https://api.netbird.io/api/scim/v2?aadOptscim062020",
+                    value: `${scimBaseUrl}?aadOptscim062020`,
                   },
                   {
                     label: "Secret token",
@@ -511,15 +514,15 @@ export function SetupContent({
           <Steps>
             <Steps.Step step={1}>
               <p>
-                Navigate to your NetBird enterprise application and click on{" "}
-                <Mark>Users and groups</Mark> in the left menu
+                Navigate to your {config.productName} enterprise application and
+                click on <Mark>Users and groups</Mark> in the left menu
               </p>
               <Lightbox image={entraAssignUsers} />
             </Steps.Step>
             <Steps.Step step={2}>
               <p className={"font-normal"}>
                 Click <Mark>+ Add user/group</Mark> and select the users and
-                groups you want to synchronize to NetBird
+                groups you want to synchronize to {config.productName}
               </p>
             </Steps.Step>
             <Steps.Step step={3} line={false}>

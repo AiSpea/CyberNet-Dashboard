@@ -3,6 +3,10 @@ import FullTooltip from "@components/FullTooltip";
 import { Lock, ShieldAlert, SlidersHorizontal, Globe } from "lucide-react";
 import { ReverseProxyCluster } from "@/interfaces/ReverseProxy";
 import EmptyRow from "@/modules/common-table-rows/EmptyRow";
+import loadConfig from "@utils/config";
+import { useLocale } from "@/contexts/LocaleProvider";
+
+const config = loadConfig();
 
 type Props = {
   cluster: ReverseProxyCluster;
@@ -20,6 +24,7 @@ type Feature = {
 // backend distinguishes "unsupported" from "not yet reported" via
 // nullable booleans, but visually both mean "not available here").
 export default function ClustersFeaturesCell({ cluster }: Readonly<Props>) {
+  const { t } = useLocale();
   const features: Feature[] = [];
   if (cluster.supports_custom_ports) {
     features.push({
@@ -53,11 +58,14 @@ export default function ClustersFeaturesCell({ cluster }: Readonly<Props>) {
       label: "Private",
       description: (
         <>
-          Lets you publish services that are only reachable from peers in your
-          NetBird network. Required for{" "}
-          <span className={"font-medium text-white"}>NetBird-Only Access</span>{" "}
-          and{" "}
-          <span className={"font-medium text-white"}>Proxy Cluster</span>{" "}
+          {t("reverseProxy.privateDescription", {
+            product: config.productName,
+          })}{" "}
+          Required for{" "}
+          <span className={"font-medium text-white"}>
+            {t("reverseProxy.privateTitle")}
+          </span>{" "}
+          and <span className={"font-medium text-white"}>Proxy Cluster</span>{" "}
           target types.
         </>
       ),

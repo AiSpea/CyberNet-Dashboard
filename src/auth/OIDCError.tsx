@@ -5,7 +5,6 @@ import loadConfig from "@utils/config";
 import { ArrowRightIcon } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import * as React from "react";
-import { useEffect, useState } from "react";
 import NetBirdIcon from "@/assets/icons/NetBirdIcon";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import { useLocale } from "@/contexts/LocaleProvider";
@@ -19,19 +18,41 @@ export const OIDCError = () => {
   const errorParam = params.get("error");
   const accessDenied = errorParam === "access_denied";
   const invalidRequest = errorParam === "invalid_request";
-  const [title, setTitle] = useState(params.get("error_description"));
-  const errorDescription = params.get("error_description");
+  const errorDescription = params.get("error_description")?.trim() ?? "";
+  const normalizedDescription = errorDescription.toLowerCase();
+  const accountLinked = normalizedDescription === "account linked successfully";
+  const blocked =
+    normalizedDescription.includes("blocked") ||
+    normalizedDescription.includes("disabled");
+  const pending = normalizedDescription.includes("pending approval");
   const { logout } = useOidc();
 
-  useEffect(() => {
-    if (accessDenied) {
-      if (title === "account linked successfully") {
-        setTitle(t("auth.linkedTitle"));
-      }
-    } else {
-      setTitle(t("auth.problemTitle"));
-    }
-  }, [accessDenied, t, title]);
+  const title = accountLinked
+    ? t("auth.linkedTitle")
+    : blocked
+    ? t("auth.blockedTitle")
+    : pending
+    ? t("auth.pendingTitle")
+    : accessDenied
+    ? t("auth.accessDeniedTitle")
+    : invalidRequest
+    ? t("auth.invalidRequestTitle")
+    : t("auth.problemTitle");
+
+  const description = accountLinked
+    ? t("auth.verifiedQuestion")
+    : blocked
+    ? t("auth.blockedDescription")
+    : pending
+    ? t("auth.pendingDescription")
+    : accessDenied
+    ? t("auth.accessDeniedDescription")
+    : invalidRequest
+    ? t("auth.invalidRequestDescription")
+    : t("auth.problemDescription");
+
+  const technicalDetails =
+    errorDescription || String(oidcUserLoadingState || "").trim();
 
   return (
     <div
@@ -51,50 +72,38 @@ export const OIDCError = () => {
       </div>
       <h1 className={"text-center mt-2"}>{title}</h1>
 
-      {accessDenied ? (
-        <>
-          <Paragraph className={"text-center mt-2"}>
-            {t("auth.verifiedQuestion")}
-          </Paragraph>
+      <Paragraph className={"text-center mt-2 block"}>{description}</Paragraph>
 
-          <Button
-            variant={"primary"}
-            size={"sm"}
-            className={"mt-5"}
-            onClick={() => logout("/", { client_id: config.clientId })}
-          >
-            {t("common.continue")}
-            <ArrowRightIcon size={16} />
-          </Button>
+      {technicalDetails && !accountLinked && (
+        <details className="mt-4 max-w-md rounded-md border border-nb-gray-800 bg-nb-gray-930 px-4 py-3 text-sm text-nb-gray-300">
+          <summary className="cursor-pointer select-none text-center">
+            {t("auth.technicalDetails")}
+          </summary>
+          <code className="mt-2 block break-words text-xs">
+            {technicalDetails}
+          </code>
+        </details>
+      )}
 
-          <Button
-            variant={"default-outline"}
-            size={"sm"}
-            className={"mt-5"}
-            onClick={() => logout("/", { client_id: config.clientId })}
-          >
-            {t("auth.tryAgain")}
-          </Button>
-        </>
-      ) : (
-        <>
-          <Paragraph className={"text-center mt-2 block"}>
-            {t("auth.errorPrefix")}{" "}
-            <span className={"inline capitalize"}>
-              {invalidRequest && errorDescription
-                ? errorDescription
-                : oidcUserLoadingState}
-            </span>
-          </Paragraph>
-          <Button
-            variant={"primary"}
-            size={"sm"}
-            className={"mt-5"}
-            onClick={() => logout("/", { client_id: config.clientId })}
-          >
-            {t("common.logout")}
-          </Button>
-        </>
+      <Button
+        variant={"primary"}
+        size={"sm"}
+        className={"mt-5"}
+        onClick={() => logout("/", { client_id: config.clientId })}
+      >
+        {accountLinked ? t("common.continue") : t("auth.tryAgain")}
+        <ArrowRightIcon size={16} />
+      </Button>
+
+      {!accountLinked && (
+        <Button
+          variant={"default-outline"}
+          size={"sm"}
+          className={"mt-3"}
+          onClick={() => logout("/", { client_id: config.clientId })}
+        >
+          {t("common.logout")}
+        </Button>
       )}
     </div>
   );

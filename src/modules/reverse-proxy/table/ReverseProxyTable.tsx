@@ -26,15 +26,13 @@ import { ExternalLinkIcon, PlusCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { useMemo } from "react";
 import { useSWRConfig } from "swr";
+import loadConfig from "@utils/config";
 import ReverseProxyIcon from "@/assets/icons/ReverseProxyIcon";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { usePermissions } from "@/contexts/PermissionsProvider";
 import { useReverseProxies } from "@/contexts/ReverseProxiesProvider";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import {
-  isL4Mode,
-  REVERSE_PROXY_DOCS_LINK,
-  ReverseProxy,
-} from "@/interfaces/ReverseProxy";
+import { isL4Mode, ReverseProxy } from "@/interfaces/ReverseProxy";
 import ReverseProxyActionCell from "@/modules/reverse-proxy/table/ReverseProxyActionCell";
 import ReverseProxyAccessControlCell from "@/modules/reverse-proxy/table/ReverseProxyAccessControlCell";
 import ReverseProxyAuthCell from "@/modules/reverse-proxy/table/ReverseProxyAuthCell";
@@ -42,6 +40,8 @@ import ReverseProxyNameCell from "@/modules/reverse-proxy/table/ReverseProxyName
 import ReverseProxyTargetsCell from "@/modules/reverse-proxy/table/ReverseProxyTargetsCell";
 import ReverseProxyTargetsTable from "@/modules/reverse-proxy/targets/ReverseProxyTargetsTable";
 import { ReverseProxyTypeCell } from "@/modules/reverse-proxy/table/ReverseProxyTypeCell";
+
+const config = loadConfig();
 
 const ReverseProxyColumns: ColumnDef<ReverseProxy>[] = [
   {
@@ -75,7 +75,9 @@ const ReverseProxyColumns: ColumnDef<ReverseProxy>[] = [
   {
     id: "auth_and_access",
     header: ({ column }) => {
-      return <DataTableHeader column={column}>Auth &amp; Access</DataTableHeader>;
+      return (
+        <DataTableHeader column={column}>Auth &amp; Access</DataTableHeader>
+      );
     },
     cell: ({ row }) => (
       <div className={"flex items-center gap-2"}>
@@ -112,6 +114,7 @@ export default function ReverseProxyTable({ headingTarget }: Readonly<Props>) {
   const path = usePathname();
   const { permission } = usePermissions();
   const { reverseProxies, isLoading, openModal } = useReverseProxies();
+  const { t } = useLocale();
 
   const [sorting, setSorting] = useLocalStorage<SortingState>(
     "netbird-table-sort" + path,
@@ -219,9 +222,9 @@ export default function ReverseProxyTable({ headingTarget }: Readonly<Props>) {
             />
           }
           title={"Create Services"}
-          description={
-            "Expose your internal services securely through NetBird's reverse proxy with automatic TLS and optional authentication to protect your services."
-          }
+          description={t("reverseProxy.emptyServices", {
+            product: config.productName,
+          })}
           button={
             <Button
               variant={"primary"}
@@ -235,9 +238,8 @@ export default function ReverseProxyTable({ headingTarget }: Readonly<Props>) {
           }
           learnMore={
             <>
-              Learn more about
-              <InlineLink href={REVERSE_PROXY_DOCS_LINK} target={"_blank"}>
-                Services
+              <InlineLink href={config.docsUrl} target={"_blank"}>
+                {t("common.learnMore")}
                 <ExternalLinkIcon size={12} />
               </InlineLink>
             </>

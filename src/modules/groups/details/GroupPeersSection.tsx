@@ -6,11 +6,13 @@ import { DataTableMultiSelectPopup } from "@components/table/DataTableMultiSelec
 import { InstallNetBirdButton } from "@components/ui/InstallNetBirdButton";
 import NoResults from "@components/ui/NoResults";
 import { ColumnDef, RowSelectionState } from "@tanstack/react-table";
+import loadConfig from "@utils/config";
 import { MinusCircle, PlusCircle } from "lucide-react";
 import * as React from "react";
 import { lazy, useState } from "react";
 import PeerIcon from "@/assets/icons/PeerIcon";
 import { useGroupContext } from "@/contexts/GroupProvider";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { usePermissions } from "@/contexts/PermissionsProvider";
 import { Peer } from "@/interfaces/Peer";
 import { AssignPeerToGroupModal } from "@/modules/groups/AssignPeerToGroupModal";
@@ -22,6 +24,7 @@ import PeerNameCell from "@/modules/peers/PeerNameCell";
 import { PeerOSCell } from "@/modules/peers/PeerOSCell";
 
 const GroupPeersTable = lazy(() => import("@/modules/peer/MinimalPeersTable"));
+const config = loadConfig();
 
 const GroupPeersTableColumns: ColumnDef<Peer>[] = [
   {
@@ -113,6 +116,7 @@ export const GroupPeersSection = ({ peers, isLoading = true }: Props) => {
   const [selectedRows, setSelectedRows] = useState<RowSelectionState>({});
   const [open, setOpen] = useState(false);
   const { permission } = usePermissions();
+  const { t } = useLocale();
 
   return (
     <GroupDetailsTableContainer>
@@ -126,9 +130,9 @@ export const GroupPeersSection = ({ peers, isLoading = true }: Props) => {
           <NoResults
             className={"py-4"}
             title={"This group has no assigned peers yet"}
-            description={
-              "Install NetBird and assign existing peers to this group to see them listed here."
-            }
+            description={t("groups.emptyPeersDescription", {
+              product: config.productName,
+            })}
             icon={<PeerIcon size={20} className={"fill-nb-gray-300"} />}
           >
             {permission?.peers?.update && permission?.groups?.update && (

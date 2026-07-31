@@ -7,6 +7,7 @@ import { GradientFadedBackground } from "@components/ui/GradientFadedBackground"
 import { MinimalList } from "@components/ui/MinimalList";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { isAuth0 } from "@utils/netbird";
 import { isEmpty, trim } from "lodash";
@@ -31,6 +32,9 @@ import { GroupPrefixHelpText } from "@/modules/integrations/idp-sync/GroupPrefix
 import { GroupPrefixInput } from "@/modules/integrations/idp-sync/GroupPrefixInput";
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
 import { useSSOConnections } from "@/modules/integrations/sso/useSSOConnections";
+
+const config = loadConfig();
+const scimBaseUrl = `${config.apiOrigin.replace(/\/+$/, "")}/api/scim/v2`;
 
 interface Props extends GenericSCIMProps {
   open: boolean;
@@ -169,7 +173,10 @@ export function SetupContent({
 
   return (
     <ModalContent
-      maxWidthClass={cn("relative", step === -1 ? "max-w-lg" : maxWidthClasses[step])}
+      maxWidthClass={cn(
+        "relative",
+        step === -1 ? "max-w-lg" : maxWidthClasses[step],
+      )}
       showClose={true}
       className={""}
       onEscapeKeyDown={(e) => step > 0 && e.preventDefault()}
@@ -194,8 +201,8 @@ export function SetupContent({
 
       <IntegrationModalHeader
         image={image || integrationImage}
-        title={`Connect NetBird with ${name}`}
-        description={`Start syncing your users and groups from ${name} to NetBird. Follow the steps below to get started.`}
+        title={`Connect ${config.productName} with ${name}`}
+        description={`Start syncing your users and groups from ${name} to ${config.productName}. Follow the steps below to get started.`}
       />
 
       {step === -1 && (
@@ -217,9 +224,7 @@ export function SetupContent({
             <InlineLink
               className={"inline"}
               target={"_blank"}
-              href={
-                "https://docs.netbird.io/how-to/idp-sync#supported-identity-providers"
-              }
+              href={config.docsUrl}
             >
               IdP Documentation
               <ExternalLinkIcon size={12} />
@@ -233,11 +238,9 @@ export function SetupContent({
             <InlineLink
               className={"inline"}
               target={"_blank"}
-              href={
-                "mailto:support@netbird.io?subject=Request%20for%20Assistance%3A%20Custom%20Identity%20Provider"
-              }
+              href={config.supportUrl}
             >
-              support@netbird.io
+              Help &amp; support
             </InlineLink>
           </p>
           {!genericConnection && !isSSOLoading && isAuth0() && (
@@ -245,10 +248,7 @@ export function SetupContent({
               <span>
                 Single-Sign-On needs to be enabled and active before you can
                 enable IdP sync.{" "}
-                <InlineLink
-                  href={"https://docs.netbird.io/how-to/single-sign-on"}
-                  target={"_blank"}
-                >
+                <InlineLink href={config.docsUrl} target={"_blank"}>
                   How to enable SSO
                   <ExternalLinkIcon size={12} />
                 </InlineLink>
@@ -309,7 +309,7 @@ export function SetupContent({
             data={[
               {
                 label: "Name",
-                value: "NetBird",
+                value: config.productName,
               },
               {
                 label: "API Type",
@@ -323,7 +323,7 @@ export function SetupContent({
               },
               {
                 label: "Base URL",
-                value: "https://api.netbird.io/api/scim/v2",
+                value: scimBaseUrl,
               },
               {
                 label: "Token",

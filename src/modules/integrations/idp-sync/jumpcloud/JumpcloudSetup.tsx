@@ -9,6 +9,7 @@ import { Mark } from "@components/ui/Mark";
 import { MinimalList } from "@components/ui/MinimalList";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { isEmpty, trim } from "lodash";
 import {
@@ -35,6 +36,9 @@ import { GroupPrefixInput } from "@/modules/integrations/idp-sync/GroupPrefixInp
 import { IntegrationModalHeader } from "@/modules/integrations/IntegrationModalHeader";
 import { useSSOConnections } from "@/modules/integrations/sso/useSSOConnections";
 import { isAuth0 } from "@utils/netbird";
+
+const config = loadConfig();
+const scimBaseUrl = `${config.apiOrigin.replace(/\/+$/, "")}/api/scim/v2`;
 
 type Props = {
   open: boolean;
@@ -164,7 +168,10 @@ export function SetupContent({ onSuccess, onClose }: ModalProps) {
 
   return (
     <ModalContent
-      maxWidthClass={cn("relative", step === -1 ? "max-w-lg" : maxWidthClasses[step])}
+      maxWidthClass={cn(
+        "relative",
+        step === -1 ? "max-w-lg" : maxWidthClasses[step],
+      )}
       showClose={true}
       className={""}
       onEscapeKeyDown={(e) => step > 0 && e.preventDefault()}
@@ -189,10 +196,8 @@ export function SetupContent({ onSuccess, onClose }: ModalProps) {
 
       <IntegrationModalHeader
         image={integrationImage}
-        title={"Connect NetBird with Jumpcloud"}
-        description={
-          "Start syncing your users and groups from Jumpcloud to NetBird. Follow the steps below to get started."
-        }
+        title={`Connect ${config.productName} with Jumpcloud`}
+        description={`Start syncing your users and groups from Jumpcloud to ${config.productName}. Follow the steps below to get started.`}
       />
 
       {step === -1 && (
@@ -266,12 +271,7 @@ export function SetupContent({ onSuccess, onClose }: ModalProps) {
               <span>
                 Jumpcloud SSO needs to be enabled before you can enable IdP
                 sync.{" "}
-                <InlineLink
-                  href={
-                    "https://docs.netbird.io/how-to/single-sign-on#jump-cloud"
-                  }
-                  target={"_blank"}
-                >
+                <InlineLink href={config.docsUrl} target={"_blank"}>
                   How to enable Jumpcloud SSO
                   <ExternalLinkIcon size={12} />
                 </InlineLink>
@@ -344,7 +344,7 @@ export function SetupContent({ onSuccess, onClose }: ModalProps) {
             <Steps.Step step={2}>
               <p className={"font-normal"}>
                 Go to <Mark>{"SSO Applications"}</Mark> and select your{" "}
-                <Mark>NetBird</Mark> application, and then select{" "}
+                <Mark>{config.productName}</Mark> application, and then select{" "}
                 <Mark>Identity Management</Mark> tab.
               </p>
             </Steps.Step>
@@ -367,7 +367,7 @@ export function SetupContent({ onSuccess, onClose }: ModalProps) {
                   },
                   {
                     label: "Base URL",
-                    value: "https://api.netbird.io/api/scim/v2",
+                    value: scimBaseUrl,
                   },
                   {
                     label: "Token Key",

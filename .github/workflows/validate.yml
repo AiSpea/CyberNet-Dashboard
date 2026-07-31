@@ -1,0 +1,25 @@
+name: Validate CyberNet Dashboard source
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v5
+
+      - name: Guard CyberNet brand boundaries
+        run: node scripts/check-brand-boundaries.js
+
+      - name: Confirm Dokploy owns the production build
+        run: |
+          test ! -f .github/workflows/build_and_push.yml
+          test -f deploy/compose.dokploy.yml

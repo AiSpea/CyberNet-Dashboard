@@ -18,7 +18,11 @@ import {
 } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { useApiCall } from "@/utils/api";
+import loadConfig from "@utils/config";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { ReverseProxyCluster } from "@/interfaces/ReverseProxy";
+
+const config = loadConfig();
 
 // Synced from templates/reverse-proxy/netbird-proxy-cfn.yaml by the
 // sync-deploy-templates workflow.
@@ -240,6 +244,7 @@ const RegistrationCheck = ({
   domain: string;
   onRegistered?: () => void;
 }) => {
+  const { t } = useLocale();
   const clustersRequest = useApiCall<ReverseProxyCluster[]>(
     "/reverse-proxies/clusters",
     true,
@@ -280,14 +285,18 @@ const RegistrationCheck = ({
         <>
           <CheckCircle2 size={16} className={"text-green-500 shrink-0"} />
           <span className={"text-nb-gray-100"}>
-            Proxy registered with NetBird and connected.
+            {t("reverseProxy.clusterRegistered", {
+              product: config.productName,
+            })}
           </span>
         </>
       ) : (
         <>
           <Loader2 size={16} className={"animate-spin shrink-0"} />
           <span className={"text-nb-gray-300"}>
-            Waiting for the proxy to register with NetBird...
+            {t("reverseProxy.clusterWaiting", {
+              product: config.productName,
+            })}
           </span>
         </>
       )}
@@ -317,8 +326,8 @@ const DeploySuccess = ({
           <>
             {" "}
             with {isStaticIP ? "static IP" : "IP"}{" "}
-            <span className={"text-netbird font-medium"}>{ip}</span> and is still
-            bootstrapping. Meanwhile, add the DNS records below.
+            <span className={"text-netbird font-medium"}>{ip}</span> and is
+            still bootstrapping. Meanwhile, add the DNS records below.
           </>
         ) : (
           <> {ipPendingNote}</>
@@ -373,6 +382,7 @@ const HetznerDeploy = ({
   isGeneratingToken,
   onRegistered,
 }: ProviderProps) => {
+  const { t } = useLocale();
   const [hetznerToken, setHetznerToken] = useState("");
   const [catalog, setCatalog] = useState<HetznerCatalog | null>(null);
   const [catalogError, setCatalogError] = useState("");
@@ -540,9 +550,9 @@ const HetznerDeploy = ({
             interactive={true}
             content={
               <>
-                The token goes straight from your browser to Hetzner and never
-                touches NetBird&apos;s servers, and you can delete it once setup
-                succeeds.{" "}
+                {t("reverseProxy.clusterTokenPrivate", {
+                  product: config.productName,
+                })}{" "}
                 <InlineLink
                   href={
                     "https://docs.hetzner.com/cloud/api/getting-started/generating-api-token/"
@@ -556,7 +566,9 @@ const HetznerDeploy = ({
           />
         </Label>
         <HelpText>
-          Create a read &amp; write API token. It is never stored by NetBird.
+          {t("reverseProxy.clusterTokenNotStored", {
+            product: config.productName,
+          })}
         </HelpText>
         <Input
           type={"password"}
@@ -682,6 +694,7 @@ const DigitalOceanDeploy = ({
   isGeneratingToken,
   onRegistered,
 }: ProviderProps) => {
+  const { t } = useLocale();
   const [rootPassword] = useState(generateRootPassword);
   const [doToken, setDoToken] = useState("");
   const [region, setRegion] = useState("fra1");
@@ -802,9 +815,10 @@ const DigitalOceanDeploy = ({
                 <span className={"font-mono text-netbird"}>tag</span>,{" "}
                 <span className={"font-mono text-netbird"}>droplet</span>, and{" "}
                 <span className={"font-mono text-netbird"}>reserved_ip</span>{" "}
-                only. The token goes straight from your browser to DigitalOcean
-                and never touches NetBird&apos;s servers, and you can delete it
-                once setup succeeds.{" "}
+                only.{" "}
+                {t("reverseProxy.clusterTokenPrivate", {
+                  product: config.productName,
+                })}{" "}
                 <InlineLink
                   href={
                     "https://docs.digitalocean.com/reference/api/create-personal-access-token/"
@@ -818,7 +832,9 @@ const DigitalOceanDeploy = ({
           />
         </Label>
         <HelpText>
-          Create a token with write access. It is never stored by NetBird.
+          {t("reverseProxy.clusterTokenNotStored", {
+            product: config.productName,
+          })}
         </HelpText>
         <Input
           type={"password"}
@@ -896,8 +912,8 @@ const AWSDeploy = ({
       <div>
         <Label>Proxy Access Token</Label>
         <HelpText>
-          Copy this token for AWS stack creation. It is excluded from outputs and
-          logs.
+          Copy this token for AWS stack creation. It is excluded from outputs
+          and logs.
         </HelpText>
         <Code codeToCopy={token} showCopyIcon={!isGeneratingToken}>
           <Code.Line>

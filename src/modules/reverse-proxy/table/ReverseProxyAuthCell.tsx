@@ -28,6 +28,7 @@ import { useReverseProxies } from "@/contexts/ReverseProxiesProvider";
 import { Group } from "@/interfaces/Group";
 import { isL4Mode, ReverseProxy } from "@/interfaces/ReverseProxy";
 import FullTooltip from "@components/FullTooltip";
+import { useLocale } from "@/contexts/LocaleProvider";
 
 const AUTH_METHODS: {
   key: "password_auth" | "pin_auth" | "bearer_auth";
@@ -56,12 +57,6 @@ const HEADER_AUTH_METHOD = {
   Icon: FileCode2Icon,
 };
 
-const NETBIRD_ONLY_METHOD = {
-  label: "NetBird Only",
-  hoverLabel: "NetBird-Only Access",
-  Icon: CircleUser,
-};
-
 type Props = {
   reverseProxy: ReverseProxy;
 };
@@ -72,6 +67,7 @@ export default function ReverseProxyAuthCell({
   const { permission } = usePermissions();
   const { openModal } = useReverseProxies();
   const { groups } = useGroups();
+  const { t } = useLocale();
 
   if (isL4Mode(reverseProxy.mode)) {
     return (
@@ -136,12 +132,16 @@ export default function ReverseProxyAuthCell({
   const showAuthHover = authCount > 0;
 
   return (
-    <div className={"flex"} data-auth-cell onClick={(e) => {
-      e.stopPropagation();
-      if (permission?.services?.update) {
-        openModal({ proxy: reverseProxy, initialTab: "auth" });
-      }
-    }}>
+    <div
+      className={"flex"}
+      data-auth-cell
+      onClick={(e) => {
+        e.stopPropagation();
+        if (permission?.services?.update) {
+          openModal({ proxy: reverseProxy, initialTab: "auth" });
+        }
+      }}
+    >
       <div className={"flex items-center"}>
         <HoverCard openDelay={200} closeDelay={100}>
           <HoverCardTrigger asChild={true}>{authBadge}</HoverCardTrigger>
@@ -151,85 +151,93 @@ export default function ReverseProxyAuthCell({
               sideOffset={14}
               onClick={(e) => e.stopPropagation()}
             >
-                <div className={"text-xs"}>
-                  {enabled.map(({ key, hoverLabel, Icon }) => (
-                    <ListItem
-                      key={key}
-                      className={"py-0.5"}
-                      icon={<Icon size={14} />}
-                      label={hoverLabel}
-                      value={
-                        <div className={"text-green-500"}>
-                          {key === "bearer_auth" && ssoGroups.length === 0
-                            ? "All Users"
-                            : "Enabled"}
-                        </div>
-                      }
-                    >
-                      {key === "bearer_auth" && ssoGroups.length > 0 && (
-                        <div className={"flex flex-col gap-2 px-4 pt-2 pb-3"}>
-                          {ssoGroups.map((group) => (
-                            <div
-                              key={group.id}
-                              className={
-                                "flex gap-2 items-center justify-between"
-                              }
-                            >
-                              <GroupBadge group={group} />
-                              <ArrowRightIcon size={14} />
-                              <UserCountStack group={group} />
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </ListItem>
-                  ))}
-                  {hasHeaderAuths && (
-                    <ListItem
-                      className={"py-0.5"}
-                      icon={<FileCode2Icon size={14} />}
-                      label={HEADER_AUTH_METHOD.hoverLabel}
-                      value={
-                        <div className={"text-green-500"}>
-                          {(auth?.header_auths ?? []).filter((h) => h.enabled).length} Header{(auth?.header_auths ?? []).filter((h) => h.enabled).length !== 1 ? "s" : ""}
-                        </div>
-                      }
-                    />
-                  )}
-                  {isPrivate && (
-                    <ListItem
-                      className={"py-0.5"}
-                      icon={<CircleUser size={14} />}
-                      label={NETBIRD_ONLY_METHOD.hoverLabel}
-                      value={
-                        <div className={"text-green-500"}>
-                          {accessGroups.length === 0
-                            ? "No groups"
-                            : accessGroups.length === 1
-                              ? "1 Group"
-                              : `${accessGroups.length} Groups`}
-                        </div>
-                      }
-                    >
-                      {accessGroups.length > 0 && (
-                        <div className={"flex flex-col gap-2 px-4 pt-2 pb-3"}>
-                          {accessGroups.map((group) => (
-                            <div
-                              key={group.id}
-                              className={
-                                "flex gap-2 items-center justify-between"
-                              }
-                            >
-                              <GroupBadge group={group} />
-                              <ArrowRightIcon size={14} />
-                              <UserCountStack group={group} />
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </ListItem>
-                  )}
-                </div>
+              <div className={"text-xs"}>
+                {enabled.map(({ key, hoverLabel, Icon }) => (
+                  <ListItem
+                    key={key}
+                    className={"py-0.5"}
+                    icon={<Icon size={14} />}
+                    label={hoverLabel}
+                    value={
+                      <div className={"text-green-500"}>
+                        {key === "bearer_auth" && ssoGroups.length === 0
+                          ? "All Users"
+                          : "Enabled"}
+                      </div>
+                    }
+                  >
+                    {key === "bearer_auth" && ssoGroups.length > 0 && (
+                      <div className={"flex flex-col gap-2 px-4 pt-2 pb-3"}>
+                        {ssoGroups.map((group) => (
+                          <div
+                            key={group.id}
+                            className={
+                              "flex gap-2 items-center justify-between"
+                            }
+                          >
+                            <GroupBadge group={group} />
+                            <ArrowRightIcon size={14} />
+                            <UserCountStack group={group} />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </ListItem>
+                ))}
+                {hasHeaderAuths && (
+                  <ListItem
+                    className={"py-0.5"}
+                    icon={<FileCode2Icon size={14} />}
+                    label={HEADER_AUTH_METHOD.hoverLabel}
+                    value={
+                      <div className={"text-green-500"}>
+                        {
+                          (auth?.header_auths ?? []).filter((h) => h.enabled)
+                            .length
+                        }{" "}
+                        Header
+                        {(auth?.header_auths ?? []).filter((h) => h.enabled)
+                          .length !== 1
+                          ? "s"
+                          : ""}
+                      </div>
+                    }
+                  />
+                )}
+                {isPrivate && (
+                  <ListItem
+                    className={"py-0.5"}
+                    icon={<CircleUser size={14} />}
+                    label={t("reverseProxy.privateTitle")}
+                    value={
+                      <div className={"text-green-500"}>
+                        {accessGroups.length === 0
+                          ? "No groups"
+                          : accessGroups.length === 1
+                          ? "1 Group"
+                          : `${accessGroups.length} Groups`}
+                      </div>
+                    }
+                  >
+                    {accessGroups.length > 0 && (
+                      <div className={"flex flex-col gap-2 px-4 pt-2 pb-3"}>
+                        {accessGroups.map((group) => (
+                          <div
+                            key={group.id}
+                            className={
+                              "flex gap-2 items-center justify-between"
+                            }
+                          >
+                            <GroupBadge group={group} />
+                            <ArrowRightIcon size={14} />
+                            <UserCountStack group={group} />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </ListItem>
+                )}
+              </div>
             </HoverCardContent>
           )}
         </HoverCard>

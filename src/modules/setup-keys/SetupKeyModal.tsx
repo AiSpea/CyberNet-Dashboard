@@ -19,6 +19,7 @@ import { PeerGroupSelector } from "@components/PeerGroupSelector";
 import Separator from "@components/Separator";
 import { IconRepeat } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
+import loadConfig from "@utils/config";
 import { cn } from "@utils/helpers";
 import { trim } from "lodash";
 import {
@@ -33,6 +34,7 @@ import {
 import React, { useMemo, useState } from "react";
 import { useSWRConfig } from "swr";
 import SetupKeysIcon from "@/assets/icons/SetupKeysIcon";
+import { useLocale } from "@/contexts/LocaleProvider";
 import { Group } from "@/interfaces/Group";
 import { SetupKey } from "@/interfaces/SetupKey";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
@@ -48,6 +50,7 @@ type Props = {
 };
 
 const copyMessage = "Setup-Key was copied to your clipboard!";
+const config = loadConfig();
 
 export default function SetupKeyModal({
   children,
@@ -57,6 +60,7 @@ export default function SetupKeyModal({
   showOnlyRoutingPeerOS,
   groups,
 }: Readonly<Props>) {
+  const { t } = useLocale();
   const [successModal, setSuccessModal] = useState(false);
   const [setupKey, setSetupKey] = useState<SetupKey>();
   const [installModal, setInstallModal] = useState(false);
@@ -149,7 +153,7 @@ export default function SetupKeyModal({
                 onClick={() => setInstallModal(true)}
               >
                 <DownloadIcon size={14} />
-                Install NetBird
+                {t("install.button")}
               </Button>
             </div>
           </ModalFooter>
@@ -172,6 +176,7 @@ export function SetupKeyModalContent({
 }: Readonly<ModalProps>) {
   const setupKeyRequest = useApiCall<SetupKey>("/setup-keys", true);
   const { mutate } = useSWRConfig();
+  const { t } = useLocale();
 
   const [name, setName] = useState(predefinedName);
   const [reusable, setReusable] = useState(false);
@@ -366,14 +371,8 @@ export function SetupKeyModalContent({
       <ModalFooter className={"items-center"}>
         <div className={"w-full"}>
           <Paragraph className={"text-sm mt-auto"}>
-            Learn more about
-            <InlineLink
-              href={
-                "https://docs.netbird.io/how-to/register-machines-using-setup-keys"
-              }
-              target={"_blank"}
-            >
-              Setup Keys
+            <InlineLink href={config.docsUrl} target={"_blank"}>
+              {t("setupKeys.learnMore")}
               <ExternalLinkIcon size={12} />
             </InlineLink>
           </Paragraph>
