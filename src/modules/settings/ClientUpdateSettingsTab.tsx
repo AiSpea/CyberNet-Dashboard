@@ -3,6 +3,7 @@
 import Breadcrumbs from "@components/Breadcrumbs";
 import Button from "@components/Button";
 import { Callout } from "@components/Callout";
+import FancyToggleSwitch from "@components/FancyToggleSwitch";
 import { Input } from "@components/Input";
 import { Label } from "@components/Label";
 import { notify } from "@components/Notification";
@@ -110,13 +111,7 @@ export default function ClientUpdateSettingsTab() {
   };
 
   const save = () => {
-    const request = saveRequest.put({
-      ...form,
-      update: {
-        ...form.update,
-        automatic_updates_enabled: false,
-      },
-    });
+    const request = saveRequest.put(form);
     notify({
       title: t("updates.saved"),
       description: t("updates.savedDescription"),
@@ -163,8 +158,15 @@ export default function ClientUpdateSettingsTab() {
           </Button>
         </div>
 
-        <Callout variant="info" className="mt-6">
-          {t("updates.manualOnly")}
+        <Callout
+          variant={form.update.automatic_updates_enabled ? "success" : "info"}
+          className="mt-6"
+        >
+          {t(
+            form.update.automatic_updates_enabled
+              ? "updates.automaticReady"
+              : "updates.manualOnly",
+          )}
         </Callout>
 
         <section className="mt-8">
@@ -231,6 +233,22 @@ export default function ClientUpdateSettingsTab() {
             <Globe2 size={17} />
             <h2 className="text-base">{t("updates.title")}</h2>
           </div>
+          <FancyToggleSwitch
+            className="mb-6"
+            value={form.update.automatic_updates_enabled}
+            onChange={(enabled) =>
+              setForm((current) => ({
+                ...current,
+                update: {
+                  ...current.update,
+                  automatic_updates_enabled: enabled,
+                },
+              }))
+            }
+            data-testid="automatic-client-updates-ready"
+            label={t("updates.automaticTitle")}
+            helpText={t("updates.automaticDescription")}
+          />
           <div className="grid gap-5 md:grid-cols-2">
             <Field label={t("updates.channel")}>
               <SelectDropdown
