@@ -400,7 +400,12 @@ const en = {
     "CyberNet clients will use the new metadata on their next version check.",
   "updates.saving": "Saving client update settings...",
   "updates.manualOnly":
-    "Privileged automatic installation remains disabled until CyberNet's artifact-signing root is published. Version checks and manual downloads are active.",
+    "In-app installation is disabled. Clients can still detect the version and open the verified download page.",
+  "updates.automaticReady":
+    "Signature-verified in-app installation is ready for supported signed platforms. Choose the rollout policy under Client settings; Windows and Linux remain manual until their production signing channels are ready.",
+  "updates.automaticTitle": "Enable signed in-app updates",
+  "updates.automaticDescription":
+    "Advertise that this release has a published CyberNet signing chain and can be installed inside supported clients.",
   "updates.emptyVersion":
     "Leave the latest version empty when you do not want to announce an update.",
   "updates.available": "Update available",
@@ -1305,7 +1310,12 @@ const zhCN: Record<TranslationKey, string> = {
   "updates.savedDescription": "CyberNet 客户端下次检查版本时会使用新配置。",
   "updates.saving": "正在保存客户端更新设置…",
   "updates.manualOnly":
-    "在 CyberNet 自有制品签名根发布前，高权限自动安装保持关闭；版本检查和手动下载不受影响。",
+    "软件内安装当前已关闭；客户端仍可检查版本并打开经过验证的下载页面。",
+  "updates.automaticReady":
+    "已为支持的平台启用签名校验后的软件内安装。请在“客户端”设置中选择推送策略；Windows 和 Linux 在正式签名渠道就绪前仍采用手动更新。",
+  "updates.automaticTitle": "启用签名验证的软件内更新",
+  "updates.automaticDescription":
+    "表示此版本已经发布 CyberNet 自有签名链，支持的客户端可以直接在软件内完成安装。",
   "updates.emptyVersion": "不希望发布更新时，请将最新版本留空。",
   "updates.available": "发现新版本",
   "updates.clientAvailableDescription":
