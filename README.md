@@ -17,6 +17,20 @@ the combined NetBird server to `0.76.0`.
 This project remains licensed under the GNU Affero General Public License v3.0.
 The original copyright, license, authors, and upstream history are retained.
 
+## Linux installation
+
+`public/install.sh` installs the unmodified upstream NetBird Linux package. It
+tries the reviewed download accelerators before the official GitHub Release,
+and accepts a package only when its SHA256 matches the checksum published for
+that exact NetBird release. It does not add NetBird's overseas APT or YUM
+repository.
+
+The Dashboard, install modal, and public download page all use the stable
+`https://cybernet.aisp24.com/install.sh` entry point. When changing the pinned
+NetBird version, update the version and every architecture/package checksum in
+`public/install.sh` together, then compare them against the upstream release's
+`netbird_<version>_checksums.txt` before deployment.
+
 ## Upstream README
 
 This project is the UI for NetBird's Management service.

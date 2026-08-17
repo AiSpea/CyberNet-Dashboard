@@ -9,6 +9,7 @@ import {
   RoutingPeerSetupKeyInfo,
 } from "@/modules/setup-netbird-modal/SetupModal";
 import { useLocale } from "@/contexts/LocaleProvider";
+import { getLinuxPackageInstallCommand } from "@/utils/linuxInstaller";
 
 type Props = {
   setupKey?: string;
@@ -28,7 +29,7 @@ export default function LinuxTab({
   const { t } = useLocale();
   const keyStep = 2;
   const runStep = keyStep + (setupKeyContent ? 1 : 0);
-  const installCommand = "curl -fsSL https://pkgs.netbird.io/install.sh | sh";
+  const installCommand = getLinuxPackageInstallCommand();
 
   return (
     <TabsContent value={String(OperatingSystem.LINUX)}>

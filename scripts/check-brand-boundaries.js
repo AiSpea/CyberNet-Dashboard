@@ -76,6 +76,12 @@ for (const file of walkSourceFiles(sourceRoot)) {
   ) {
     failures.push(`${relative}: upstream service endpoint in self-hosted code`);
   }
+
+  if (/https:\/\/pkgs\.netbird\.io\/install\.sh/.test(source)) {
+    failures.push(
+      `${relative}: upstream Linux installer bypasses CyberNet's verified download flow`,
+    );
+  }
 }
 
 const integrationsRoot = path.join(root, "src", "modules", "integrations");

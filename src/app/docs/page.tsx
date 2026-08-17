@@ -16,9 +16,9 @@ import PublicContentCard from "@/components/public/PublicContentCard";
 import PublicPageLayout from "@/components/public/PublicPageLayout";
 import { useLocale } from "@/contexts/LocaleProvider";
 import useCopyToClipboard from "@/hooks/useCopyToClipboard";
-import { getNetBirdUpCommand } from "@/utils/netbird";
+import { getLinuxInstallAndConnectCommand } from "@/utils/linuxInstaller";
 
-const linuxInstallCommand = `curl -fsSL https://pkgs.netbird.io/install.sh | sh && ${getNetBirdUpCommand()}`;
+const linuxInstallCommand = getLinuxInstallAndConnectCommand();
 
 export default function DocsPage() {
   const { t } = useLocale();
