@@ -25,8 +25,12 @@ import { useLocale } from "@/contexts/LocaleProvider";
 import useCopyToClipboard from "@/hooks/useCopyToClipboard";
 import type { ClientUpdateConfig } from "@/interfaces/Instance";
 import { resolveClientDownloads } from "@/modules/setup-netbird-modal/useClientDownloads";
+import {
+  CYBERNET_LINUX_INSTALLER_URL,
+  getLinuxInstallAndConnectCommand,
+  NETBIRD_LINUX_VERSION,
+} from "@/utils/linuxInstaller";
 import { fetchInstanceStatus } from "@/utils/unauthenticatedApi";
-import { getNetBirdUpCommand } from "@/utils/netbird";
 
 type Platform = keyof ClientUpdateConfig["update"]["platform_download_urls"];
 
@@ -106,7 +110,7 @@ function isDownloadHub(url: string): boolean {
   }
 }
 
-const linuxInstallCommand = `curl -fsSL https://pkgs.netbird.io/install.sh | sh && ${getNetBirdUpCommand()}`;
+const linuxInstallCommand = getLinuxInstallAndConnectCommand();
 
 function companionAndroidUrl(url?: string): string | undefined {
   if (!url?.endsWith("-Android-arm64-v8a.apk")) return undefined;
@@ -251,6 +255,13 @@ export default function DownloadsPage() {
                       <p className="mt-2 min-h-16 text-sm leading-6 text-slate-600 dark:text-nb-gray-300">
                         {t(descriptionKey)}
                       </p>
+                      {id === "linux" && (
+                        <p className="mt-3 text-xs text-slate-500 dark:text-nb-gray-400">
+                          {t("downloads.linuxPackageVersion", {
+                            version: NETBIRD_LINUX_VERSION,
+                          })}
+                        </p>
+                      )}
                       {(showWindowsBetaWarning ||
                         showAndroidMigrationWarning) && (
                         <div className="mt-3 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs leading-5 text-amber-950 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-100">
@@ -307,6 +318,15 @@ export default function DownloadsPage() {
                             <p className="mt-2 text-xs leading-5 text-slate-500 dark:text-nb-gray-400">
                               {t("downloads.linuxPasteHint")}
                             </p>
+                            <a
+                              href={CYBERNET_LINUX_INSTALLER_URL}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-3 flex items-center justify-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-950 dark:text-nb-gray-300 dark:hover:text-white"
+                            >
+                              <ExternalLink size={13} />
+                              {t("downloads.action.linuxReview")}
+                            </a>
                           </div>
                         ) : url ? (
                           <div className="space-y-3">

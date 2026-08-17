@@ -492,7 +492,7 @@ const en = {
     "Install the iPhone and iPad app from your administrator's TestFlight invitation.",
   "install.openTestFlight": "Open TestFlight",
   "install.linuxScriptDescription":
-    "Run the official installation script in a terminal:",
+    "Install the unmodified official NetBird package through verified China download accelerators:",
   "install.linuxRunAndSignIn":
     "Start CyberNet with this command, then finish account sign-in in your browser.",
   "install.linuxRunServer":
@@ -553,7 +553,7 @@ const en = {
     "Download the Windows x64 Beta installer, complete setup, then open CyberNet and sign in.",
   "downloads.platform.linux": "Linux",
   "downloads.platform.linuxDescription":
-    "Use the installation script for now. After installation, start CyberNet and complete sign-in in your browser.",
+    "Install the unmodified official NetBird package through China download accelerators, then connect it to CyberNet.",
   "downloads.platform.ios": "iPhone / iPad",
   "downloads.platform.iosDescription":
     "Join the TestFlight build, install CyberNet, then open the app and sign in.",
@@ -568,13 +568,16 @@ const en = {
     "Other Android devices: universal APK (larger file)",
   "downloads.action.linuxCopy": "Copy Linux install command",
   "downloads.action.linuxCopied": "Command copied",
+  "downloads.action.linuxReview": "Review the installation script",
   "downloads.notice.windowsUnsigned":
     "Unsigned Beta: Windows may show a SmartScreen or unknown publisher warning.",
   "downloads.notice.androidMigration":
     "Installed the earlier 0.1.0 test APK? Uninstall it once before installing 0.1.1. Future versions can upgrade normally.",
-  "downloads.linuxScriptTitle": "Install and sign in with one command",
+  "downloads.linuxScriptTitle": "Verified official package · China accelerated",
+  "downloads.linuxPackageVersion":
+    "Official NetBird package: {{version}} · amd64 / arm64 / 386 / armv6",
   "downloads.linuxPasteHint":
-    "Paste it into a Linux terminal. CyberNet opens browser sign-in after installation.",
+    "The script tries two China accelerators first, verifies the official SHA256, and falls back to GitHub. It never adds the overseas NetBird APT or YUM repository.",
   "downloads.scriptCopied": "The installation command was copied.",
   "publicNav.label": "Public information",
   "publicNav.downloads": "Downloads",
@@ -679,12 +682,12 @@ const en = {
   "docs.downloads.action": "Open download center",
   "docs.linux.title": "Install on Linux",
   "docs.linux.description":
-    "For now, install the Linux client with the official package script and then start the sign-in flow:",
+    "Install the unmodified official NetBird package through verified China download accelerators, then start the CyberNet sign-in flow:",
   "docs.linux.copy": "Copy",
   "docs.linux.copyDone": "Copied",
   "docs.linux.copied": "The Linux installation command was copied.",
   "docs.linux.afterInstall":
-    "Paste the command into a Linux terminal. After installation, CyberNet opens browser sign-in; use your account to finish connecting.",
+    "The script detects RPM/DEB and CPU architecture, verifies the SHA256 published for the official package, and then installs it. GitHub is used only as the final fallback.",
   "docs.admin.title": "Use the management platform",
   "docs.admin.description":
     "Administrators can review the network and control who can reach each resource. Available features depend on the account configuration.",
@@ -1395,7 +1398,8 @@ const zhCN: Record<TranslationKey, string> = {
   "install.iosDownloadDescription":
     "通过管理员提供的 TestFlight 邀请安装 iPhone 和 iPad 客户端。",
   "install.openTestFlight": "打开 TestFlight",
-  "install.linuxScriptDescription": "在终端中运行官方安装脚本：",
+  "install.linuxScriptDescription":
+    "通过国内加速源下载安装未经修改的 NetBird 官方原版软件包：",
   "install.linuxRunAndSignIn":
     "运行以下命令启动 CyberNet，然后在浏览器中完成账号登录。",
   "install.linuxRunServer": "使用设置密钥启动无人值守的 CyberNet 客户端：",
@@ -1450,7 +1454,7 @@ const zhCN: Record<TranslationKey, string> = {
     "下载 Windows x64 Beta 安装程序，完成安装后打开 CyberNet 并登录。",
   "downloads.platform.linux": "Linux",
   "downloads.platform.linuxDescription":
-    "目前使用安装脚本完成安装，然后启动 CyberNet 并在浏览器中完成登录。",
+    "通过国内加速源安装未经修改的 NetBird 官方原版软件包，然后连接到 CyberNet。",
   "downloads.platform.ios": "iPhone / iPad",
   "downloads.platform.iosDescription":
     "通过 TestFlight 安装 CyberNet，打开 App 后使用账号登录。",
@@ -1464,13 +1468,16 @@ const zhCN: Record<TranslationKey, string> = {
   "downloads.action.androidUniversal": "其他安卓设备：通用 APK（文件较大）",
   "downloads.action.linuxCopy": "复制 Linux 安装命令",
   "downloads.action.linuxCopied": "命令已复制",
+  "downloads.action.linuxReview": "查看并审阅安装脚本",
   "downloads.notice.windowsUnsigned":
     "未签名 Beta：安装时 Windows 可能显示 SmartScreen 或“未知发布者”提醒。",
   "downloads.notice.androidMigration":
     "安装过早期 0.1.0 测试 APK？请先卸载一次再安装 0.1.1；后续版本可正常覆盖升级。",
-  "downloads.linuxScriptTitle": "一条命令完成安装并登录",
+  "downloads.linuxScriptTitle": "官方原版软件包 · 国内加速下载",
+  "downloads.linuxPackageVersion":
+    "NetBird 官方包：{{version}} · 支持 amd64 / arm64 / 386 / armv6",
   "downloads.linuxPasteHint":
-    "粘贴到 Linux 终端运行；安装完成后会打开浏览器登录 CyberNet。",
+    "脚本优先尝试两个国内加速入口，强制校验官方 SHA256，最后才回退 GitHub；不会添加境外 NetBird APT/YUM 软件源。",
   "downloads.scriptCopied": "安装命令已复制。",
   "publicNav.label": "公开信息",
   "publicNav.downloads": "下载",
@@ -1564,12 +1571,12 @@ const zhCN: Record<TranslationKey, string> = {
   "docs.downloads.action": "打开下载中心",
   "docs.linux.title": "在 Linux 上安装",
   "docs.linux.description":
-    "Linux 目前先通过官方软件包脚本完成安装，然后启动登录流程：",
+    "通过国内加速源下载安装未经修改的 NetBird 官方原版软件包，然后启动 CyberNet 登录流程：",
   "docs.linux.copy": "复制",
   "docs.linux.copyDone": "已复制",
   "docs.linux.copied": "Linux 安装命令已复制。",
   "docs.linux.afterInstall":
-    "将命令粘贴到 Linux 终端运行；安装完成后，CyberNet 会打开浏览器，请使用账号完成登录和连接。",
+    "脚本会自动识别 RPM/DEB 与处理器架构，校验官方软件包 SHA256 后再安装；仅在国内加速源均失败时回退 GitHub。",
   "docs.admin.title": "使用管理平台",
   "docs.admin.description":
     "管理员可以查看专属网络状态，并控制不同用户可以访问的资源。具体功能取决于账号配置。",
